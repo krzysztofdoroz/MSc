@@ -15,6 +15,16 @@ public class ComputingNodeImpl implements IComputingNode {
 	private JmsTemplate jmsTemplate;
 	private String queueName;
 
+	public void sendResultsToAggregatingNode() throws JMSException {
+		logger.info("sending message...");
+		try {
+			jmsTemplate.convertAndSend(queueName, "ala ma kota");
+		} catch (JmsException e) {
+			logger.error("exception during sending message to aggregating component!!!");
+			throw e;
+		}
+	}
+
 	public JmsTemplate getJmsTemplate() {
 		return jmsTemplate;
 	}
@@ -29,15 +39,5 @@ public class ComputingNodeImpl implements IComputingNode {
 
 	public void setQueueName(String queueName) {
 		this.queueName = queueName;
-	}
-
-	public void sendResultsToAggregatingNode() throws JMSException {
-		logger.info("sending message...");
-		try {
-			jmsTemplate.convertAndSend(queueName, "ala ma kota");
-		} catch (JmsException e) {
-			logger.error("exception during sending message to aggregating component!!!");
-			throw e;
-		}
 	}
 }
