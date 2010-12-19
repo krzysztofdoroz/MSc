@@ -42,7 +42,7 @@
 							<transformers>
 								<transformer
 									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>pl.edu.agh.computing.node.ComputingNode</mainClass>
+									<mainClass>pl.edu.agh.computing.node.manager.ComputingNodeManager</mainClass>
 								</transformer>
 							</transformers>
 						</configuration>

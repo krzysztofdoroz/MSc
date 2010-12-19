@@ -1,5 +1,7 @@
 package pl.edu.agh.computing.node.manager;
 
+import javax.jms.JMSException;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanFactory;
@@ -13,7 +15,7 @@ public class ComputingNodeManager {
 
 	static Logger logger = Logger.getLogger(ComputingNodeManager.class);
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws JMSException {
 		Resource resource = new ClassPathResource("computingNode-context.xml");
 		BeanFactory factory = new XmlBeanFactory(resource);
 
