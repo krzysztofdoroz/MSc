@@ -25,10 +25,9 @@
 		</property>
 	</bean>
 
-
 	<bean id="aggregationController" class="pl.edu.agh.agg.controller.impl.AggregationControllerImpl">
 		<property name="jmsTemplate" ref="jmsTemplate"/>
-		<property name="numberOfComputingAgents" value="1"/>
+		<property name="numberOfComputingAgents" value="2"/>
 		<property name="queueName" value="simple"/>
 	</bean>
 
