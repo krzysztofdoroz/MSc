@@ -1,4 +1,4 @@
-package pl.edu.agh.msc.GenericGeneticAlgorithm;
+package pl.edu.agh.msc.generic.genetic.algorithm;
 
 import java.util.ArrayList;
 

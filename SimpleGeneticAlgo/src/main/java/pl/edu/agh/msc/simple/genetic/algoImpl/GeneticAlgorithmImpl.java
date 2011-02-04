@@ -1,11 +1,12 @@
-package pl.edu.agh.msc.SimpleGeneticAlgoImpl;
+package pl.edu.agh.msc.simple.genetic.algoImpl;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-import pl.edu.agh.msc.GenericGeneticAlgorithm.IGeneticAlgorithm;
-import pl.edu.agh.msc.GenericGeneticAlgorithm.Portfolio;
+import pl.edu.agh.msc.generic.genetic.algorithm.IGeneticAlgorithm;
+import pl.edu.agh.msc.generic.genetic.algorithm.Portfolio;
+import pl.edu.agh.msc.generic.genetic.algorithm.exception.InvalidPortfolioException;
 
 public class GeneticAlgorithmImpl implements IGeneticAlgorithm {
 
@@ -27,6 +28,11 @@ public class GeneticAlgorithmImpl implements IGeneticAlgorithm {
 		randomPopulationInit();
 	}
 	
+	public void checkIfPortfolioIsValid(Portfolio portfolio) throws InvalidPortfolioException {
+		
+	}
+	
+	
 	private void randomPopulationInit(){
 		
 		Random rand = new Random();
@@ -47,6 +53,17 @@ public class GeneticAlgorithmImpl implements IGeneticAlgorithm {
 				population.get(i).getPortfolio().set(j,population.get(i).getPortfolio().get(j) / sum);
 			}
 		}
+	}
+	
+	//in this case fitness is equal to current portfolio value
+	public double calculateFitness(Portfolio portfolio, int day){
+		double result = 0.0;
+		
+		for(int i = 0; i < portfolio.getPortfolio().size(); i++ ){
+			result += portfolio.getPortfolio().get(i) * data[i][day];
+		}
+		
+		return result;
 	}
 	
 	public Portfolio calculateCurrentPortfolio() {
