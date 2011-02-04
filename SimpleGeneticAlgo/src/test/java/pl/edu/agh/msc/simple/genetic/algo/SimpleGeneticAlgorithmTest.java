@@ -19,7 +19,6 @@ public class SimpleGeneticAlgorithmTest {
 		for(double d : gen.getPopulation().get(0).getPortfolio()){
 			System.out.println(d);
 		}
-		
 	}
 	
 	@Test
@@ -32,8 +31,7 @@ public class SimpleGeneticAlgorithmTest {
 		portfolio.getPortfolio().set(1, 0.5);
 		
 		System.out.println(GeneticAlgorithmImpl.calculateFitness(portfolio, 0));
-		assertEquals(100.0, GeneticAlgorithmImpl.calculateFitness(portfolio, 0), 0.01);
-		
+		assertEquals(1.0, GeneticAlgorithmImpl.calculateFitness(portfolio, 0), 0.01);
 	}
 	
 	@Test
@@ -62,5 +60,26 @@ public class SimpleGeneticAlgorithmTest {
 		}
 	}
 	
+	@Test
+	public void testgeneticAlgo(){
+		System.out.println("GA test:");
+		GeneticAlgorithmImpl gen = new GeneticAlgorithmImpl(2,8);
+		
+		for(int i = 0; i < 4 ; i++){
+			Portfolio bestPortfolio = gen.calculateCurrentPortfolio();
+			System.out.println(bestPortfolio);
+		}
+	}
+	
+	@Test
+	public void testMutation(){
+		Portfolio portfolio = new Portfolio(3);
+		portfolio.getPortfolio().set(0, 0.25);
+		portfolio.getPortfolio().set(1, 0.5);
+		portfolio.getPortfolio().set(2, 0.25);
+		
+		GeneticAlgorithmImpl.mutate(portfolio);
+		System.out.println(portfolio);
+	}
 	
 }

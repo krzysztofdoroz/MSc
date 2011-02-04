@@ -2,7 +2,7 @@ package pl.edu.agh.msc.generic.genetic.algorithm;
 
 import java.util.ArrayList;
 
-public class Portfolio {
+public class Portfolio implements Comparable<Portfolio> {
 
 	private static final double PORTFOLIO_START_VAL = 100.0;
 	private int size;
@@ -18,6 +18,18 @@ public class Portfolio {
 		}
 		
 		this.value = PORTFOLIO_START_VAL;
+	}
+	
+	public void normalize(){
+		double sum = 0.0;
+		
+		for(double d : portfolio){
+			sum += d;
+		}
+		
+		for(int i = 0; i < portfolio.size(); i++){
+			portfolio.set(i, portfolio.get(i)/sum);
+		}
 	}
 	
 	@Override
@@ -56,6 +68,16 @@ public class Portfolio {
 
 	public void setSize(int size) {
 		this.size = size;
+	}
+
+	public int compareTo(Portfolio portfolioB) {
+		
+		if(this.value < portfolioB.getValue())
+			return -1;
+		else if (this.value > portfolioB.getValue())
+			return 1;
+		else
+			return 0;
 	}
 	
 }
