@@ -4,17 +4,20 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import org.apache.log4j.Logger;
+
 import pl.edu.agh.msc.generic.genetic.algorithm.IGeneticAlgorithm;
 import pl.edu.agh.msc.generic.genetic.algorithm.Portfolio;
 import pl.edu.agh.msc.generic.genetic.algorithm.exception.InvalidPortfolioException;
 
 public class GeneticAlgorithmImpl implements IGeneticAlgorithm {
 
+	static Logger logger = Logger.getLogger(GeneticAlgorithmImpl.class);
 	private int numberOfStocks;
 	private List<Portfolio> population;
 	private int populationSize;
 	
-	private int[][] data = new int[][]{{100,101,103,104},{100,99,100,99}};
+	private static int[][] data = new int[][]{{100,101,103,104},{100,99,100,99}};
 	
 	public GeneticAlgorithmImpl(int portfolioSize, int populationSize){
 		this.numberOfStocks = portfolioSize;
@@ -28,10 +31,53 @@ public class GeneticAlgorithmImpl implements IGeneticAlgorithm {
 		randomPopulationInit();
 	}
 	
-	public void checkIfPortfolioIsValid(Portfolio portfolio) throws InvalidPortfolioException {
+	public Portfolio getBestPortfolio(int day) {
+		double max = 0.0;
+		Portfolio bestPortfolio = null;
+		
+		for(int i = 0; i < population.size(); i++){
+			if(max <  calculateFitness(population.get(i), day)){
+				bestPortfolio = population.get(i);
+				max = calculateFitness(population.get(i), day);
+			}
+		}
+		
+		return bestPortfolio;
+	}
+	
+	
+	public static void checkIfPortfolioIsValid(Portfolio portfolio) throws InvalidPortfolioException {
+		
+		double sum = 0.0;
+		final double EPS = 0.001;
+		
+		//check if all values sum up to 1.0
+		for(int i = 0; i < portfolio.getSize(); i++){
+			sum += portfolio.getPortfolio().get(i);
+		}
+		
+		if(Math.abs(sum - 1.0) > EPS){
+			throw new InvalidPortfolioException();
+		}
 		
 	}
 	
+	public static Portfolio crossover(Portfolio parentA, Portfolio parentB){
+		Portfolio childPortfolio = new Portfolio(parentA.getSize());
+
+		for(int i = 0; i < parentA.getSize(); i++){
+			childPortfolio.getPortfolio().set(i, (parentA.getPortfolio().get(i) + parentB.getPortfolio().get(i))/2.0);
+		}
+		
+		try{
+			checkIfPortfolioIsValid(childPortfolio);
+		} catch (InvalidPortfolioException e) {
+			System.out.println("childPortfolio is not valid");
+			logger.error("childPortfolio is not valid");
+		}
+		
+		return childPortfolio;
+	}
 	
 	private void randomPopulationInit(){
 		
@@ -56,7 +102,7 @@ public class GeneticAlgorithmImpl implements IGeneticAlgorithm {
 	}
 	
 	//in this case fitness is equal to current portfolio value
-	public double calculateFitness(Portfolio portfolio, int day){
+	public static double calculateFitness(Portfolio portfolio, int day){
 		double result = 0.0;
 		
 		for(int i = 0; i < portfolio.getPortfolio().size(); i++ ){

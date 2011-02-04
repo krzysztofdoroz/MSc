@@ -31,9 +31,36 @@ public class SimpleGeneticAlgorithmTest {
 		portfolio.getPortfolio().set(0, 0.5);
 		portfolio.getPortfolio().set(1, 0.5);
 		
-		System.out.println(gen.calculateFitness(portfolio, 0));
-		assertEquals(100.0, gen.calculateFitness(portfolio, 0), 0.01);
+		System.out.println(GeneticAlgorithmImpl.calculateFitness(portfolio, 0));
+		assertEquals(100.0, GeneticAlgorithmImpl.calculateFitness(portfolio, 0), 0.01);
 		
 	}
+	
+	@Test
+	public void testCrossover(){
+		Portfolio parentA = new Portfolio(2);
+		parentA.getPortfolio().set(0, 0.5);
+		parentA.getPortfolio().set(1, 0.5);
+		
+		Portfolio parentB = new Portfolio(2);
+		parentB.getPortfolio().set(0, 1.0);
+		parentB.getPortfolio().set(1, 0.0);
+		
+		Portfolio child = GeneticAlgorithmImpl.crossover(parentA, parentB);
+		
+		assertEquals(0.75, child.getPortfolio().get(0), 0.001);
+		assertEquals(0.25, child.getPortfolio().get(1), 0.001);
+	}
+	
+	@Test
+	public void testSelectingBestPortfolio(){
+		GeneticAlgorithmImpl gen = new GeneticAlgorithmImpl(2,2);
+		
+		for(int i = 0; i < 4 ; i++){
+			Portfolio bestPortfolio = gen.getBestPortfolio(i);
+			System.out.println(bestPortfolio);
+		}
+	}
+	
 	
 }

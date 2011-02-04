@@ -20,6 +20,20 @@ public class Portfolio {
 		this.value = PORTFOLIO_START_VAL;
 	}
 	
+	@Override
+	public String toString(){
+		StringBuilder result = new StringBuilder();
+		
+		for(int i = 0; i < size; i++){
+			result.append(i);
+			result.append(":");
+			result.append(portfolio.get(i));
+			result.append(" | ");
+		}
+		
+		return result.toString();
+	}
+	
 	public double getValue() {
 		return value;
 	}
