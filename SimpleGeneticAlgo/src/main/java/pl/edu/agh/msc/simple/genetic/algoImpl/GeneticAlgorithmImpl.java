@@ -24,7 +24,7 @@ public class GeneticAlgorithmImpl implements IGeneticAlgorithm {
 	private final double MUTATION_COEFF;
 
 	private static int[][] data = new int[][] { { 100, 101, 103, 104 },
-			{ 100, 99, 100, 99 } };
+			{ 5, 6, 7, 8 } };
 
 	public GeneticAlgorithmImpl(int portfolioSize, int populationSize,
 			double breedingCoeff, double mutationCoeff, double extinctionCoeff) {

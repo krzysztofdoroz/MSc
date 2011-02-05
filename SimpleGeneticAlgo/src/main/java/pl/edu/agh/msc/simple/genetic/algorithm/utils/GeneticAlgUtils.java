@@ -39,7 +39,7 @@ public class GeneticAlgUtils {
 		int numberOfNewMutants = (int) (population.size() * mutationCoeff);
 
 		for (int i = 0; i < numberOfNewMutants; i++) {
-			int indexOfPortfolioToMutate = rand.nextInt() % population.size();
+			int indexOfPortfolioToMutate = Math.abs(rand.nextInt() % population.size());
 			mutants.add(mutate(population.get(indexOfPortfolioToMutate)));
 		}
 		return mutants;
