@@ -1,0 +1,8 @@
+
+set terminal png
+
+set output 'wykres.png'
+
+plot "kghm.data"  title 'kghm' with linespoints
+
+
