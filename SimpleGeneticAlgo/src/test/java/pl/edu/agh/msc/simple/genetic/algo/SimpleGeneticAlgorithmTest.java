@@ -1,19 +1,34 @@
 package pl.edu.agh.msc.simple.genetic.algo;
 
+import java.util.LinkedList;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import pl.edu.agh.msc.data.source.StockDataSource;
+import pl.edu.agh.msc.data.source.interfaces.IDataSource;
 import pl.edu.agh.msc.generic.genetic.algorithm.Portfolio;
 import pl.edu.agh.msc.simple.genetic.algoImpl.GeneticAlgorithmImpl;
 import pl.edu.agh.msc.simple.genetic.algorithm.utils.GeneticAlgUtils;
 
 public class SimpleGeneticAlgorithmTest {
+	
+	List<String> filenames;
+	IDataSource dataSource;
 
+	@Before
+	public void init(){
+		filenames =  new LinkedList<String>();
+		filenames.add("/home/krzysztof/MSc/data-source/kghm.data");
+		filenames.add("/home/krzysztof/MSc/data-source/tpsa.data");
+		dataSource = new StockDataSource(filenames, 4);
+	}
+	
 	@Test
 	public void testRandomInit() {
-		GeneticAlgorithmImpl gen = new GeneticAlgorithmImpl(2,2, 0.2, 0.1, 0.3);
+		GeneticAlgorithmImpl gen = new GeneticAlgorithmImpl(2,2, 0.2, 0.1, 0.3, dataSource);
 		
 		assertEquals(2,gen.getPopulationSize());
 		assertEquals(2,gen.getNumberOfStocks());
@@ -27,14 +42,14 @@ public class SimpleGeneticAlgorithmTest {
 	@Test
 	public void testFitnessFunctionCalculation(){
 		
-		GeneticAlgorithmImpl gen = new GeneticAlgorithmImpl(2,2, 0.2, 0.1,0.3);
+		GeneticAlgorithmImpl gen = new GeneticAlgorithmImpl(2,2, 0.2, 0.1,0.3, dataSource);
 		
 		Portfolio portfolio = new Portfolio(2);
 		portfolio.getPortfolio().set(0, 0.5);
 		portfolio.getPortfolio().set(1, 0.5);
 		
-		System.out.println(GeneticAlgorithmImpl.calculateFitness(portfolio, 0));
-		assertEquals(1.0, GeneticAlgorithmImpl.calculateFitness(portfolio, 0), 0.01);
+		System.out.println(gen.calculateFitness(portfolio, 0));
+		assertEquals(1.0, gen.calculateFitness(portfolio, 0), 0.01);
 	}
 	
 	@Test
@@ -55,7 +70,7 @@ public class SimpleGeneticAlgorithmTest {
 	
 	@Test
 	public void testSelectingBestPortfolio(){
-		GeneticAlgorithmImpl gen = new GeneticAlgorithmImpl(2,2, 0.2, 0.1, 0.3);
+		GeneticAlgorithmImpl gen = new GeneticAlgorithmImpl(2,2, 0.2, 0.1, 0.3, dataSource);
 		
 		for(int i = 0; i < 4 ; i++){
 			Portfolio bestPortfolio = gen.getBestPortfolio(i);
@@ -66,7 +81,7 @@ public class SimpleGeneticAlgorithmTest {
 	@Test
 	public void testgeneticAlgo(){
 		System.out.println("GA test:");
-		GeneticAlgorithmImpl gen = new GeneticAlgorithmImpl(2,8, 0.2, 0.1, 0.3);
+		GeneticAlgorithmImpl gen = new GeneticAlgorithmImpl(2,8, 0.2, 0.1, 0.3, dataSource);
 		
 		for(int i = 0; i < 4 ; i++){
 			Portfolio bestPortfolio = gen.calculateCurrentPortfolio();
@@ -88,7 +103,7 @@ public class SimpleGeneticAlgorithmTest {
 	@Test
 	public void testCrossoverWithGenesSwapping(){
 		
-		GeneticAlgorithmImpl gen = new GeneticAlgorithmImpl(5, 5, 0.2, 0.1, 0.3);
+		GeneticAlgorithmImpl gen = new GeneticAlgorithmImpl(5, 5, 0.2, 0.1, 0.3, dataSource);
 		
 		Portfolio parentA = gen.getPopulation().get(0);
 		Portfolio parentB = gen.getPopulation().get(1);

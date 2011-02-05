@@ -7,6 +7,7 @@ import java.util.Random;
 
 import org.apache.log4j.Logger;
 
+import pl.edu.agh.msc.data.source.interfaces.IDataSource;
 import pl.edu.agh.msc.generic.genetic.algorithm.IGeneticAlgorithm;
 import pl.edu.agh.msc.generic.genetic.algorithm.Portfolio;
 import pl.edu.agh.msc.generic.genetic.algorithm.exception.InvalidPortfolioException;
@@ -22,15 +23,17 @@ public class GeneticAlgorithmImpl implements IGeneticAlgorithm {
 	private static int day = 0;
 	private final double BREEDING_COEFF;
 	private final double MUTATION_COEFF;
+	private IDataSource stockDataSource;
 
-	private static int[][] data = new int[][] { { 100, 101, 103, 104 },
-			{ 5, 6, 7, 8 } };
+	//private static int[][] data = new int[][] { { 100, 101, 103, 104 },
+	//		{ 5, 6, 7, 8 } };
 
 	public GeneticAlgorithmImpl(int portfolioSize, int populationSize,
-			double breedingCoeff, double mutationCoeff, double extinctionCoeff) {
+			double breedingCoeff, double mutationCoeff, double extinctionCoeff, IDataSource dataSource) {
 		this.numberOfStocks = portfolioSize;
 		this.population = new LinkedList<Portfolio>();
 		this.populationSize = populationSize;
+		this.stockDataSource = dataSource;
 
 		for (int i = 0; i < this.populationSize; i++) {
 			population.add(new Portfolio(this.numberOfStocks));
@@ -116,13 +119,13 @@ public class GeneticAlgorithmImpl implements IGeneticAlgorithm {
 	}
 
 	// in this case fitness is equal to current portfolio value
-	public static double calculateFitness(Portfolio portfolio, int day) {
+	public double calculateFitness(Portfolio portfolio, int day) {
 		double result = 0.0;
 
 		for (int i = 0; i < portfolio.getPortfolio().size(); i++) {
 
-			result += (portfolio.getPortfolio().get(i) * data[i][day])
-					/ data[i][day - 1 < 0 ? 0 : day - 1];
+			result += (portfolio.getPortfolio().get(i) * stockDataSource.getStockData(i, day))
+					/ stockDataSource.getStockData(i,day - 1 < 0 ? 0 : day - 1);
 		}
 
 		return result;

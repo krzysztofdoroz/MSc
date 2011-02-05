@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Portfolio implements Comparable<Portfolio> {
 
-	private static final double PORTFOLIO_START_VAL = 100.0;
+	private static final double PORTFOLIO_START_VAL = 1.0;
 	private int size;
 	private ArrayList<Double> portfolio;
 	private double value;
@@ -42,6 +42,8 @@ public class Portfolio implements Comparable<Portfolio> {
 			result.append(portfolio.get(i));
 			result.append(" | ");
 		}
+		result.append(" v:");
+		result.append(this.value);
 		
 		return result.toString();
 	}
