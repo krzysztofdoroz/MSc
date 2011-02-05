@@ -1,16 +1,19 @@
 package pl.edu.agh.msc.simple.genetic.algo;
 
+import java.util.List;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 import pl.edu.agh.msc.generic.genetic.algorithm.Portfolio;
 import pl.edu.agh.msc.simple.genetic.algoImpl.GeneticAlgorithmImpl;
+import pl.edu.agh.msc.simple.genetic.algorithm.utils.GeneticAlgUtils;
 
 public class SimpleGeneticAlgorithmTest {
 
 	@Test
 	public void testRandomInit() {
-		GeneticAlgorithmImpl gen = new GeneticAlgorithmImpl(2,2);
+		GeneticAlgorithmImpl gen = new GeneticAlgorithmImpl(2,2, 0.2, 0.1, 0.3);
 		
 		assertEquals(2,gen.getPopulationSize());
 		assertEquals(2,gen.getNumberOfStocks());
@@ -24,7 +27,7 @@ public class SimpleGeneticAlgorithmTest {
 	@Test
 	public void testFitnessFunctionCalculation(){
 		
-		GeneticAlgorithmImpl gen = new GeneticAlgorithmImpl(2,2);
+		GeneticAlgorithmImpl gen = new GeneticAlgorithmImpl(2,2, 0.2, 0.1,0.3);
 		
 		Portfolio portfolio = new Portfolio(2);
 		portfolio.getPortfolio().set(0, 0.5);
@@ -52,7 +55,7 @@ public class SimpleGeneticAlgorithmTest {
 	
 	@Test
 	public void testSelectingBestPortfolio(){
-		GeneticAlgorithmImpl gen = new GeneticAlgorithmImpl(2,2);
+		GeneticAlgorithmImpl gen = new GeneticAlgorithmImpl(2,2, 0.2, 0.1, 0.3);
 		
 		for(int i = 0; i < 4 ; i++){
 			Portfolio bestPortfolio = gen.getBestPortfolio(i);
@@ -63,7 +66,7 @@ public class SimpleGeneticAlgorithmTest {
 	@Test
 	public void testgeneticAlgo(){
 		System.out.println("GA test:");
-		GeneticAlgorithmImpl gen = new GeneticAlgorithmImpl(2,8);
+		GeneticAlgorithmImpl gen = new GeneticAlgorithmImpl(2,8, 0.2, 0.1, 0.3);
 		
 		for(int i = 0; i < 4 ; i++){
 			Portfolio bestPortfolio = gen.calculateCurrentPortfolio();
@@ -78,8 +81,29 @@ public class SimpleGeneticAlgorithmTest {
 		portfolio.getPortfolio().set(1, 0.5);
 		portfolio.getPortfolio().set(2, 0.25);
 		
-		GeneticAlgorithmImpl.mutate(portfolio);
+		GeneticAlgUtils.mutate(portfolio);
 		System.out.println(portfolio);
+	}
+	
+	@Test
+	public void testCrossoverWithGenesSwapping(){
+		
+		GeneticAlgorithmImpl gen = new GeneticAlgorithmImpl(5, 5, 0.2, 0.1, 0.3);
+		
+		Portfolio parentA = gen.getPopulation().get(0);
+		Portfolio parentB = gen.getPopulation().get(1);
+
+		System.out.println("parents:");
+		System.out.println(parentA);
+		System.out.println(parentB);
+		
+		List<Portfolio> children = GeneticAlgUtils.crossoverWithGenomeSwapping(parentA, parentB);
+		
+		System.out.println("Children:");
+		for(Portfolio portfolio : children){
+			System.out.println(portfolio);
+		}
+		
 	}
 	
 }

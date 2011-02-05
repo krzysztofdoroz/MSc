@@ -10,19 +10,24 @@ import org.apache.log4j.Logger;
 import pl.edu.agh.msc.generic.genetic.algorithm.IGeneticAlgorithm;
 import pl.edu.agh.msc.generic.genetic.algorithm.Portfolio;
 import pl.edu.agh.msc.generic.genetic.algorithm.exception.InvalidPortfolioException;
+import pl.edu.agh.msc.simple.genetic.algorithm.utils.GeneticAlgUtils;
 
 public class GeneticAlgorithmImpl implements IGeneticAlgorithm {
 
+	private final double EXTINCTION_COEFF;
 	static Logger logger = Logger.getLogger(GeneticAlgorithmImpl.class);
 	private int numberOfStocks;
 	private List<Portfolio> population;
 	private int populationSize;
 	private static int day = 0;
+	private final double BREEDING_COEFF;
+	private final double MUTATION_COEFF;
 
 	private static int[][] data = new int[][] { { 100, 101, 103, 104 },
 			{ 100, 99, 100, 99 } };
 
-	public GeneticAlgorithmImpl(int portfolioSize, int populationSize) {
+	public GeneticAlgorithmImpl(int portfolioSize, int populationSize,
+			double breedingCoeff, double mutationCoeff, double extinctionCoeff) {
 		this.numberOfStocks = portfolioSize;
 		this.population = new LinkedList<Portfolio>();
 		this.populationSize = populationSize;
@@ -30,6 +35,9 @@ public class GeneticAlgorithmImpl implements IGeneticAlgorithm {
 		for (int i = 0; i < this.populationSize; i++) {
 			population.add(new Portfolio(this.numberOfStocks));
 		}
+		BREEDING_COEFF = breedingCoeff;
+		MUTATION_COEFF = mutationCoeff;
+		EXTINCTION_COEFF = extinctionCoeff;
 
 		randomPopulationInit();
 	}
@@ -120,67 +128,6 @@ public class GeneticAlgorithmImpl implements IGeneticAlgorithm {
 		return result;
 	}
 
-	public static void mutate(Portfolio portfolio) {
-		Random rand = new Random();
-		int indexToMutate = Math.abs(rand.nextInt() % portfolio.getSize());
-		double mutatedValue = rand.nextDouble();
-
-		portfolio.getPortfolio().set(indexToMutate, mutatedValue);
-		portfolio.normalize();
-	}
-
-	public List<Portfolio> crossoverWithGenomeSwapping(Portfolio parentA,
-			Portfolio parentB) {
-		List<Portfolio> children = new LinkedList<Portfolio>();
-
-		Portfolio childA = new Portfolio(parentA.getSize());
-		Portfolio childB = new Portfolio(parentA.getSize());
-		Random rand = new Random();
-		int left, right, tmp;
-
-		left = Math.abs(rand.nextInt() % parentA.getSize());
-		right = Math.abs(rand.nextInt() % parentA.getSize());
-
-		if (left > right) {
-			tmp = left;
-			left = right;
-			right = tmp;
-		}
-
-		// childA: AAA |L| BBBBB |R| AAAA
-		for(int i = 0; i < left; i++) {
-			childA.getPortfolio().set(i, parentA.getPortfolio().get(i));
-		}
-
-		for(int i = left; i < right; i++) {
-			childA.getPortfolio().set(i, parentB.getPortfolio().get(i));
-		}
-
-		for(int i = right; i < parentA.getSize(); i++) {
-			childA.getPortfolio().set(i, parentA.getPortfolio().get(i));
-		}
-		childA.normalize();
-
-		// childB: BBBB |L| AAAAAA |R| BBBBB
-		for(int i = 0; i < left; i++) {
-			childB.getPortfolio().set(i, parentB.getPortfolio().get(i));
-		}
-
-		for(int i = left; i < right; i++) {
-			childB.getPortfolio().set(i, parentA.getPortfolio().get(i));
-		}
-
-		for(int i = right; i < parentA.getSize(); i++) {
-			childB.getPortfolio().set(i, parentB.getPortfolio().get(i));
-		}
-		childB.normalize();
-		
-		children.add(childA);
-		children.add(childB);
-
-		return children;
-	}
-
 	public Portfolio calculateCurrentPortfolio() {
 
 		for (Portfolio portfolio : population) {
@@ -196,6 +143,14 @@ public class GeneticAlgorithmImpl implements IGeneticAlgorithm {
 		 * for(Portfolio portfolio : population){ System.out.println(portfolio);
 		 * } System.out.println("-----------------");
 		 */
+
+		List<Portfolio> children = GeneticAlgUtils.breedNewPortfolios(
+				population, BREEDING_COEFF);
+		List<Portfolio> mutants = GeneticAlgUtils.createMutants(population,
+				MUTATION_COEFF);
+
+		GeneticAlgUtils.extinctTheWeakest(population, EXTINCTION_COEFF);
+		GeneticAlgUtils.mergePopulation(population, children, mutants);
 
 		return getBestPortfolio(day++);
 	}
