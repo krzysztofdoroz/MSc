@@ -140,13 +140,6 @@ public class GeneticAlgorithmImpl implements IGeneticAlgorithm {
 		Collections.sort(population);
 		Collections.reverse(population);
 
-		/*
-		 * System.out.println("Sorted population:");
-		 * 
-		 * for(Portfolio portfolio : population){ System.out.println(portfolio);
-		 * } System.out.println("-----------------");
-		 */
-
 		List<Portfolio> children = GeneticAlgUtils.breedNewPortfolios(
 				population, BREEDING_COEFF);
 		List<Portfolio> mutants = GeneticAlgUtils.createMutants(population,
@@ -155,6 +148,10 @@ public class GeneticAlgorithmImpl implements IGeneticAlgorithm {
 		GeneticAlgUtils.extinctTheWeakest(population, EXTINCTION_COEFF);
 		GeneticAlgUtils.mergePopulation(population, children, mutants);
 
+		for (Portfolio portfolio : population) {
+			portfolio.setValue(calculateFitness(portfolio, day));
+		}
+		
 		return getBestPortfolio(day++);
 	}
 
