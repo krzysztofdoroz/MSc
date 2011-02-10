@@ -17,7 +17,7 @@ simple_moving_average <- function(data, index, howMany) {
 	sum = 0.0
 	
 	for(i in 1:howMany){
-		sum = sum + data$V1[index - howMany + i]
+		sum = sum + data[index - howMany + i]
 	}
 
 	sum / howMany
@@ -52,7 +52,7 @@ go_short <- function(data, index, stockId) {
 		trades[stockId,2] <<- 0
 	}
 	
-	portfolio_value <<- cbind(portfolio_value,current_money_ammount)
+	#portfolio_value <<- cbind(portfolio_value,current_money_ammount)
 	
 }
 
@@ -79,6 +79,10 @@ initialize <- function() {
 	}	
 }
 
+get_current_stock_price <- function(data, index) {
+	data[index]
+}
+
 #
 #loading data from files:
 #
@@ -92,6 +96,9 @@ initialize <- function() {
 #
 	kghm_all <- rbind(kghm_2009,kghm_2010)
 	tpsa_all <- rbind(tpsa_2009,tpsa_2010)	
+	stock_prices <- cbind(kghm_all,tpsa_all)
+	colnames(stock_prices) <- c("V1","V2")
+	#dim(stock_prices) <- c(length(kghm_all$V1), 2)
 
 #
 #calculate indices -> data dependant
@@ -108,48 +115,33 @@ initialize <- function() {
 	#plot(tpsa_2010$V1,type="o", col="black")
 	trades <- array(c(1:2,1:2), dim=c(2,2))
 	initialize()
-	print(trades)
-	portfolio_value
+	
+	## portfolio_value 
 	
 #
 #lets seek some trends out there
 #
+print(stock_prices[,2])
 
 solve <- function() {
 	counter = 0
 	for(i in start_index:end_index){
-
-		if (get_most_recent_trade_stock_price(1) < 0.98 * tpsa_all$V1[i]){
-			go_short(tpsa_all$V1,i,1)
-		} else if (simple_moving_average(tpsa_all,i,20) < simple_moving_average(tpsa_all,i,40)){
-			go_short(tpsa_all$V1,i,1)
-		} 
-		
-		if (simple_moving_average(tpsa_all,i,20) > simple_moving_average(tpsa_all,i,40)){
-			go_long(tpsa_all$V1,i,1)
-			counter = counter + 1
-		} else if (max_historical_price(tpsa_all$V1, i, 20) < tpsa_all$V1[i] ){
-			go_long(tpsa_all$V1,i,1)
-		} 
-		
-		if (get_most_recent_trade_stock_price(2) < 0.98 * kghm_all$V1[i]){
-			go_short(kghm_all$V1,i,2)
-		} else if (simple_moving_average(kghm_all,i,20) < simple_moving_average(kghm_all,i,40)){
-			go_short(kghm_all$V1,i,2)
-		} 
-		
-		if (simple_moving_average(kghm_all,i,20) > simple_moving_average(kghm_all,i,40)){
-			go_long(kghm_all$V1,i,2)
-			counter = counter + 1
-		} else if (max_historical_price(kghm_all$V1, i, 20) < kghm_all$V1[i] ){
-			go_long(kghm_all$V1,i,2)
-		} 
-		
+		#for each stock in portfolio:
+		for(j in 1:ncol(stock_prices)){
+			
+			if (get_most_recent_trade_stock_price(j) < 0.98 * get_current_stock_price(stock_prices[,j],i)){
+				go_short(stock_prices[,j],i,j)
+			} else if (simple_moving_average(stock_prices[,j],i,20) < simple_moving_average(stock_prices[,j],i,40)){
+				go_short(stock_prices[,j],i,j)
+			} 
+			
+			if (simple_moving_average(stock_prices[,j],i,20) > simple_moving_average(stock_prices[,j],i,40)){
+				go_long(stock_prices[,j],i,j)
+			} else if (max_historical_price(stock_prices[,j], i, 20) < stock_prices[i,j] ){
+				go_long(stock_prices[,j],i,j)
+			} 
+		}
 	}
-	print(counter)
-	
-	print(max_historical_price(tpsa_all$V1,253,3))
-	
 }
 
 solve()
@@ -157,4 +149,4 @@ solve()
 print(trades)
 print(current_money_ammount)
 
-plot(portfolio_value)
+
