@@ -110,10 +110,10 @@ get_current_stock_price <- function(data, index) {
 #
 	current_money_ammount <- 100.0
 	initial_money_ammount <- 100.0
-	money_cap_per_single_trade <- 0.5 
+	money_cap_per_single_trade <- 0.5
 	maximal_value_loss <- 0.98
-	lower_number_of_days <- 20
-	higher_number_of_days <- 40
+	lower_number_of_days <- 10
+	higher_number_of_days <- 20
 	trades <- array(c(1:2,1:2), dim=c(2,2))
 	initialize()
 	
