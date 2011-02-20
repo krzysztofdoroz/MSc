@@ -22,9 +22,10 @@ public class MPTGeneticAlgorithm implements IGeneticAlgorithm {
 	private final double BREEDING_COEFF;
 	private final double MUTATION_COEFF;
 	private IDataSource stockDataSource;
-	
+
 	public MPTGeneticAlgorithm(int portfolioSize, int populationSize,
-			double breedingCoeff, double mutationCoeff, double extinctionCoeff, IDataSource dataSource) {
+			double breedingCoeff, double mutationCoeff, double extinctionCoeff,
+			IDataSource dataSource) {
 		this.numberOfStocks = portfolioSize;
 		this.population = new LinkedList<Portfolio>();
 		this.populationSize = populationSize;
@@ -39,7 +40,7 @@ public class MPTGeneticAlgorithm implements IGeneticAlgorithm {
 
 		randomPopulationInit();
 	}
-	
+
 	private void randomPopulationInit() {
 		Random rand = new Random();
 		double sum = 0.0;
@@ -61,7 +62,7 @@ public class MPTGeneticAlgorithm implements IGeneticAlgorithm {
 			}
 		}
 	}
-	
+
 	public Portfolio calculateCurrentPortfolio() {
 		for (Portfolio portfolio : population) {
 			portfolio.setValue(calculateFitness(portfolio, day));
@@ -81,10 +82,10 @@ public class MPTGeneticAlgorithm implements IGeneticAlgorithm {
 		for (Portfolio portfolio : population) {
 			portfolio.setValue(calculateFitness(portfolio, day));
 		}
-		
+
 		return getBestPortfolio(day++);
 	}
-	
+
 	public Portfolio getBestPortfolio(int day) {
 		double max = 0.0;
 		Portfolio bestPortfolio = null;
@@ -97,17 +98,49 @@ public class MPTGeneticAlgorithm implements IGeneticAlgorithm {
 		}
 		return bestPortfolio;
 	}
-	
+
 	// in this case fitness is equal to current portfolio value
 	public double calculateFitness(Portfolio portfolio, int day) {
 		double result = 0.0;
 
 		for (int i = 0; i < portfolio.getPortfolio().size(); i++) {
 
-			result += (portfolio.getPortfolio().get(i) * stockDataSource.getStockData(i, day))
-					/ stockDataSource.getStockData(i,day - 1 < 0 ? 0 : day - 1);
+			result += (portfolio.getPortfolio().get(i) * stockDataSource
+					.getStockData(i, day))
+					/ stockDataSource
+							.getStockData(i, day - 1 < 0 ? 0 : day - 1);
 		}
 
 		return result;
 	}
+
+	public double getRisk(Portfolio portfolio, int day) {
+		double risk = 0.0;
+		double correlationCoeff = 0.0;
+		double stockNumberOneWeigth = 0.0;
+		double stockNumberTwoWeigth = 0.0;
+
+		for (int i = 0; i < portfolio.getSize(); i++) {
+			for (int j = 0; j < portfolio.getSize(); j++) {
+
+				if (i == j) {
+					correlationCoeff = 1.0;
+				} else {
+					correlationCoeff = stockDataSource.getCorrelationCoeffData(
+							i, day);
+				}
+
+				stockNumberOneWeigth = portfolio.getPortfolio().get(i);
+				stockNumberTwoWeigth = portfolio.getPortfolio().get(j);
+
+				risk += stockNumberOneWeigth * stockNumberTwoWeigth
+						* stockDataSource.getStandardDevData(i, day)
+						* stockDataSource.getStandardDevData(j, day)
+						* correlationCoeff;
+			}
+		}
+
+		return risk;
+	}
+
 }
