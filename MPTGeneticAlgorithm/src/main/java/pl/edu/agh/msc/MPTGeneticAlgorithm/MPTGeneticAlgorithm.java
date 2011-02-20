@@ -127,7 +127,7 @@ public class MPTGeneticAlgorithm implements IGeneticAlgorithm {
 					correlationCoeff = 1.0;
 				} else {
 					correlationCoeff = stockDataSource.getCorrelationCoeffData(
-							i, day);
+							i/2, day);
 				}
 
 				stockNumberOneWeigth = portfolio.getPortfolio().get(i);
@@ -140,7 +140,7 @@ public class MPTGeneticAlgorithm implements IGeneticAlgorithm {
 			}
 		}
 
-		return risk;
+		return Math.sqrt(risk);
 	}
 
 }

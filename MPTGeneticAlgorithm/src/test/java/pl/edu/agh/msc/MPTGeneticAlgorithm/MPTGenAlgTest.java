@@ -16,10 +16,35 @@ import pl.edu.agh.msc.generic.genetic.algorithm.Portfolio;
 
 public class MPTGenAlgTest {
 
-	@Test
-	public void testRiskCalculating(){
+	List<String> filenames;
+	IDataSource dataSource;
+
+	@Before
+	public void init(){
+		filenames =  new LinkedList<String>();
+		filenames.add("/home/krzysztof/MSc/data-source/kghm.data");
+		filenames.add("/home/krzysztof/MSc/data-source/tpsa.data");
+		dataSource = new StockDataSource(filenames, 253);
 		
+		List<String> standardDevFileList = new LinkedList<String>();
+		standardDevFileList.add("/home/krzysztof/MSc/R_scripts/output/kghm_standard_deviation");
+		standardDevFileList.add("/home/krzysztof/MSc/R_scripts/output/tpsa_standard_deviation");
+		dataSource.loadStockStandardDeviationData(standardDevFileList);
+		
+		List<String> correlationCoeffFileList = new LinkedList<String>();
+		correlationCoeffFileList.add("/home/krzysztof/MSc/R_scripts/output/kghm-tpsa_correlation_coeff");
+		dataSource.loadStockStandardCorrelationCoeffData(correlationCoeffFileList);
 	}
 	
+	@Test
+	public void testRiskCalculating(){
+		MPTGeneticAlgorithm gen = new MPTGeneticAlgorithm(2, 16, 0.2, 0.1, 0.3, dataSource);
+		
+		Portfolio portfolio = new Portfolio(2);
+		portfolio.getPortfolio().set(0, 0.1);
+		portfolio.getPortfolio().set(1, 0.9);
+		
+		System.out.println( gen.getRisk(portfolio, 0));
+	}
 	
 }
