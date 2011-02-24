@@ -99,16 +99,25 @@ public class MPTGeneticAlgorithm implements IGeneticAlgorithm {
 		return bestPortfolio;
 	}
 
-	// in this case fitness is equal to current portfolio value
 	public double calculateFitness(Portfolio portfolio, int day) {
 		double result = 0.0;
 
 		for (int i = 0; i < portfolio.getPortfolio().size(); i++) {
+			result += stockDataSource.getCovarianceData(i, day)
+					/ stockDataSource.getMarketVariance(day);
+		}
 
-			result += (portfolio.getPortfolio().get(i) * stockDataSource
-					.getStockData(i, day))
-					/ stockDataSource
-							.getStockData(i, day - 1 < 0 ? 0 : day - 1);
+		return result;
+	}
+
+	// in this case fitness is calculated according to CAPT
+	public double calculateExpectedReturn(Portfolio portfolio, int day) {
+		double result = 0.0;
+		
+		for (int i = 0; i < portfolio.getPortfolio().size(); i++) {
+			
+			result += ( portfolio.getPortfolio().get(i) * stockDataSource.getCovarianceData(i, day) )
+					/ stockDataSource.getMarketVariance(day);
 		}
 
 		return result;
@@ -127,7 +136,7 @@ public class MPTGeneticAlgorithm implements IGeneticAlgorithm {
 					correlationCoeff = 1.0;
 				} else {
 					correlationCoeff = stockDataSource.getCorrelationCoeffData(
-							i/2, day);
+							i / 2, day);
 				}
 
 				stockNumberOneWeigth = portfolio.getPortfolio().get(i);
