@@ -8,44 +8,60 @@ import pl.edu.agh.msc.generic.genetic.algorithm.Portfolio;
 
 public class MPTAlgorithmUtils {
 
-	public static List<Portfolio> breedNewPortfolios(
-			List<Portfolio> population, double breedingCoeff) {
+	public static List<MPTPortfolio> selectBestGenomes(
+			List<MPTPortfolio> riskOrientedPopulation,
+			List<MPTPortfolio> expectedReturnPopulation, double breedingCoeff) {
 
-		List<Portfolio> children = new LinkedList<Portfolio>();
+		List<MPTPortfolio> bestGenomes = new LinkedList<MPTPortfolio>();
+		int populationSize = (int) (breedingCoeff * riskOrientedPopulation
+				.size());
 
-		int numberOfOffspring = (int) (population.size() * breedingCoeff);
-		
-		//numberOfOffspring has to be even!
-		if(numberOfOffspring % 2 == 1){
+		for (int i = 0; i < populationSize; i++) {
+			bestGenomes.add(riskOrientedPopulation.get(i));
+			bestGenomes.add(expectedReturnPopulation.get(i));
+		}
+
+		return bestGenomes;
+	}
+
+	public static List<MPTPortfolio> breedNewPortfolios(
+			List<MPTPortfolio> population) {
+
+		List<MPTPortfolio> children = new LinkedList<MPTPortfolio>();
+
+		int numberOfOffspring = population.size();
+
+		if (numberOfOffspring % 2 == 1) {
 			numberOfOffspring++;
 		}
-		
-		for(int i = 0; i < numberOfOffspring; ){
+
+		for (int i = 0; i < numberOfOffspring;) {
 			Portfolio parentA = population.get(i);
 			i++;
 			Portfolio parentB = population.get(i);
 			i++;
 			children.addAll(crossoverWithGenomeSwapping(parentA, parentB));
 		}
-		
+
 		return children;
 	}
 
-	public static List<Portfolio> createMutants(List<Portfolio> population,
-			double mutationCoeff) {
-		List<Portfolio> mutants = new LinkedList<Portfolio>();
+	public static List<MPTPortfolio> createMutants(
+			List<MPTPortfolio> population, double mutationCoeff) {
+		List<MPTPortfolio> mutants = new LinkedList<MPTPortfolio>();
 		Random rand = new Random();
 
 		int numberOfNewMutants = (int) (population.size() * mutationCoeff);
 
 		for (int i = 0; i < numberOfNewMutants; i++) {
-			int indexOfPortfolioToMutate = Math.abs(rand.nextInt() % population.size());
+			int indexOfPortfolioToMutate = Math.abs(rand.nextInt()
+					% population.size());
 			mutants.add(mutate(population.get(indexOfPortfolioToMutate)));
 		}
 		return mutants;
 	}
 
-	public static void extinctTheWeakest(List<Portfolio> population,
+	public static void extinctTheWeakest(List<MPTPortfolio> population,
 			double extinctionCoeff) {
 		int numberOfExtinctedPortfolios = (int) (population.size() * extinctionCoeff);
 
@@ -54,22 +70,16 @@ public class MPTAlgorithmUtils {
 		}
 	}
 
+	public static void mergePopulation(List<MPTPortfolio> population,
+			List<MPTPortfolio> mutants) {
 
-	public static void mergePopulation(List<Portfolio> population,
-			List<Portfolio> children, List<Portfolio> mutants) {
-
-		for (Portfolio newPortfolio : children) {
-			population.add(newPortfolio);
-		}
-
-		for (Portfolio newPortfolio : mutants) {
+		for (MPTPortfolio newPortfolio : mutants) {
 			population.add(newPortfolio);
 		}
 	}
 
-
-	public static Portfolio mutate(Portfolio portfolio) {
-		Portfolio mutant = new Portfolio(portfolio.getSize());
+	public static MPTPortfolio mutate(MPTPortfolio portfolio) {
+		MPTPortfolio mutant = new MPTPortfolio(portfolio.getSize());
 
 		Random rand = new Random();
 		int indexToMutate = Math.abs(rand.nextInt() % portfolio.getSize());
@@ -84,13 +94,13 @@ public class MPTAlgorithmUtils {
 
 		return mutant;
 	}
-	
-	public static List<Portfolio> crossoverWithGenomeSwapping(
-			Portfolio parentA, Portfolio parentB) {
-		List<Portfolio> children = new LinkedList<Portfolio>();
 
-		Portfolio childA = new Portfolio(parentA.getSize());
-		Portfolio childB = new Portfolio(parentA.getSize());
+	public static List<MPTPortfolio> crossoverWithGenomeSwapping(
+			Portfolio parentA, Portfolio parentB) {
+		List<MPTPortfolio> children = new LinkedList<MPTPortfolio>();
+
+		MPTPortfolio childA = new MPTPortfolio(parentA.getSize());
+		MPTPortfolio childB = new MPTPortfolio(parentA.getSize());
 		Random rand = new Random();
 		int left, right, tmp;
 
@@ -135,6 +145,23 @@ public class MPTAlgorithmUtils {
 		children.add(childB);
 
 		return children;
+	}
+
+	public static void splitChildrenAccordingToTheirGenome(
+			List<MPTPortfolio> children,
+			List<MPTPortfolio> riskOrientedPopulation,
+			List<MPTPortfolio> returnOrientedpopulation) {
+		
+		// children are already sorted according to risk
+		
+		for(int i = 0; i < children.size()/2; i++){
+			riskOrientedPopulation.add(children.get(i));
+		}
+		
+		for(int i = children.size()/2; i < children.size(); i++){
+			 returnOrientedpopulation.add(children.get(i));
+		}
+		
 	}
 
 }

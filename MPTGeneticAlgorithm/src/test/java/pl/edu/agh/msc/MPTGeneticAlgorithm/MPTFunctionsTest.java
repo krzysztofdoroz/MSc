@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.*;
 
 import pl.edu.agh.msc.data.source.StockDataSource;
 import pl.edu.agh.msc.data.source.interfaces.IDataSource;
-import pl.edu.agh.msc.generic.genetic.algorithm.Portfolio;
 
 public class MPTFunctionsTest {
 
@@ -45,11 +45,36 @@ public class MPTFunctionsTest {
 	public void testExpectedValue(){
 		MPTGeneticAlgorithm gen = new MPTGeneticAlgorithm(2, 16, 0.2, 0.1, 0.3, dataSource);
 		
-		Portfolio portfolio = new Portfolio(2);
+		MPTPortfolio portfolio = new MPTPortfolio(2);
 		portfolio.getPortfolio().set(0, 0.1);
 		portfolio.getPortfolio().set(1, 0.9);
 		
 		System.out.println( gen.calculateExpectedReturn(portfolio, 0));
+	}
+	
+	@Test
+	public void testRiskCalculating(){
+		MPTGeneticAlgorithm gen = new MPTGeneticAlgorithm(2, 16, 0.2, 0.1, 0.3, dataSource);
+		
+		MPTPortfolio portfolio = new MPTPortfolio(2);
+		portfolio.getPortfolio().set(0, 0.9);
+		portfolio.getPortfolio().set(1, 0.1);
+		
+		System.out.println( gen.getRisk(portfolio, 0));
+	}
+	
+	@Test
+	public void testBreedingNewPortfolios(){
+		List<MPTPortfolio> parents = new LinkedList<MPTPortfolio>();
+		
+		for(int i = 0 ; i < 6; i++){
+			parents.add(new MPTPortfolio(2));
+		}
+		
+		List<MPTPortfolio> result = MPTAlgorithmUtils.breedNewPortfolios(parents);
+	
+		assertEquals(6, result.size());
+		
 	}
 	
 }
