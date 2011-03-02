@@ -82,37 +82,39 @@ public class MPTGeneticAlgorithm implements IGeneticAlgorithm {
 		}
 	}
 
-	public Portfolio calculateCurrentPortfolio() {
-		
+	public MPTPortfolio calculateCurrentPortfolio() {
+
 		/*
-		 *  calculating risk and expected return of subpopulations
+		 * calculating risk and expected return of subpopulations
 		 */
-		
+
 		for (MPTPortfolio portfolio : riskOrientedPopulation) {
 			portfolio.setRisk(getRisk(portfolio, day));
+			portfolio.setValue(calculateExpectedReturn(portfolio, day));
 		}
 
 		for (MPTPortfolio portfolio : returnOrientedpopulation) {
+			portfolio.setRisk(getRisk(portfolio, day));
 			portfolio.setValue(calculateExpectedReturn(portfolio, day));
 		}
 
 		/*
 		 * sorting both subpopulations with appropriate comparators
 		 */
-		
+
 		Collections.sort(returnOrientedpopulation);
 		Collections.reverse(returnOrientedpopulation);
 
 		Collections.sort(riskOrientedPopulation, new RiskComparator());
 
-		for (Portfolio portfolio : riskOrientedPopulation) {
+		for (Portfolio portfolio : returnOrientedpopulation) {
 			System.out.println(portfolio);
 		}
 
 		/*
 		 * selecting best genomes from both subpopulations to reproduction
 		 */
-		
+
 		List<MPTPortfolio> reproducingGenomes = MPTAlgorithmUtils
 				.selectBestGenomes(riskOrientedPopulation,
 						returnOrientedpopulation, BREEDING_COEFF);
@@ -120,7 +122,7 @@ public class MPTGeneticAlgorithm implements IGeneticAlgorithm {
 		/*
 		 * breeding offspring
 		 */
-		
+
 		List<MPTPortfolio> children = MPTAlgorithmUtils
 				.breedNewPortfolios(reproducingGenomes);
 		Collections.sort(children, new RiskComparator());
@@ -128,7 +130,7 @@ public class MPTGeneticAlgorithm implements IGeneticAlgorithm {
 		/*
 		 * creating mutants
 		 */
-		
+
 		List<MPTPortfolio> riskOrientedmutants = MPTAlgorithmUtils
 				.createMutants(riskOrientedPopulation, MUTATION_COEFF);
 		List<MPTPortfolio> returnOrientedmutants = MPTAlgorithmUtils
@@ -137,16 +139,17 @@ public class MPTGeneticAlgorithm implements IGeneticAlgorithm {
 		/*
 		 * extinct the weakest genomes from both subpopulations
 		 */
-		
+
 		MPTAlgorithmUtils.extinctTheWeakest(riskOrientedPopulation,
 				EXTINCTION_COEFF);
 		MPTAlgorithmUtils.extinctTheWeakest(returnOrientedpopulation,
 				EXTINCTION_COEFF);
 
 		/*
-		 * merge subpopulations with new generation genomes (offspring + mutants)
+		 * merge subpopulations with new generation genomes (offspring +
+		 * mutants)
 		 */
-		
+
 		MPTAlgorithmUtils.splitChildrenAccordingToTheirGenome(children,
 				riskOrientedPopulation, returnOrientedpopulation);
 
@@ -158,29 +161,65 @@ public class MPTGeneticAlgorithm implements IGeneticAlgorithm {
 		/*
 		 * calculate risk and expected return of newly introduced genomes
 		 */
-		
+
 		for (MPTPortfolio portfolio : riskOrientedPopulation) {
 			portfolio.setRisk(getRisk(portfolio, day));
+			portfolio.setValue(calculateExpectedReturn(portfolio, day));
 		}
-		
+
 		for (MPTPortfolio portfolio : returnOrientedpopulation) {
 			portfolio.setValue(calculateExpectedReturn(portfolio, day));
+			portfolio.setRisk(getRisk(portfolio, day));
 		}
 
 		return getBestPortfolio(day++);
 	}
 
-	public Portfolio getBestPortfolio(int day) {
+	public MPTPortfolio getBestPortfolio(int day) {
+		double min = 10000000.0;
 		double max = 0.0;
-		Portfolio bestPortfolio = null;
+		MPTPortfolio bestPortfolio = null;
+		MPTPortfolio bestPortfolioReturnOriented = null;
+		MPTPortfolio bestPortfolioRiskOriented = null;
 
-		for (int i = 0; i < riskOrientedPopulation.size(); i++) {
-			if (max < calculateExpectedReturn(riskOrientedPopulation.get(i), day)) {
-				bestPortfolio = riskOrientedPopulation.get(i);
-				max = calculateExpectedReturn(riskOrientedPopulation.get(i), day);
+		// select portfolio with minimum risk
+		/*
+		for (int i = 0; i < returnOrientedpopulation.size(); i++) {
+			if (min > getRisk(returnOrientedpopulation.get(i), day)) {
+				bestPortfolioReturnOriented = returnOrientedpopulation.get(i);
+				min = getRisk(returnOrientedpopulation.get(i), day);
 			}
 		}
-		return bestPortfolio;
+		*/
+		List<MPTPortfolio> allGenomes = new LinkedList<MPTPortfolio>();
+		allGenomes.addAll(riskOrientedPopulation);
+		allGenomes.addAll(returnOrientedpopulation);
+		
+		//sorting by expected return, then by risk
+		Collections.sort(allGenomes);
+		Collections.sort(allGenomes, new RiskComparator());
+		
+		/*
+		// select portfolio with maximum return
+		for (int i = 0; i < riskOrientedPopulation.size(); i++) {
+			if (max < calculateExpectedReturn(riskOrientedPopulation.get(i),
+					day)) {
+				bestPortfolioRiskOriented = riskOrientedPopulation.get(i);
+				max = calculateExpectedReturn(riskOrientedPopulation.get(i),
+						day);
+			}
+		}
+
+		if (bestPortfolioReturnOriented.getValue() > bestPortfolioRiskOriented
+				.getValue()
+				&& bestPortfolioReturnOriented.getRisk() < bestPortfolioRiskOriented
+						.getRisk()){
+			return bestPortfolioReturnOriented;
+		} else if(bestPortfolioReturnOriented.getRisk() > ) {
+			return bestPortfolioRiskOriented;
+		}
+		*/
+			return allGenomes.get(0);
 	}
 
 	public double calculateFitness(Portfolio portfolio, int day) {
@@ -235,12 +274,12 @@ public class MPTGeneticAlgorithm implements IGeneticAlgorithm {
 		return Math.sqrt(risk);
 	}
 
-	class RiskComparator implements Comparator<Portfolio> {
+	class RiskComparator implements Comparator<MPTPortfolio> {
 
-		public int compare(Portfolio portfolioA, Portfolio portfolioB) {
+		public int compare(MPTPortfolio portfolioA, MPTPortfolio portfolioB) {
 
-			double portfolioARisk = getRisk(portfolioA, day);
-			double portfolioBRisk = getRisk(portfolioB, day);
+			double portfolioARisk = portfolioA.getRisk();
+			double portfolioBRisk = portfolioB.getRisk();
 
 			if (portfolioARisk > portfolioBRisk) {
 				return 1;
@@ -270,6 +309,24 @@ public class MPTGeneticAlgorithm implements IGeneticAlgorithm {
 			}
 		}
 
+	}
+
+	public List<MPTPortfolio> getRiskOrientedPopulation() {
+		return riskOrientedPopulation;
+	}
+
+	public void setRiskOrientedPopulation(
+			List<MPTPortfolio> riskOrientedPopulation) {
+		this.riskOrientedPopulation = riskOrientedPopulation;
+	}
+
+	public List<MPTPortfolio> getReturnOrientedpopulation() {
+		return returnOrientedpopulation;
+	}
+
+	public void setReturnOrientedpopulation(
+			List<MPTPortfolio> returnOrientedpopulation) {
+		this.returnOrientedpopulation = returnOrientedpopulation;
 	}
 
 }
