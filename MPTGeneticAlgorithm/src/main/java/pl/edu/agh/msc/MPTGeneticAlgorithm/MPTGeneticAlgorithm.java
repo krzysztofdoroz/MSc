@@ -176,12 +176,6 @@ public class MPTGeneticAlgorithm implements IGeneticAlgorithm {
 	}
 
 	public MPTPortfolio getBestPortfolio(int day) {
-		double min = 10000000.0;
-		double max = 0.0;
-		MPTPortfolio bestPortfolio = null;
-		MPTPortfolio bestPortfolioReturnOriented = null;
-		MPTPortfolio bestPortfolioRiskOriented = null;
-
 		// select portfolio with minimum risk
 		/*
 		for (int i = 0; i < returnOrientedpopulation.size(); i++) {
@@ -327,6 +321,11 @@ public class MPTGeneticAlgorithm implements IGeneticAlgorithm {
 	public void setReturnOrientedpopulation(
 			List<MPTPortfolio> returnOrientedpopulation) {
 		this.returnOrientedpopulation = returnOrientedpopulation;
+	}
+
+	public Portfolio getPortfolioToMigrate() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

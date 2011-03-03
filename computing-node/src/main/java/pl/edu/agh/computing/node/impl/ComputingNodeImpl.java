@@ -7,6 +7,7 @@ import org.springframework.jms.JmsException;
 import org.springframework.jms.core.JmsTemplate;
 
 import pl.edu.agh.computing.node.IComputingNode;
+import pl.edu.agh.msc.generic.genetic.algorithm.IGeneticAlgorithm;
 
 public class ComputingNodeImpl implements IComputingNode {
 
@@ -14,6 +15,7 @@ public class ComputingNodeImpl implements IComputingNode {
 
 	private JmsTemplate jmsTemplate;
 	private String queueName;
+	private IGeneticAlgorithm geneticAlgorithm;
 
 	public void sendResultsToAggregatingNode() throws JMSException {
 		logger.info("sending message...");
@@ -39,5 +41,18 @@ public class ComputingNodeImpl implements IComputingNode {
 
 	public void setQueueName(String queueName) {
 		this.queueName = queueName;
+	}
+
+	public void migrate() throws JMSException {
+		geneticAlgorithm.calculateCurrentPortfolio();
+		//TODO:
+	}
+	
+	public IGeneticAlgorithm getGeneticAlgorithm() {
+		return geneticAlgorithm;
+	}
+
+	public void setGeneticAlgorithm(IGeneticAlgorithm geneticAlgorithm) {
+		this.geneticAlgorithm = geneticAlgorithm;
 	}
 }

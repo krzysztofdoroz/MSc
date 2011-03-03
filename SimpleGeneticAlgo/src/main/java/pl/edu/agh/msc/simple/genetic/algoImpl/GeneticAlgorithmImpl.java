@@ -179,4 +179,9 @@ public class GeneticAlgorithmImpl implements IGeneticAlgorithm {
 		this.populationSize = populationSize;
 	}
 
+	public Portfolio getPortfolioToMigrate() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

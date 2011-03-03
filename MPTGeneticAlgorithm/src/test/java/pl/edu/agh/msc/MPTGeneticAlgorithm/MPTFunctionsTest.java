@@ -20,7 +20,7 @@ public class MPTFunctionsTest {
 		filenames =  new LinkedList<String>();
 		filenames.add("/home/krzysztof/MSc/data-source/kghm.data");
 		filenames.add("/home/krzysztof/MSc/data-source/tpsa.data");
-		dataSource = new StockDataSource(filenames, 253);
+		dataSource = new StockDataSource(filenames,null, null, null, null, 253);
 		
 		List<String> standardDevFileList = new LinkedList<String>();
 		standardDevFileList.add("/home/krzysztof/MSc/R_scripts/output/kghm_standard_deviation");

@@ -18,7 +18,11 @@ public class StockDataSource implements IDataSource {
 	private double[] marketIndexVarianceData;
 	private int timeHorizon;
 
-	public StockDataSource(List<String> filenames, int timeHorizon) {
+	public StockDataSource(List<String> filenames,
+			List<String> standardDeviationFiles,
+			List<String> standardCorrelationCoeffFiles,
+			List<String> covarianceFiles, String marketVarianceFile,
+			int timeHorizon) {
 		this.timeHorizon = timeHorizon;
 		stockData = new double[filenames.size()][timeHorizon];
 
@@ -46,6 +50,23 @@ public class StockDataSource implements IDataSource {
 				e.printStackTrace();
 			}
 		}
+
+		if (marketVarianceFile != null) {
+			loadMarketVarianceData(marketVarianceFile);
+		}
+
+		if (covarianceFiles != null) {
+			loadStockCovarianceData(covarianceFiles);
+		}
+
+		if (standardCorrelationCoeffFiles != null) {
+			loadStockStandardCorrelationCoeffData(standardCorrelationCoeffFiles);
+		}
+
+		if (standardDeviationFiles != null) {
+			loadStockStandardDeviationData(standardDeviationFiles);
+		}
+
 	}
 
 	public void loadStockStandardDeviationData(List<String> filenames) {

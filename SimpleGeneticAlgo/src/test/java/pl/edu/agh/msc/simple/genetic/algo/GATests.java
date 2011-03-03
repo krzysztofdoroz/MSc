@@ -25,7 +25,7 @@ public class GATests {
 		filenames =  new LinkedList<String>();
 		filenames.add("/home/krzysztof/MSc/data-source/kghm.data");
 		filenames.add("/home/krzysztof/MSc/data-source/tpsa.data");
-		dataSource = new StockDataSource(filenames, 253);
+		dataSource = new StockDataSource(filenames,null, null, null, null, 253);
 	}
 	
 	@Test

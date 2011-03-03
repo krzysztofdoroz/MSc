@@ -17,7 +17,7 @@ public class DataSourceTest {
 		filesToLoad.add("kghm.data");
 		filesToLoad.add("tpsa.data");
 		
-		IDataSource dataSource = new StockDataSource(filesToLoad, 253);
+		IDataSource dataSource = new StockDataSource(filesToLoad,null ,null, null, null, 253);
 
 		assertEquals(14.9999, dataSource.getStockData(1, 2), 0.0001);	
 		assertEquals(163.1, dataSource.getStockData(0, 249), 0.0001);	

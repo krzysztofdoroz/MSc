@@ -1,6 +1,17 @@
 #!/bin/bash
 
-cd Aggregation-Controller/
+cd data-source/
+mvn clean install
+
+cd ../GenericGeneticAlgorithm/
+
+mvn clean install 
+
+cd ../MPTGeneticAlgorithm/
+
+mvn clean install
+
+cd ../Aggregation-Controller/
 
 mvn clean install
 

@@ -10,6 +10,20 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
+	<repositories>
+		<repository>
+			<id>com.springsource.repository.bundles.release</id>
+			<name>SpringSource Enterprise Bundle Repository - SpringSource Bundle Releases</name>
+			<url>http://repository.springsource.com/maven/bundles/release</url>
+		</repository>
+		<repository>
+			<id>com.springsource.repository.bundles.external</id>
+			<name>SpringSource Enterprise Bundle Repository - External Bundle Releases</name>
+			<url>http://repository.springsource.com/maven/bundles/external</url>
+		</repository>
+
+	</repositories>
+
 	<build>
 		<plugins>
 
@@ -28,7 +42,7 @@
 				</configuration>
 			</plugin>
 
-		<plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
 				<version>1.4</version>
@@ -115,6 +129,17 @@
 			<version>1.5</version>
 		</dependency>
 
+		<dependency>
+			<groupId>pl.edu.agh.msc</groupId>
+			<artifactId>generic-genetic-algorithm</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>pl.edu.agh.msc</groupId>
+			<artifactId>MPT-genetic-algorithm</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<reporting>
