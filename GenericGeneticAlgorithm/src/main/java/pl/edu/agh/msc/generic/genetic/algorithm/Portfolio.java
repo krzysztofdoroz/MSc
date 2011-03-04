@@ -1,8 +1,9 @@
 package pl.edu.agh.msc.generic.genetic.algorithm;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Portfolio implements Comparable<Portfolio> {
+public class Portfolio implements Comparable<Portfolio>, Serializable {
 
 	private static final double PORTFOLIO_START_VAL = 1.0;
 	private int size;

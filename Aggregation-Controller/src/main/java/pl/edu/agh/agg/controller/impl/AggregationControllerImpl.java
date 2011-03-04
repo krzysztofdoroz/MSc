@@ -2,13 +2,14 @@ package pl.edu.agh.agg.controller.impl;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
-import javax.jms.TextMessage;
+import javax.jms.ObjectMessage;
 
 import org.apache.log4j.Logger;
 import org.springframework.jms.JmsException;
 import org.springframework.jms.core.JmsTemplate;
 
 import pl.edu.agh.agg.controller.IAggregationController;
+import pl.edu.agh.msc.MPTGeneticAlgorithm.MPTPortfolio;
 
 public class AggregationControllerImpl implements IAggregationController {
 
@@ -25,7 +26,7 @@ public class AggregationControllerImpl implements IAggregationController {
 
 			for (int i = 0; i < numberOfComputingAgents; i++) {
 				message = jmsTemplate.receive(queueName);
-				logger.info("message received:" + ((TextMessage) message).getText());
+				logger.info("message received:" + ((MPTPortfolio)((ObjectMessage) message).getObject()));
 			}
 		} catch (JmsException e) {
 			logger.error("exception during receiving a message from computing node!!!");

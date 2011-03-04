@@ -20,7 +20,7 @@ public class ComputingNodeImpl implements IComputingNode {
 	public void sendResultsToAggregatingNode() throws JMSException {
 		logger.info("sending message...");
 		try {
-			jmsTemplate.convertAndSend(queueName, "ala ma kota");
+			jmsTemplate.convertAndSend(queueName, geneticAlgorithm.calculateCurrentPortfolio());
 		} catch (JmsException e) {
 			logger.error("exception during sending message to aggregating component!!!");
 			throw e;
