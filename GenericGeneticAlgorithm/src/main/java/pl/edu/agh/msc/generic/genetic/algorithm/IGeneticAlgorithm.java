@@ -4,5 +4,6 @@ public interface IGeneticAlgorithm {
 
 	Portfolio calculateCurrentPortfolio();
 	Portfolio getPortfolioToMigrate();
+	void acceptMigrant(Portfolio portfolio);
 	
 }

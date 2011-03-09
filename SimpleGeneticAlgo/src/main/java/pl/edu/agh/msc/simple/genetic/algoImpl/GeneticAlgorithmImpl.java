@@ -184,4 +184,9 @@ public class GeneticAlgorithmImpl implements IGeneticAlgorithm {
 		return null;
 	}
 
+	public void acceptMigrant(Portfolio portfolio) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

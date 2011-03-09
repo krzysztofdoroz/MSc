@@ -324,8 +324,25 @@ public class MPTGeneticAlgorithm implements IGeneticAlgorithm {
 	}
 
 	public Portfolio getPortfolioToMigrate() {
-		// TODO Auto-generated method stub
-		return null;
+		//randomly choose which population member will migrate
+		Random rand = new Random();
+		
+		if (rand.nextInt() % 2 == 0){
+			return riskOrientedPopulation.get(Math.abs(rand.nextInt()) % riskOrientedPopulation.size());
+		} else {
+			return returnOrientedpopulation.get(Math.abs(rand.nextInt()) % returnOrientedpopulation.size());
+		}
+	}
+
+	public void acceptMigrant(Portfolio portfolio) {
+		Random rand = new Random();
+		
+		if (rand.nextInt() % 2 == 0){
+			 riskOrientedPopulation.add((MPTPortfolio) portfolio);
+		} else {
+			returnOrientedpopulation.add((MPTPortfolio) portfolio);
+		}
+		
 	}
 
 }
