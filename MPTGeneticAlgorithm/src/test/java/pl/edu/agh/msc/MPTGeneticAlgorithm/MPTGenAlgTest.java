@@ -12,7 +12,6 @@ import org.junit.Test;
 
 import pl.edu.agh.msc.data.source.StockDataSource;
 import pl.edu.agh.msc.data.source.interfaces.IDataSource;
-import pl.edu.agh.msc.generic.genetic.algorithm.Portfolio;
 
 public class MPTGenAlgTest {
 

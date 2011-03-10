@@ -68,9 +68,7 @@ public class GATests {
 			
 			System.out.println("      CURRENT POPULATION STATE:  ");
 			
-			for(Portfolio portfolio : gen.getPopulation()){
-			//	System.out.println(portfolio);
-			}
+			
 			System.out.println("  BEST PORTFOLIO:");
 
 			//money *= bestPortfolio.getValue();

@@ -29,6 +29,7 @@
 		<property name="jmsTemplate" ref="jmsTemplate"/>
 		<property name="numberOfComputingAgents" value="2"/>
 		<property name="queueName" value="simple"/>
+		<property name="numberOfRounds" value="3"/>
 	</bean>
 
 </beans>

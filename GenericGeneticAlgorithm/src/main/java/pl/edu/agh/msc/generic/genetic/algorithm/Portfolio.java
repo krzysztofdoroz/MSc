@@ -5,6 +5,11 @@ import java.util.ArrayList;
 
 public class Portfolio implements Comparable<Portfolio>, Serializable {
 
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -191345053381145143L;
 	private static final double PORTFOLIO_START_VAL = 1.0;
 	private int size;
 	private ArrayList<Double> portfolio;

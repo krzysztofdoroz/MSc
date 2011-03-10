@@ -14,14 +14,18 @@ import pl.edu.agh.computing.node.impl.ComputingNodeImpl;
 public class ComputingNodeManager {
 
 	static Logger logger = Logger.getLogger(ComputingNodeManager.class);
-	
+	private static final int NUMBER_OF_ROUNDS = 3;
+
 	public static void main(String[] args) throws JMSException {
 		Resource resource = new ClassPathResource("computingNode-context.xml");
 		BeanFactory factory = new XmlBeanFactory(resource);
 
-		IComputingNode compNode = (ComputingNodeImpl) factory.getBean("computingNode");
-		
-		compNode.sendResultsToAggregatingNode();
+		IComputingNode compNode = (ComputingNodeImpl) factory
+				.getBean("computingNode");
+
+		for (int round = 0; round < NUMBER_OF_ROUNDS; round++) {
+			compNode.sendResultsToAggregatingNode();
+		}
 	}
-	
+
 }

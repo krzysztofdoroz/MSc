@@ -4,7 +4,11 @@ import pl.edu.agh.msc.generic.genetic.algorithm.Portfolio;
 
 public class MPTPortfolio extends Portfolio {
 
-	private double risk;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 299711241408204220L;
+	private double risk = -1.0;
 
 	public MPTPortfolio(int size) {
 		super(size);

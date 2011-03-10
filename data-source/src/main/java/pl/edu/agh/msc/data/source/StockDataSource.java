@@ -75,6 +75,8 @@ public class StockDataSource implements IDataSource {
 		for (int i = 0; i < filenames.size(); i++) {
 			File currentFile = new File(filenames.get(i));
 
+			System.out.println("CURRENT FILENAME:" + currentFile);
+			System.out.println((new File("")).getAbsolutePath());
 			try {
 				BufferedReader reader = new BufferedReader(new FileReader(
 						currentFile));
