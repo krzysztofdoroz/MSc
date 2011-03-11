@@ -25,11 +25,19 @@
 		</property>
 	</bean>
 
-	<bean id="aggregationController" class="pl.edu.agh.agg.controller.impl.AggregationControllerImpl">
-		<property name="jmsTemplate" ref="jmsTemplate"/>
-		<property name="numberOfComputingAgents" value="2"/>
-		<property name="queueName" value="simple"/>
-		<property name="numberOfRounds" value="3"/>
+	<bean id="jmsTopicTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory">
+			<ref local="jmsFactory" />
+		</property>
+	</bean>
+
+	<bean id="aggregationController"
+		class="pl.edu.agh.agg.controller.impl.AggregationControllerImpl">
+		<property name="jmsTemplate" ref="jmsTemplate" />
+		<property name="jmsTopicTemplate" ref="jmsTopicTemplate"/>
+		<property name="numberOfComputingAgents" value="2" />
+		<property name="queueName" value="simple" />
+		<property name="numberOfRounds" value="3" />
 	</bean>
 
 </beans>

@@ -23,12 +23,18 @@
 			<ref local="jmsFactory" />
 		</property>
 	</bean>
-
+	
+	<bean id="jmsTopicTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory">
+			<ref local="jmsFactory" />
+		</property>
+	</bean>
 
 	<bean id="computingNode" class="pl.edu.agh.computing.node.impl.ComputingNodeImpl">
 		<property name="jmsTemplate" ref="jmsTemplate" />
 		<property name="queueName" value="simple" />
 		<property name="geneticAlgorithm" ref="MPTGenAlg" />
+		<property name="jmsTopicTemplate" ref="jmsTopicTemplate" />
 	</bean>
 
 	<bean id="MPTGenAlg" class="pl.edu.agh.msc.MPTGeneticAlgorithm.MPTGeneticAlgorithm">

@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.Random;
 
 import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.TextMessage;
 import javax.jms.ObjectMessage;
 
 import org.apache.log4j.Logger;
@@ -21,23 +23,30 @@ public class ComputingNodeImpl implements IComputingNode {
 	private Random rand = new Random();
 
 	private JmsTemplate jmsTemplate;
+	private JmsTemplate jmsTopicTemplate;
 	private String queueName;
 	private IGeneticAlgorithm geneticAlgorithm;
 	private static final int NUMBER_OF_MILIS = 50;
+	private boolean maySend = true;
 
 	public void sendResultsToAggregatingNode() throws JMSException {
 
-		logger.info("sending message...");
 		try {
+			MPTPortfolio portfolio = (MPTPortfolio) geneticAlgorithm
+					.calculateCurrentPortfolio();
 			
-			MPTPortfolio portfolio = (MPTPortfolio) geneticAlgorithm.calculateCurrentPortfolio();
+			if (maySend) {
+				logger.info("sending message...");
+				jmsTemplate.convertAndSend(queueName, portfolio);
+				maySend = false;
+			}
 			
-			System.out.println("RISK:" + portfolio.getRisk());
+			logger.info("receiving message from agg controller..");
+			Message message = jmsTopicTemplate.receive("controllerQueue");
 			
-			jmsTemplate.convertAndSend(queueName,
-					portfolio);
+			System.out.println("received MESSAGE:" +((TextMessage)message).getText());
 			
-			
+			maySend = true;
 			
 			migrate();
 		} catch (JmsException e) {
@@ -92,6 +101,14 @@ public class ComputingNodeImpl implements IComputingNode {
 
 	public void setGeneticAlgorithm(IGeneticAlgorithm geneticAlgorithm) {
 		this.geneticAlgorithm = geneticAlgorithm;
+	}
+
+	public JmsTemplate getJmsTopicTemplate() {
+		return jmsTopicTemplate;
+	}
+
+	public void setJmsTopicTemplate(JmsTemplate jmsTopicTemplate) {
+		this.jmsTopicTemplate = jmsTopicTemplate;
 	}
 
 }

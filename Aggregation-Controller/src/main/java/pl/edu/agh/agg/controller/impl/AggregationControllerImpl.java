@@ -24,6 +24,7 @@ public class AggregationControllerImpl implements IAggregationController {
 	static Logger logger = Logger.getLogger(AggregationControllerImpl.class);
 
 	private JmsTemplate jmsTemplate;
+	private JmsTemplate jmsTopicTemplate;
 	private int numberOfComputingAgents;
 	private int numberOfRounds;
 
@@ -35,8 +36,8 @@ public class AggregationControllerImpl implements IAggregationController {
 		BufferedWriter bufferedWriter;
 		try {
 			Message message;
-			bufferedWriter = new BufferedWriter(new FileWriter(
-					new File("aggregated_results")));
+			bufferedWriter = new BufferedWriter(new FileWriter(new File(
+					"aggregated_results")));
 
 			for (int round = 0; round < numberOfRounds; round++) {
 				portfolios.clear();
@@ -48,27 +49,33 @@ public class AggregationControllerImpl implements IAggregationController {
 							+ ((MPTPortfolio) ((ObjectMessage) message)
 									.getObject()));
 
-					System.out.println("CLASS:" + ((ObjectMessage) message)
-									.getObject().getClass());
-					
-					
+					System.out.println("CLASS:"
+							+ ((ObjectMessage) message).getObject().getClass());
+
 					if (((ObjectMessage) message).getObject() instanceof MPTPortfolio) {
-						
-						logger.info("RECEIVED MPTPORTFOLIO:" + ((MPTPortfolio) ((ObjectMessage) message)
-								.getObject()).getRisk());
-						
+
+						logger.info("RECEIVED MPTPORTFOLIO:"
+								+ ((MPTPortfolio) ((ObjectMessage) message)
+										.getObject()).getRisk());
+
 						portfolios.add((MPTPortfolio) ((ObjectMessage) message)
 								.getObject());
-					}/* else {
-						portfolios.add((Portfolio) ((ObjectMessage) message)
-								.getObject());
-					} */
+					}/*
+					 * else { portfolios.add((Portfolio) ((ObjectMessage)
+					 * message) .getObject()); }
+					 */
 				}
 
 				MPTPortfolio bestPortfolio = selectBestPortfolio(portfolios);
-				bufferedWriter.write(round + " " + bestPortfolio.getRisk() + " " + bestPortfolio.getValue() + "\n");
+				bufferedWriter.write(round + " " + bestPortfolio.getRisk()
+						+ " " + bestPortfolio.getValue() + "\n");
+
+				// request new results from computing nodes
+				for (int j = 0; j < numberOfComputingAgents; j++) {
+					jmsTopicTemplate.convertAndSend("controllerQueue", "ala");
+				}
 			}
-			
+
 			bufferedWriter.close();
 
 		} catch (JmsException e) {
@@ -80,7 +87,7 @@ public class AggregationControllerImpl implements IAggregationController {
 		} catch (IOException e) {
 			logger.error("IOException...");
 			e.printStackTrace();
-		} 
+		}
 	}
 
 	public JmsTemplate getJmsTemplate() {
@@ -130,4 +137,11 @@ public class AggregationControllerImpl implements IAggregationController {
 		this.numberOfRounds = numberOfRounds;
 	}
 
+	public JmsTemplate getJmsTopicTemplate() {
+		return jmsTopicTemplate;
+	}
+
+	public void setJmsTopicTemplate(JmsTemplate jmsTopicTemplate) {
+		this.jmsTopicTemplate = jmsTopicTemplate;
+	}
 }
