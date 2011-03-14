@@ -1,4 +1,4 @@
-package pl.edu.agh.computing.node;
+package pl.edu.agh.msc.generic.computing.node;
 
 import javax.jms.JMSException;
 
