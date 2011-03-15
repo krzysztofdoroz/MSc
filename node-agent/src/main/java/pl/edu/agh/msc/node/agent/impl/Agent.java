@@ -3,6 +3,7 @@ package pl.edu.agh.msc.node.agent.impl;
 import java.util.Iterator;
 import java.util.List;
 
+import pl.edu.agh.msc.generic.genetic.algorithm.MPTPortfolio;
 import pl.edu.agh.msc.node.agent.IAgent;
 
 public class Agent implements IAgent {
@@ -11,7 +12,9 @@ public class Agent implements IAgent {
 	private double risk;
 	private double expectedReturn;
 	private double resource;
-	
+	private MPTPortfolio portfolio;
+	private int specie;
+
 	public Agent(int id, double resource){
 		this.id = id;
 		this.resource = resource;
@@ -42,8 +45,13 @@ public class Agent implements IAgent {
 	}
 	
 	public void seekAndGet(List<IAgent> population) {
-		// TODO Auto-generated method stub
-		
+		for(IAgent agent : population){
+			if(agent.getRisk() > getRisk() && agent.getExpectedReturn() < getExpectedReturn()){
+				double acquiredResource = agent.give();
+				setResource(getResource() + acquiredResource);
+				return;
+			}
+		}
 	}
 
 	public double give() {
@@ -96,5 +104,19 @@ public class Agent implements IAgent {
 		return builder.toString();
 	}
 
+	public MPTPortfolio getPortfolio() {
+		return portfolio;
+	}
 
+	public void setPortfolio(MPTPortfolio portfolio) {
+		this.portfolio = portfolio;
+	}
+
+	public int getSpecie() {
+		return specie;
+	}
+
+	public void setSpecie(int specie) {
+		this.specie = specie;
+	}
 }

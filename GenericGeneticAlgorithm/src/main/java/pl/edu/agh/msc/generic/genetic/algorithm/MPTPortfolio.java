@@ -1,6 +1,5 @@
-package pl.edu.agh.msc.MPTGeneticAlgorithm;
+package pl.edu.agh.msc.generic.genetic.algorithm;
 
-import pl.edu.agh.msc.generic.genetic.algorithm.Portfolio;
 
 public class MPTPortfolio extends Portfolio {
 

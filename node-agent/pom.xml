@@ -152,5 +152,11 @@
 			<artifactId>data-source</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>pl.edu.agh.msc</groupId>
+			<artifactId>generic-genetic-algorithm</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 </project>

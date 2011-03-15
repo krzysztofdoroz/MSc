@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import pl.edu.agh.msc.generic.genetic.algorithm.MPTPortfolio;
 import pl.edu.agh.msc.generic.genetic.algorithm.Portfolio;
 
 public class MPTAlgorithmUtils {

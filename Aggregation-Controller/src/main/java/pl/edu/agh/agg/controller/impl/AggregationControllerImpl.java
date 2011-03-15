@@ -16,8 +16,8 @@ import org.springframework.jms.JmsException;
 import org.springframework.jms.core.JmsTemplate;
 
 import pl.edu.agh.agg.controller.IAggregationController;
-import pl.edu.agh.msc.MPTGeneticAlgorithm.MPTPortfolio;
 import pl.edu.agh.msc.data.source.interfaces.IDataSource;
+import pl.edu.agh.msc.generic.genetic.algorithm.MPTPortfolio;
 import pl.edu.agh.msc.generic.genetic.algorithm.Portfolio;
 
 public class AggregationControllerImpl implements IAggregationController {

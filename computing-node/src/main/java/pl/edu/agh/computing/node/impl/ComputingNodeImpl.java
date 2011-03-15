@@ -12,9 +12,9 @@ import org.apache.log4j.Logger;
 import org.springframework.jms.JmsException;
 import org.springframework.jms.core.JmsTemplate;
 
-import pl.edu.agh.msc.MPTGeneticAlgorithm.MPTPortfolio;
 import pl.edu.agh.msc.generic.computing.node.IComputingNode;
 import pl.edu.agh.msc.generic.genetic.algorithm.IGeneticAlgorithm;
+import pl.edu.agh.msc.generic.genetic.algorithm.MPTPortfolio;
 import pl.edu.agh.msc.generic.genetic.algorithm.Portfolio;
 
 public class ComputingNodeImpl implements IComputingNode {

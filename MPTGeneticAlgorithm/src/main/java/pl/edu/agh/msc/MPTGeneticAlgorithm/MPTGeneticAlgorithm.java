@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 
 import pl.edu.agh.msc.data.source.interfaces.IDataSource;
 import pl.edu.agh.msc.generic.genetic.algorithm.IGeneticAlgorithm;
+import pl.edu.agh.msc.generic.genetic.algorithm.MPTPortfolio;
 import pl.edu.agh.msc.generic.genetic.algorithm.Portfolio;
 
 public class MPTGeneticAlgorithm implements IGeneticAlgorithm {

@@ -9,16 +9,19 @@ import static org.junit.Assert.*;
 
 
 import pl.edu.agh.msc.node.agent.impl.Agent;
+import pl.edu.agh.msc.node.agent.impl.Environment;
 
 public class AgentFunctionTests{
 
-	
 	List<IAgent> population;
-	
+	List<Agent> riskPopulation;
+	List<Agent> returnPopulation;
 	
 	@Before
 	public void init(){
 		population = new LinkedList<IAgent>();
+		riskPopulation = new LinkedList<Agent>();
+		returnPopulation = new LinkedList<Agent>();
 	}
 	
 	@Test
@@ -45,7 +48,6 @@ public class AgentFunctionTests{
 	
 	@Test
 	public void testGive(){
-		
 		Agent agent = new Agent(1, 1.0);
 		double result = agent.give();
 		
@@ -59,5 +61,68 @@ public class AgentFunctionTests{
 		agent.get(2.44);
 		
 		assertEquals(3.44, agent.getResource(), 0.001);
+	}
+	
+	@Test
+	public void testSeekAndGet(){
+		System.out.println("seek and get test:");
+
+		Agent agent1 = new Agent(1, 0.5);
+		agent1.setRisk(0.1);
+		agent1.setExpectedReturn(1.1);
+		
+		Agent agent2 = new Agent(2, 1.0);
+		agent2.setRisk(0.2);
+		agent2.setExpectedReturn(0.4);
+		
+		Agent agent3 = new Agent(3, 0.3);
+		agent3.setRisk(0.1);
+		agent3.setExpectedReturn(1.1);
+		
+		population.add(agent1);
+		population.add(agent2);
+		population.add(agent3);
+		
+		agent1.seekAndGet(population);
+		
+		assertEquals(0.7, agent1.getResource(), 0.001);
+		
+		for(IAgent agent : population){
+			System.out.println(agent);
+		}
+	}
+	
+	@Test
+	public void testNonDominatedSolution(){
+		System.out.println("nondominated solution test:");
+
+		Agent agent1 = new Agent(1, 0.5);
+		agent1.setRisk(0.1);
+		agent1.setExpectedReturn(1.1);
+		
+		Agent agent2 = new Agent(2, 1.0);
+		agent2.setRisk(0.2);
+		agent2.setExpectedReturn(0.4);
+		
+		Agent agent3 = new Agent(3, 0.3);
+		agent3.setRisk(0.1);
+		agent3.setExpectedReturn(1.12);
+		
+		Agent agent4 = new Agent(4, 0.3);
+		agent4.setRisk(0.15);
+		agent4.setExpectedReturn(1.125);
+		
+		riskPopulation.add(agent1);
+		riskPopulation.add(agent2);
+		returnPopulation.add(agent3);
+		
+		Environment env = new Environment(100.0, 4, null);
+		
+		env.setReturnOrientedPopulation(returnPopulation);
+		env.setRiskOrientedPopulation(riskPopulation);
+		
+		Agent result = env.findNonDominatedSolution();
+		assertEquals(0.1, result.getRisk(), 0.001);
+		assertEquals(1.12, result.getExpectedReturn(), 0.001);
 	}
 }

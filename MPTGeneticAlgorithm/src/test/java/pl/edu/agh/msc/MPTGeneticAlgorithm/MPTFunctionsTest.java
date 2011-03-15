@@ -9,6 +9,7 @@ import static org.junit.Assert.*;
 
 import pl.edu.agh.msc.data.source.StockDataSource;
 import pl.edu.agh.msc.data.source.interfaces.IDataSource;
+import pl.edu.agh.msc.generic.genetic.algorithm.MPTPortfolio;
 
 public class MPTFunctionsTest {
 

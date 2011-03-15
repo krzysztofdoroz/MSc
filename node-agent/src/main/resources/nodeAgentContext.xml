@@ -34,6 +34,21 @@
 		<property name="jmsTemplate" ref="jmsTemplate" />
 		<property name="queueName" value="simple" />
 		<property name="jmsTopicTemplate" ref="jmsTopicTemplate" />
+		<property name="environment" ref="environment" />
+	</bean>
+
+	<bean id="environment" class="pl.edu.agh.msc.node.agent.impl.Environment">
+		<constructor-arg index="0">
+			<value>100.0</value>
+		</constructor-arg>
+		
+		<constructor-arg index="1">
+			<value>16</value>
+		</constructor-arg>
+		
+		<constructor-arg index="2">
+			<ref bean="dataSource" />
+		</constructor-arg>
 	</bean>
 
 	<bean id="dataSource" class="pl.edu.agh.msc.data.source.StockDataSource">

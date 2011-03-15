@@ -11,6 +11,7 @@ public class NodeAgentImpl implements IComputingNode {
 	private String queueName;
 	private JmsTemplate jmsTemplate;
 	private JmsTemplate jmsTopicTemplate;
+	private Environment environment;
 	
 	public void sendResultsToAggregatingNode() throws JMSException {
 		// TODO Auto-generated method stub
@@ -43,5 +44,13 @@ public class NodeAgentImpl implements IComputingNode {
 
 	public void setJmsTopicTemplate(JmsTemplate jmsTopicTemplate) {
 		this.jmsTopicTemplate = jmsTopicTemplate;
+	}
+
+	public Environment getEnvironment() {
+		return environment;
+	}
+
+	public void setEnvironment(Environment environment) {
+		this.environment = environment;
 	}
 }
