@@ -8,7 +8,7 @@ mkdir sandbox/data
 number_of_computing_nodes=2
 dir='node-'
 
-cp computing-node/target/node-agent-0.0.1-SNAPSHOT.jar sandbox/
+cp node-agent/target/node-agent-0.0.1-SNAPSHOT.jar sandbox/
 
 cp Aggregation-Controller/target/Aggregation-Controller-0.0.1-SNAPSHOT.jar sandbox/
 

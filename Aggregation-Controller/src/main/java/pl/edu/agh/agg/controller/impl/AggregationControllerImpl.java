@@ -39,14 +39,14 @@ public class AggregationControllerImpl implements IAggregationController {
 
 		double money = 100.0;
 		double[] stocskBought = new double[2];
-		BufferedWriter paretoWriter = null;
+		//BufferedWriter paretoWriter = null;
 
 		try {
 			Message message;
 			bufferedWriter = new BufferedWriter(new FileWriter(new File(
 					"aggregated_results")));
-			paretoWriter = new BufferedWriter(new FileWriter(new File(
-					"pareto_results")));
+			//paretoWriter = new BufferedWriter(new FileWriter(new File(
+			//		"pareto_results")));
 
 			for (int round = 0; round < numberOfRounds; round++) {
 				portfolios.clear();

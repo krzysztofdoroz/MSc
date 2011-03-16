@@ -1,7 +1,9 @@
 package pl.edu.agh.msc.node.agent.impl;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 import pl.edu.agh.msc.data.source.interfaces.IDataSource;
 import pl.edu.agh.msc.generic.genetic.algorithm.MPTPortfolio;
@@ -15,15 +17,20 @@ public class Environment {
 	private double freeResource;
 	private static final int FIRST_SPECIE = 1;
 	private static final int SECOND_SPECIE = 2;
-	IDataSource stockDataSource;
+	private final int NUMBER_OF_STOCKS;
+	private final double DYING_THRESHOLD;
+	private IDataSource stockDataSource;
 	private int day = 0;
+	private Random rand = new Random();
 
 	public Environment(double totalResource, int populationSize,
-			IDataSource dataSource) {
+			int numberOfStocks, double dyingThreshold, IDataSource dataSource) {
 		riskOrientedPopulation = new LinkedList<Agent>();
 		returnOrientedPopulation = new LinkedList<Agent>();
 		this.totalResource = totalResource;
 		this.stockDataSource = dataSource;
+		this.NUMBER_OF_STOCKS = numberOfStocks;
+		this.DYING_THRESHOLD = dyingThreshold;
 
 		initPopulations(populationSize);
 	}
@@ -46,20 +53,116 @@ public class Environment {
 		int id = 1;
 
 		for (int i = 0; i < populationSize; i += 2) {
-			Agent agent = new Agent(id++, totalResource / (populationSize));
+			Agent agent = new Agent(id++, totalResource / (populationSize),
+					NUMBER_OF_STOCKS);
 			agent.setSpecie(FIRST_SPECIE);
 			riskOrientedPopulation.add(agent);
 
-			Agent agent2 = new Agent(id++, totalResource / (populationSize));
+			Agent agent2 = new Agent(id++, totalResource / (populationSize),
+					NUMBER_OF_STOCKS);
 			agent2.setSpecie(SECOND_SPECIE);
 			returnOrientedPopulation.add(agent2);
+		}
+
+		randomPopulationInit(populationSize / 2);
+	}
+
+	private void randomPopulationInit(int populationSize) {
+		Random rand = new Random();
+		double sum = 0.0;
+
+		for (int i = 0; i < populationSize; i++) {
+
+			sum = 0.0;
+			for (int j = 0; j < NUMBER_OF_STOCKS; j++) {
+				double randomStockPart = rand.nextDouble();
+				sum += randomStockPart;
+
+				riskOrientedPopulation.get(i).getPortfolio().getPortfolio()
+						.set(j, randomStockPart);
+				returnOrientedPopulation.get(i).getPortfolio().getPortfolio()
+						.set(j, randomStockPart);
+			}
+
+			// now we have to normalize the result
+			for (int j = 0; j < NUMBER_OF_STOCKS; j++) {
+				riskOrientedPopulation
+						.get(i)
+						.getPortfolio()
+						.getPortfolio()
+						.set(j,
+								riskOrientedPopulation.get(i).getPortfolio()
+										.getPortfolio().get(j)
+										/ sum);
+				returnOrientedPopulation
+						.get(i)
+						.getPortfolio()
+						.getPortfolio()
+						.set(j,
+								returnOrientedPopulation.get(i).getPortfolio()
+										.getPortfolio().get(j)
+										/ sum);
+			}
 		}
 	}
 
 	public MPTPortfolio getBestAgentPortfolio() {
 		recalculateRiskAndReturn(day++);
+		simulateInteractions(3);
 
-		return null;
+		return findNonDominatedSolution().getPortfolio();
+	}
+	
+	public void extinctTheWeakest(){
+		
+		for(Iterator<Agent> iter = riskOrientedPopulation.iterator();iter.hasNext();){
+			Agent agent = iter.next();
+			if (agent.getResource() < DYING_THRESHOLD){
+				freeResource += agent.getResource();
+				iter.remove();
+			}
+		}
+		
+		for(Iterator<Agent> iter = returnOrientedPopulation.iterator();iter.hasNext();){
+			Agent agent = iter.next();
+			if (agent.getResource() < DYING_THRESHOLD){
+				freeResource += agent.getResource();
+				iter.remove();
+			}
+		}
+	}
+
+	private void simulateInteractions(int numberOfRounds) {
+
+		int behaviourStrategy;
+		List<Agent> allAgents = new LinkedList<Agent>();
+		allAgents.addAll(riskOrientedPopulation);
+		allAgents.addAll(returnOrientedPopulation);
+		Agent currentAgent;
+		
+		for (int round = 0; round < numberOfRounds; round++) {
+			for (int i = 0; i < allAgents.size(); i++) {
+				
+				behaviourStrategy = Math.abs(rand.nextInt() % 4);
+				currentAgent = allAgents.get(i);
+				
+				switch (behaviourStrategy) {
+				case 0:
+					currentAgent.seekAndGet(allAgents);
+					break;
+				case 1:
+
+					break;
+				case 2:
+
+					break;
+				case 3:
+
+					break;
+				}
+			}
+			extinctTheWeakest();
+		}
 	}
 
 	public Agent findNonDominatedSolution() {
@@ -69,16 +172,16 @@ public class Environment {
 			if (agent.getRisk() <= nonDominatedSolution.getRisk()
 					&& agent.getExpectedReturn() >= nonDominatedSolution
 							.getExpectedReturn()) {
-				
+
 				nonDominatedSolution = agent;
 			}
 		}
-		
+
 		for (Agent agent : returnOrientedPopulation) {
 			if (agent.getRisk() <= nonDominatedSolution.getRisk()
 					&& agent.getExpectedReturn() >= nonDominatedSolution
 							.getExpectedReturn()) {
-				
+
 				nonDominatedSolution = agent;
 			}
 		}

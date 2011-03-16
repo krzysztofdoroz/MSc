@@ -14,16 +14,19 @@ public class Agent implements IAgent {
 	private double resource;
 	private MPTPortfolio portfolio;
 	private int specie;
+	private final int NUMBER_OF_STOCKS;
 
-	public Agent(int id, double resource){
+	public Agent(int id, double resource, int numberOfStocks){
 		this.id = id;
 		this.resource = resource;
+		this.NUMBER_OF_STOCKS = numberOfStocks;
+		portfolio = new MPTPortfolio(NUMBER_OF_STOCKS);
 	}
 	
-	public void die(List<IAgent> population) {
-		Iterator<IAgent> iter = population.iterator();
+	public void die(List<? extends IAgent> population) {
+		Iterator<? extends IAgent> iter = population.iterator();
 		
-		while(iter.hasNext()){
+		for(;iter.hasNext();){
 			if(iter.next().getId() == getId()){
 				iter.remove();
 			}
@@ -44,7 +47,7 @@ public class Agent implements IAgent {
 		return null;
 	}
 	
-	public void seekAndGet(List<IAgent> population) {
+	public void seekAndGet(List<? extends IAgent> population) {
 		for(IAgent agent : population){
 			if(agent.getRisk() > getRisk() && agent.getExpectedReturn() < getExpectedReturn()){
 				double acquiredResource = agent.give();

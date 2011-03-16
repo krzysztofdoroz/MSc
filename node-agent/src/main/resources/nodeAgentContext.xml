@@ -3,8 +3,6 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-
-
 	<!-- a pooling based JMS provider -->
 	<bean id="jmsFactory" class="org.apache.activemq.pool.PooledConnectionFactory"
 		destroy-method="stop">
@@ -47,6 +45,10 @@
 		</constructor-arg>
 		
 		<constructor-arg index="2">
+			<value>2</value>
+		</constructor-arg>
+		
+		<constructor-arg index="3">
 			<ref bean="dataSource" />
 		</constructor-arg>
 	</bean>

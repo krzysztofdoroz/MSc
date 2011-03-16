@@ -4,8 +4,8 @@ import java.util.List;
 
 public interface IAgent {
 	
-	void die(List<IAgent> population);
-	void seekAndGet(List<IAgent> population);
+	void die(List<? extends IAgent> population);
+	void seekAndGet(List<? extends IAgent> population);
 	double give();
 	void get(double acquiredResource);
 	boolean accept(IAgent agent);
