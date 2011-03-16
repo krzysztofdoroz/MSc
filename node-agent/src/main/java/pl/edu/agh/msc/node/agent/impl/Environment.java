@@ -8,6 +8,7 @@ import java.util.Random;
 import pl.edu.agh.msc.data.source.interfaces.IDataSource;
 import pl.edu.agh.msc.generic.genetic.algorithm.MPTPortfolio;
 import pl.edu.agh.msc.generic.genetic.algorithm.Portfolio;
+import pl.edu.agh.msc.node.agent.IAgent;
 
 public class Environment {
 
@@ -15,22 +16,25 @@ public class Environment {
 	private List<Agent> returnOrientedPopulation;
 	private double totalResource;
 	private double freeResource;
-	private static final int FIRST_SPECIE = 1;
-	private static final int SECOND_SPECIE = 2;
+	private static final int FIRST_SPECIES = 1;
+	private static final int SECOND_SPECIES = 2;
 	private final int NUMBER_OF_STOCKS;
 	private final double DYING_THRESHOLD;
 	private IDataSource stockDataSource;
 	private int day = 0;
 	private Random rand = new Random();
+	private double REPRODUCTION_THRESHOLD;
 
 	public Environment(double totalResource, int populationSize,
-			int numberOfStocks, double dyingThreshold, IDataSource dataSource) {
+			int numberOfStocks, double dyingThreshold,
+			double reproductionThreshold, IDataSource dataSource) {
 		riskOrientedPopulation = new LinkedList<Agent>();
 		returnOrientedPopulation = new LinkedList<Agent>();
 		this.totalResource = totalResource;
 		this.stockDataSource = dataSource;
 		this.NUMBER_OF_STOCKS = numberOfStocks;
 		this.DYING_THRESHOLD = dyingThreshold;
+		this.REPRODUCTION_THRESHOLD = reproductionThreshold;
 
 		initPopulations(populationSize);
 	}
@@ -54,13 +58,13 @@ public class Environment {
 
 		for (int i = 0; i < populationSize; i += 2) {
 			Agent agent = new Agent(id++, totalResource / (populationSize),
-					NUMBER_OF_STOCKS);
-			agent.setSpecie(FIRST_SPECIE);
+					NUMBER_OF_STOCKS, REPRODUCTION_THRESHOLD);
+			agent.setSpecies(FIRST_SPECIES);
 			riskOrientedPopulation.add(agent);
 
 			Agent agent2 = new Agent(id++, totalResource / (populationSize),
-					NUMBER_OF_STOCKS);
-			agent2.setSpecie(SECOND_SPECIE);
+					NUMBER_OF_STOCKS, REPRODUCTION_THRESHOLD);
+			agent2.setSpecies(SECOND_SPECIES);
 			returnOrientedPopulation.add(agent2);
 		}
 
@@ -112,20 +116,22 @@ public class Environment {
 
 		return findNonDominatedSolution().getPortfolio();
 	}
-	
-	public void extinctTheWeakest(){
-		
-		for(Iterator<Agent> iter = riskOrientedPopulation.iterator();iter.hasNext();){
+
+	public void extinctTheWeakest() {
+
+		for (Iterator<Agent> iter = riskOrientedPopulation.iterator(); iter
+				.hasNext();) {
 			Agent agent = iter.next();
-			if (agent.getResource() < DYING_THRESHOLD){
+			if (agent.getResource() < DYING_THRESHOLD) {
 				freeResource += agent.getResource();
 				iter.remove();
 			}
 		}
-		
-		for(Iterator<Agent> iter = returnOrientedPopulation.iterator();iter.hasNext();){
+
+		for (Iterator<Agent> iter = returnOrientedPopulation.iterator(); iter
+				.hasNext();) {
 			Agent agent = iter.next();
-			if (agent.getResource() < DYING_THRESHOLD){
+			if (agent.getResource() < DYING_THRESHOLD) {
 				freeResource += agent.getResource();
 				iter.remove();
 			}
@@ -139,26 +145,37 @@ public class Environment {
 		allAgents.addAll(riskOrientedPopulation);
 		allAgents.addAll(returnOrientedPopulation);
 		Agent currentAgent;
-		
+
 		for (int round = 0; round < numberOfRounds; round++) {
 			for (int i = 0; i < allAgents.size(); i++) {
-				
-				behaviourStrategy = Math.abs(rand.nextInt() % 4);
+
+				behaviourStrategy = Math.abs(rand.nextInt() % 10);
 				currentAgent = allAgents.get(i);
-				
+
 				switch (behaviourStrategy) {
 				case 0:
-					currentAgent.seekAndGet(allAgents);
-					break;
 				case 1:
-
-					break;
 				case 2:
-
-					break;
 				case 3:
-
+				case 4:
+				case 5:
+					//60% chance of rivalry between members of the same species
+					currentAgent.seekAndGet(currentAgent.getSpecies() == FIRST_SPECIES ? riskOrientedPopulation 
+							: returnOrientedPopulation );
 					break;
+				case 6:
+				case 7:
+					//finding mate from members of the other species
+					IAgent mate = currentAgent
+							.seekPartner(currentAgent.getSpecies() == FIRST_SPECIES ? returnOrientedPopulation
+									: riskOrientedPopulation);
+					currentAgent.accept((Agent)mate);
+					break;
+				case 8:
+					//mutation
+					currentAgent.accept(null);
+				case 9:
+					//migration
 				}
 			}
 			extinctTheWeakest();

@@ -16,6 +16,7 @@ public class AgentFunctionTests{
 	List<IAgent> population;
 	List<Agent> riskPopulation;
 	List<Agent> returnPopulation;
+	private static final double REPRODUCTION_THRESHOLD = 0.5;
 	
 	@Before
 	public void init(){
@@ -26,9 +27,9 @@ public class AgentFunctionTests{
 	
 	@Test
 	public void testDying(){
-		Agent agent1 = new Agent(1, 0.5, 2);
-		Agent agent2 = new Agent(2, 0.4, 2);
-		Agent agent3 = new Agent(3, 0.3, 2);
+		Agent agent1 = new Agent(1, 0.5, 2, REPRODUCTION_THRESHOLD);
+		Agent agent2 = new Agent(2, 0.4, 2, REPRODUCTION_THRESHOLD);
+		Agent agent3 = new Agent(3, 0.3, 2, REPRODUCTION_THRESHOLD);
 		
 		population.add(agent1);
 		population.add(agent2);
@@ -48,7 +49,7 @@ public class AgentFunctionTests{
 	
 	@Test
 	public void testGive(){
-		Agent agent = new Agent(1, 1.0, 2);
+		Agent agent = new Agent(1, 1.0, 2, REPRODUCTION_THRESHOLD);
 		double result = agent.give();
 		
 		assertEquals(0.2, result, 0.001);
@@ -57,7 +58,7 @@ public class AgentFunctionTests{
 	
 	@Test
 	public void testGet(){
-		Agent agent = new Agent(1, 1.0, 2);
+		Agent agent = new Agent(1, 1.0, 2, REPRODUCTION_THRESHOLD);
 		agent.get(2.44);
 		
 		assertEquals(3.44, agent.getResource(), 0.001);
@@ -67,15 +68,15 @@ public class AgentFunctionTests{
 	public void testSeekAndGet(){
 		System.out.println("seek and get test:");
 
-		Agent agent1 = new Agent(1, 0.5, 2);
+		Agent agent1 = new Agent(1, 0.5, 2, REPRODUCTION_THRESHOLD);
 		agent1.setRisk(0.1);
 		agent1.setExpectedReturn(1.1);
 		
-		Agent agent2 = new Agent(2, 1.0, 2);
+		Agent agent2 = new Agent(2, 1.0, 2, REPRODUCTION_THRESHOLD);
 		agent2.setRisk(0.2);
 		agent2.setExpectedReturn(0.4);
 		
-		Agent agent3 = new Agent(3, 0.3, 2);
+		Agent agent3 = new Agent(3, 0.3, 2, REPRODUCTION_THRESHOLD);
 		agent3.setRisk(0.1);
 		agent3.setExpectedReturn(1.1);
 		
@@ -96,19 +97,19 @@ public class AgentFunctionTests{
 	public void testNonDominatedSolution(){
 		System.out.println("nondominated solution test:");
 
-		Agent agent1 = new Agent(1, 0.5, 2);
+		Agent agent1 = new Agent(1, 0.5, 2, REPRODUCTION_THRESHOLD);
 		agent1.setRisk(0.1);
 		agent1.setExpectedReturn(1.1);
 		
-		Agent agent2 = new Agent(2, 1.0, 2);
+		Agent agent2 = new Agent(2, 1.0, 2, REPRODUCTION_THRESHOLD);
 		agent2.setRisk(0.2);
 		agent2.setExpectedReturn(0.4);
 		
-		Agent agent3 = new Agent(3, 0.3, 2);
+		Agent agent3 = new Agent(3, 0.3, 2, REPRODUCTION_THRESHOLD);
 		agent3.setRisk(0.1);
 		agent3.setExpectedReturn(1.12);
 		
-		Agent agent4 = new Agent(4, 0.3, 2);
+		Agent agent4 = new Agent(4, 0.3, 2, REPRODUCTION_THRESHOLD);
 		agent4.setRisk(0.15);
 		agent4.setExpectedReturn(1.125);
 		
@@ -116,7 +117,7 @@ public class AgentFunctionTests{
 		riskPopulation.add(agent2);
 		returnPopulation.add(agent3);
 		
-		Environment env = new Environment(100.0, 4, 2, 0.1, null);
+		Environment env = new Environment(100.0, 4, 2, 0.1, REPRODUCTION_THRESHOLD, null);
 		
 		env.setReturnOrientedPopulation(returnPopulation);
 		env.setRiskOrientedPopulation(riskPopulation);
@@ -130,7 +131,7 @@ public class AgentFunctionTests{
 	public void testRandomPopulationInit(){
 		System.out.println("random population init test:");
 		
-		Environment env = new Environment(100.0, 4, 2, 0.1, null);
+		Environment env = new Environment(100.0, 4, 2, 0.1, REPRODUCTION_THRESHOLD, null);
 		
 		for(Agent agent : env.getReturnOrientedPopulation()){
 			assertTrue(agent.getPortfolio().getPortfolio().get(0) > 0.0);
@@ -148,19 +149,19 @@ public class AgentFunctionTests{
 	public void testExtinction(){
 		System.out.println("extinction test:");
 		
-		Agent agent1 = new Agent(1, 0.5, 2);
+		Agent agent1 = new Agent(1, 0.5, 2, REPRODUCTION_THRESHOLD);
 		agent1.setRisk(0.1);
 		agent1.setExpectedReturn(1.1);
 		
-		Agent agent2 = new Agent(2, 1.0, 2);
+		Agent agent2 = new Agent(2, 1.0, 2, REPRODUCTION_THRESHOLD);
 		agent2.setRisk(0.2);
 		agent2.setExpectedReturn(0.4);
 		
-		Agent agent3 = new Agent(3, 0.3, 2);
+		Agent agent3 = new Agent(3, 0.3, 2, REPRODUCTION_THRESHOLD);
 		agent3.setRisk(0.1);
 		agent3.setExpectedReturn(1.12);
 		
-		Agent agent4 = new Agent(4, 0.3, 2);
+		Agent agent4 = new Agent(4, 0.3, 2, REPRODUCTION_THRESHOLD);
 		agent4.setRisk(0.15);
 		agent4.setExpectedReturn(1.125);
 		
@@ -169,7 +170,7 @@ public class AgentFunctionTests{
 		returnPopulation.add(agent3);
 		returnPopulation.add(agent4);
 		
-		Environment env = new Environment(100.0, 4, 2, 0.4, null);
+		Environment env = new Environment(100.0, 4, 2, 0.4, REPRODUCTION_THRESHOLD, null);
 		
 		env.setReturnOrientedPopulation(returnPopulation);
 		env.setRiskOrientedPopulation(riskPopulation);

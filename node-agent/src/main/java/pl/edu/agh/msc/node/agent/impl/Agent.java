@@ -1,6 +1,7 @@
 package pl.edu.agh.msc.node.agent.impl;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import pl.edu.agh.msc.generic.genetic.algorithm.MPTPortfolio;
@@ -8,42 +9,61 @@ import pl.edu.agh.msc.node.agent.IAgent;
 
 public class Agent implements IAgent {
 
-	private int id;
 	private double risk;
 	private double expectedReturn;
 	private double resource;
 	private MPTPortfolio portfolio;
-	private int specie;
+	private int species;
 	private final int NUMBER_OF_STOCKS;
+	private final double REPRODUCTION_THRESHOLD;
 
-	public Agent(int id, double resource, int numberOfStocks){
-		this.id = id;
+	public Agent(int species, double resource, int numberOfStocks, double reproductionThreshold){
+		this.species = species;
 		this.resource = resource;
 		this.NUMBER_OF_STOCKS = numberOfStocks;
 		portfolio = new MPTPortfolio(NUMBER_OF_STOCKS);
+		REPRODUCTION_THRESHOLD = reproductionThreshold;
 	}
 	
 	public void die(List<? extends IAgent> population) {
-		Iterator<? extends IAgent> iter = population.iterator();
 		
-		for(;iter.hasNext();){
-			if(iter.next().getId() == getId()){
-				iter.remove();
-			}
-		}
 	}
 
 	public void get(double acquiredResource) {
 		setResource(getResource() + acquiredResource); 
 	}
 	
-	public boolean accept(IAgent agent) {
-		// TODO Auto-generated method stub
-		return false;
+	public List<? extends IAgent> accept(Agent mate) {
+		if (mate != null){
+			//regular mating
+			List<IAgent> result = new LinkedList<IAgent>();
+			
+			List<MPTPortfolio> childrenPortfolios = AgentUtils.crossoverWithGenomeSwapping(getPortfolio(), mate.getPortfolio());
+			
+			Agent childA = new Agent(species, 0.2, NUMBER_OF_STOCKS, REPRODUCTION_THRESHOLD);
+			childA.setPortfolio(childrenPortfolios.get(0));
+			
+			Agent childB = new Agent(species, 0.2, NUMBER_OF_STOCKS, REPRODUCTION_THRESHOLD);
+			childB.setPortfolio(childrenPortfolios.get(1));
+			
+			result.add(childA);
+			result.add(childB);
+			
+			return result;
+		} else {
+			//mutation
+			MPTPortfolio mutant = AgentUtils.mutate(getPortfolio());
+			setPortfolio(mutant);
+			return null;
+		}
 	}
 
-	public IAgent seekPartner(List<IAgent> population) {
-		// TODO Auto-generated method stub
+	public IAgent seekPartner(List<? extends IAgent> population) {
+		for(IAgent agent : population){
+			if(agent.getResource() > REPRODUCTION_THRESHOLD){
+				return agent;
+			}
+		}
 		return null;
 	}
 	
@@ -62,14 +82,6 @@ public class Agent implements IAgent {
 		setResource(getResource() * 0.8);
 		
 		return result;
-	}
-	
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 	
 	public double getRisk() {
@@ -99,8 +111,8 @@ public class Agent implements IAgent {
 	@Override
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
-		builder.append("id:");
-		builder.append(getId());
+		builder.append("species:");
+		builder.append(getSpecies());
 		builder.append(", res:");
 		builder.append(getResource());
 		
@@ -115,11 +127,11 @@ public class Agent implements IAgent {
 		this.portfolio = portfolio;
 	}
 
-	public int getSpecie() {
-		return specie;
+	public int getSpecies() {
+		return species;
 	}
 
-	public void setSpecie(int specie) {
-		this.specie = specie;
+	public void setSpecies(int species) {
+		this.species = species;
 	}
 }
