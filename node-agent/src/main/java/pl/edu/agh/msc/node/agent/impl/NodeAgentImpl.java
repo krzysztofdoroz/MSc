@@ -1,6 +1,12 @@
 package pl.edu.agh.msc.node.agent.impl;
 
+import java.util.Date;
+import java.util.Random;
+
 import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.ObjectMessage;
+import javax.jms.TextMessage;
 
 import org.apache.log4j.Logger;
 import org.springframework.jms.core.JmsTemplate;
@@ -14,15 +20,45 @@ public class NodeAgentImpl implements IComputingNode {
 	private JmsTemplate jmsTopicTemplate;
 	private Environment environment;
 	static Logger logger = Logger.getLogger(NodeAgentImpl.class);
+	private static final int NUMBER_OF_MILIS = 50;
+	private Random rand = new Random();
 	
 	public void sendResultsToAggregatingNode() throws JMSException {
 		
 		logger.info("sending message...");
 		jmsTemplate.convertAndSend(queueName, environment.getBestAgentPortfolio());
+		
+		logger.info("receiving message from agg controller..");
+		Message message = jmsTopicTemplate.receive("controllerQueue");
+		
+		System.out.println("received MESSAGE:" +((TextMessage)message).getText());
+		
+		migrate();
 	}
 
 	public void migrate() throws JMSException {
-		// TODO Auto-generated method stub
+		Agent agentToMigrate = environment.getAgentToMigrate();
+		
+		long timestamp = new Date().getTime();
+
+		logger.info("migration:" + timestamp + agentToMigrate);
+
+		jmsTemplate.convertAndSend("migrationQueue", agentToMigrate);
+
+		// sleeping in order to assure that messages would be get from a queue
+		// at random
+		try {
+			Thread.sleep(Math.abs(rand.nextInt() % NUMBER_OF_MILIS));
+		} catch (Exception e) {
+			logger.error("sleeping failed");
+		}
+
+		ObjectMessage message = (ObjectMessage) jmsTemplate
+				.receive("migrationQueue");
+		Agent migrant = (Agent) message.getObject();
+		logger.info("new migrant has arrived: " + timestamp + migrant);
+		environment.acceptMigrant(migrant);
+		
 	}
 
 	public String getQueueName() {

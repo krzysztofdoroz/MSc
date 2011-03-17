@@ -1,13 +1,16 @@
 package pl.edu.agh.msc.node.agent.impl;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
 import pl.edu.agh.msc.generic.genetic.algorithm.MPTPortfolio;
 import pl.edu.agh.msc.node.agent.IAgent;
 
-public class Agent implements IAgent {
+public class Agent implements IAgent, Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
 	private double risk;
 	private double expectedReturn;
 	private double resource;
@@ -15,6 +18,7 @@ public class Agent implements IAgent {
 	private int species;
 	private final int NUMBER_OF_STOCKS;
 	private final double REPRODUCTION_THRESHOLD;
+	private final static double REPRODUCTION_RESOURCE_TRANSFER = 0.2;
 
 	public Agent(int species, double resource, int numberOfStocks, double reproductionThreshold){
 		this.species = species;
@@ -28,17 +32,20 @@ public class Agent implements IAgent {
 		setResource(getResource() + acquiredResource); 
 	}
 	
-	public List<? extends IAgent> accept(Agent mate) {
+	public List<Agent> accept(Agent mate) {
 		if (mate != null){
 			//regular mating
-			List<IAgent> result = new LinkedList<IAgent>();
+			mate.setResource(mate.getResource() - REPRODUCTION_RESOURCE_TRANSFER);
+			setResource(getResource() - REPRODUCTION_RESOURCE_TRANSFER);
+			
+			List<Agent> result = new LinkedList<Agent>();
 			
 			List<MPTPortfolio> childrenPortfolios = AgentUtils.crossoverWithGenomeSwapping(getPortfolio(), mate.getPortfolio());
 			
-			Agent childA = new Agent(species, 0.2, NUMBER_OF_STOCKS, REPRODUCTION_THRESHOLD);
+			Agent childA = new Agent(species, REPRODUCTION_RESOURCE_TRANSFER, NUMBER_OF_STOCKS, REPRODUCTION_THRESHOLD);
 			childA.setPortfolio(childrenPortfolios.get(0));
 			
-			Agent childB = new Agent(species, 0.2, NUMBER_OF_STOCKS, REPRODUCTION_THRESHOLD);
+			Agent childB = new Agent(species, REPRODUCTION_RESOURCE_TRANSFER, NUMBER_OF_STOCKS, REPRODUCTION_THRESHOLD);
 			childB.setPortfolio(childrenPortfolios.get(1));
 			
 			result.add(childA);

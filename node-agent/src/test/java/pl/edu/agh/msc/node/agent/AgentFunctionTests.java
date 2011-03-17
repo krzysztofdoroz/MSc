@@ -210,4 +210,34 @@ public class AgentFunctionTests {
 		System.out.println(agent.getPortfolio().getPortfolio());
 		System.out.println("mutation test: OK");
 	}
+	
+	@Test
+	public void testReproduction(){
+		
+	}
+	
+	@Test
+	public void testRedistibutionOfFreeResource(){
+		System.out.println("redistribution test:");
+		
+		Environment env = new Environment(0.0, 4, 2, 0.4,
+				REPRODUCTION_THRESHOLD, null);
+		env.setFreeResource(0.2);
+		
+		Agent agent = new Agent(1, 1.0, 2, REPRODUCTION_THRESHOLD);
+		Agent agent2 = new Agent(2, 2, 2, REPRODUCTION_THRESHOLD);
+		
+		riskPopulation.add(agent);
+		returnPopulation.add(agent2);
+
+		env.setReturnOrientedPopulation(returnPopulation);
+		env.setRiskOrientedPopulation(riskPopulation);
+		
+		env.redistributeFreeResource();
+		
+		assertEquals(1.1, agent.getResource(), 0.001);
+		assertEquals(2.1, agent2.getResource(), 0.001);
+		
+		System.out.println("redistribution test: OK");
+	}
 }
