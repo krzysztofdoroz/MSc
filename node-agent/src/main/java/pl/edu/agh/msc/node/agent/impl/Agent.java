@@ -1,6 +1,5 @@
 package pl.edu.agh.msc.node.agent.impl;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,10 +22,6 @@ public class Agent implements IAgent {
 		this.NUMBER_OF_STOCKS = numberOfStocks;
 		portfolio = new MPTPortfolio(NUMBER_OF_STOCKS);
 		REPRODUCTION_THRESHOLD = reproductionThreshold;
-	}
-	
-	public void die(List<? extends IAgent> population) {
-		
 	}
 
 	public void get(double acquiredResource) {

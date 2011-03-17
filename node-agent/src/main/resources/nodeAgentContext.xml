@@ -36,19 +36,34 @@
 	</bean>
 
 	<bean id="environment" class="pl.edu.agh.msc.node.agent.impl.Environment">
+		
+		<!-- resource -->
 		<constructor-arg index="0">
 			<value>100.0</value>
 		</constructor-arg>
 		
+		<!-- population size -->
 		<constructor-arg index="1">
 			<value>16</value>
 		</constructor-arg>
 		
+		<!-- number of stocks -->
 		<constructor-arg index="2">
 			<value>2</value>
 		</constructor-arg>
 		
+		<!-- dying threshold -->
 		<constructor-arg index="3">
+			<value>0.1</value>
+		</constructor-arg>
+		
+		<!-- reproduction threshold -->
+		<constructor-arg index="4">
+			<value>0.5</value>
+		</constructor-arg>
+		
+		<!-- data source -->
+		<constructor-arg index="5">
 			<ref bean="dataSource" />
 		</constructor-arg>
 	</bean>
