@@ -39,14 +39,14 @@ public class AggregationControllerImpl implements IAggregationController {
 
 		double money = 100.0;
 		double[] stocskBought = new double[3];
-		//BufferedWriter paretoWriter = null;
+		// BufferedWriter paretoWriter = null;
 
 		try {
 			Message message;
 			bufferedWriter = new BufferedWriter(new FileWriter(new File(
 					"aggregated_results")));
-			//paretoWriter = new BufferedWriter(new FileWriter(new File(
-			//		"pareto_results")));
+			// paretoWriter = new BufferedWriter(new FileWriter(new File(
+			// "pareto_results")));
 
 			for (int round = 0; round < numberOfRounds; round++) {
 				portfolios.clear();
@@ -79,22 +79,25 @@ public class AggregationControllerImpl implements IAggregationController {
 					money = 0;
 					int index = 0;
 					for (double ammount : stocskBought) {
-						money += ammount * dataSource.getStockData(index, round);
+						money += ammount
+								* dataSource.getStockData(index, round);
 						index++;
 					}
 				}
-				
+
 				MPTPortfolio bestPortfolio = selectBestPortfolio(portfolios);
 				bufferedWriter.write(round + " " + money + " "
 						+ stocskBought[0] + " " + stocskBought[1] + " "
-						+ bestPortfolio.getRisk() / 100.0 + " "
-						+ bestPortfolio.getValue() + "\n");
+						+ stocskBought[2] + " " + bestPortfolio.getRisk()
+						/ 100.0 + " " + bestPortfolio.getValue() + "\n");
 
 				// buy stocks according to best portfolio
 				stocskBought[0] = (bestPortfolio.getPortfolio().get(0) * money)
 						/ dataSource.getStockData(0, round);
 				stocskBought[1] = (bestPortfolio.getPortfolio().get(1) * money)
 						/ dataSource.getStockData(1, round);
+				stocskBought[2] = (bestPortfolio.getPortfolio().get(2) * money)
+						/ dataSource.getStockData(2, round);
 
 				// request new results from computing nodes
 				for (int j = 0; j < numberOfComputingAgents; j++) {

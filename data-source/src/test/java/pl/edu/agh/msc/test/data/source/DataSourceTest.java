@@ -22,4 +22,23 @@ public class DataSourceTest {
 		assertEquals(14.9999, dataSource.getStockData(1, 2), 0.0001);	
 		assertEquals(163.1, dataSource.getStockData(0, 249), 0.0001);	
 	}
+	
+	@Test
+	public void testCorrelationCoeffLoading(){
+		List<String> filesToLoad = new LinkedList<String>();
+		filesToLoad.add("kghm.data");
+		filesToLoad.add("tpsa.data");
+		
+		List<String> coeffsToLoad = new LinkedList<String>();
+		coeffsToLoad.add("kghm-tpsa_correlation_coeff");
+		coeffsToLoad.add("kghm-pko_correlation_coeff");
+		coeffsToLoad.add("tpsa-pko_correlation_coeff");
+		
+		IDataSource dataSource = new StockDataSource(filesToLoad,null ,coeffsToLoad, null, null, 253);
+		
+		assertEquals(3, ((StockDataSource)dataSource).getCorrelationCoeffData().size());
+		
+		assertEquals(-0.04407846, dataSource.getCorrelationCoeffData(1, 2, 0), 0.0001);
+	}
+	
 }

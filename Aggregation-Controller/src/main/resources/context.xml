@@ -37,7 +37,7 @@
 		<property name="jmsTopicTemplate" ref="jmsTopicTemplate"/>
 		<property name="numberOfComputingAgents" value="2" />
 		<property name="queueName" value="simple" />
-		<property name="numberOfRounds" value="3" />
+		<property name="numberOfRounds" value="253" />
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 
@@ -61,7 +61,6 @@
 
 		<constructor-arg index="2">
 			<list>
-				<value>data/kghm-tpsa_correlation_coeff</value>
 				<value>data/kghm-tpsa_correlation_coeff</value>
 				<value>data/kghm-pko_correlation_coeff</value>
 				<value>data/tpsa-pko_correlation_coeff</value>

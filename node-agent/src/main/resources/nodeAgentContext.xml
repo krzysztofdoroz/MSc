@@ -49,7 +49,7 @@
 		
 		<!-- number of stocks -->
 		<constructor-arg index="2">
-			<value>2</value>
+			<value>3</value>
 		</constructor-arg>
 		
 		<!-- dying threshold -->
@@ -73,6 +73,7 @@
 			<list>
 				<value>/home/krzysztof/MSc/data-source/kghm.data</value>
 				<value>/home/krzysztof/MSc/data-source/tpsa.data</value>
+				<value>/home/krzysztof/MSc/data-source/pko.data</value>
 			</list>
 		</constructor-arg>
 
@@ -80,12 +81,15 @@
 			<list>
 				<value>data/kghm_standard_deviation</value>
 				<value>data/tpsa_standard_deviation</value>
+				<value>data/pko_standard_deviation</value>
 			</list>
 		</constructor-arg>
 
 		<constructor-arg index="2">
 			<list>
 				<value>data/kghm-tpsa_correlation_coeff</value>
+				<value>data/kghm-pko_correlation_coeff</value>
+				<value>data/tpsa-pko_correlation_coeff</value>
 			</list>
 		</constructor-arg>
 
@@ -93,6 +97,7 @@
 			<list>
 				<value>data/kghm-wig20_cov</value>
 				<value>data/tpsa-wig20_cov</value>
+				<value>data/pko-wig20_cov</value>
 			</list>
 		</constructor-arg>
 

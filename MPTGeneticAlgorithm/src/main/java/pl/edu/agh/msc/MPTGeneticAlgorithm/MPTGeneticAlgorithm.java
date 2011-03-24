@@ -108,8 +108,15 @@ public class MPTGeneticAlgorithm implements IGeneticAlgorithm {
 
 		Collections.sort(riskOrientedPopulation, new RiskComparator());
 
+		logger.info("return oriented population:");
 		for (Portfolio portfolio : returnOrientedpopulation) {
 			System.out.println(portfolio);
+			logger.info(portfolio.toString());
+		}
+		
+		logger.info("risk oriented population:");
+		for (Portfolio portfolio : riskOrientedPopulation) {
+			logger.info(portfolio.toString());
 		}
 
 		/*
@@ -253,7 +260,7 @@ public class MPTGeneticAlgorithm implements IGeneticAlgorithm {
 					correlationCoeff = 1.0;
 				} else {
 					correlationCoeff = stockDataSource.getCorrelationCoeffData(
-							i / 2, day);
+							i , j, day);
 				}
 
 				stockNumberOneWeigth = portfolio.getPortfolio().get(i);

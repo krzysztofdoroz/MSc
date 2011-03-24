@@ -269,7 +269,7 @@ public class Environment {
 					correlationCoeff = 1.0;
 				} else {
 					correlationCoeff = stockDataSource.getCorrelationCoeffData(
-							i / 2, day);
+							i, j, day);
 				}
 
 				stockNumberOneWeigth = portfolio.getPortfolio().get(i);

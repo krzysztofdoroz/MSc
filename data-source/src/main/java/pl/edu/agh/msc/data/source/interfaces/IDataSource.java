@@ -6,7 +6,7 @@ public interface IDataSource {
 
 	double getStockData(int stockNumber, int day);
 	double getStandardDevData(int stockNumber, int day);
-	double getCorrelationCoeffData(int stockNumber, int day);
+	double getCorrelationCoeffData(int stockNumber, int secondStockNumber, int day);
 	double getCovarianceData(int stockNumber, int day);
 	double getMarketVariance(int day);
 	void loadStockStandardDeviationData(List<String> filenames);

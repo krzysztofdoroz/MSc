@@ -68,7 +68,6 @@
 		<constructor-arg index="2">
 			<list>
 				<value>data/kghm-tpsa_correlation_coeff</value>
-				<value>data/kghm-tpsa_correlation_coeff</value>
 				<value>data/kghm-pko_correlation_coeff</value>
 				<value>data/tpsa-pko_correlation_coeff</value>
 			</list>

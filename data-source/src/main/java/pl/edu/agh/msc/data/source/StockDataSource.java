@@ -5,7 +5,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import pl.edu.agh.msc.data.source.interfaces.IDataSource;
 
@@ -13,7 +15,8 @@ public class StockDataSource implements IDataSource {
 
 	private double[][] stockData;
 	private double[][] stockStandardDevData;
-	private double[][] stockCorrelationCoeffData;
+	Map<Integer, Map<Integer,double[]>> correlationCoeffData = new HashMap<Integer, Map<Integer,double[]>>();
+	
 	private double[][] stockCovarianceData;
 	private double[] marketIndexVarianceData;
 	private int timeHorizon;
@@ -102,22 +105,51 @@ public class StockDataSource implements IDataSource {
 	}
 
 	public void loadStockStandardCorrelationCoeffData(List<String> filenames) {
-		stockCorrelationCoeffData = new double[filenames.size()][timeHorizon];
 
 		for (int i = 0; i < filenames.size(); i++) {
 			File currentFile = new File(filenames.get(i));
+			double[] stockCorrelationCoeffData = new double[timeHorizon];
 
 			try {
 				BufferedReader reader = new BufferedReader(new FileReader(
 						currentFile));
 
+				int firstStockId = Integer.parseInt(reader.readLine());
+				int secondStockId = Integer.parseInt(reader.readLine());
+				
 				for (int j = 0; j < timeHorizon; j++) {
 					// System.out.println(j + " " + reader.readLine());
 
-					stockCorrelationCoeffData[i][j] = Double.parseDouble(reader
+					stockCorrelationCoeffData[j] = Double.parseDouble(reader
 							.readLine());
 				}
 				reader.close();
+				
+				//fill HM properly:
+				Map<Integer,double[]> currentMap = correlationCoeffData.get(firstStockId);
+			
+				if (currentMap == null){
+					currentMap = new HashMap<Integer, double[]>();
+					currentMap.put(secondStockId, stockCorrelationCoeffData);
+					correlationCoeffData.put(firstStockId, currentMap);
+				} else {
+					currentMap.put(secondStockId, stockCorrelationCoeffData);
+					correlationCoeffData.put(firstStockId, currentMap);
+				}
+				
+				currentMap = correlationCoeffData.get(secondStockId);
+				
+				if (currentMap == null){
+					currentMap = new HashMap<Integer, double[]>();
+					currentMap.put(firstStockId, stockCorrelationCoeffData);
+					correlationCoeffData.put(secondStockId, currentMap);
+				} else {
+					currentMap.put(secondStockId, stockCorrelationCoeffData);
+					correlationCoeffData.put(secondStockId, currentMap);
+				}
+				
+				System.out.println(correlationCoeffData.size());
+				
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -195,8 +227,9 @@ public class StockDataSource implements IDataSource {
 		return stockStandardDevData[stockNumber][day];
 	}
 
-	public double getCorrelationCoeffData(int stockNumber, int day) {
-		return stockCorrelationCoeffData[stockNumber][day];
+	public double getCorrelationCoeffData(int stockNumber,
+			int secondStockNumber, int day) {
+		return correlationCoeffData.get(stockNumber).get(secondStockNumber)[day];
 	}
 
 	public double getCovarianceData(int stockNumber, int day) {
@@ -205,6 +238,10 @@ public class StockDataSource implements IDataSource {
 
 	public double getMarketVariance(int day) {
 		return marketIndexVarianceData[day];
+	}
+
+	public Map<Integer, Map<Integer, double[]>> getCorrelationCoeffData() {
+		return correlationCoeffData;
 	}
 
 }
