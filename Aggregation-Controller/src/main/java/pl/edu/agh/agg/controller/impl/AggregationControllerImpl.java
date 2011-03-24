@@ -38,7 +38,7 @@ public class AggregationControllerImpl implements IAggregationController {
 		BufferedWriter bufferedWriter;
 
 		double money = 100.0;
-		double[] stocskBought = new double[2];
+		double[] stocskBought = new double[3];
 		//BufferedWriter paretoWriter = null;
 
 		try {

@@ -14,10 +14,15 @@ cp Aggregation-Controller/target/Aggregation-Controller-0.0.1-SNAPSHOT.jar sandb
 
 cp /home/krzysztof/MSc/data-source/kghm.data sandbox/data/
 cp /home/krzysztof/MSc/data-source/tpsa.data sandbox/data/
+cp /home/krzysztof/MSc/data-source/pko.data sandbox/data/
 cp /home/krzysztof/MSc/R_scripts/output/kghm_standard_deviation sandbox/data/ 
 cp /home/krzysztof/MSc/R_scripts/output/tpsa_standard_deviation sandbox/data/
+cp /home/krzysztof/MSc/R_scripts/output/pko_standard_deviation sandbox/data/
+cp /home/krzysztof/MSc/R_scripts/output/kghm-pko_correlation_coeff sandbox/data/
+cp /home/krzysztof/MSc/R_scripts/output/tpsa-pko_correlation_coeff sandbox/data/
 cp /home/krzysztof/MSc/R_scripts/output/kghm-tpsa_correlation_coeff sandbox/data/
 cp /home/krzysztof/MSc/R_scripts/output/kghm-wig20_cov sandbox/data/
+cp /home/krzysztof/MSc/R_scripts/output/pko-wig20_cov sandbox/data/
 cp /home/krzysztof/MSc/R_scripts/output/tpsa-wig20_cov sandbox/data/
 cp /home/krzysztof/MSc/R_scripts/output/wig20_var sandbox/data/
 
