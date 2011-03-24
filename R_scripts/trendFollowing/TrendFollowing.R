@@ -64,14 +64,14 @@ get_current_portfolio_value <- function(data,index) {
 	
 	result <- current_money_ammount
 	
-	for(i in 1:2){
+	for(i in 1:number_of_stocks){
 		result <- result + (trades[i,2] * data[index, i])
 	}
 	result
 }
 
 initialize <- function() {
-	for(i in 1:2){
+	for(i in 1:number_of_stocks){
 		for(j in 1:2){
 			trades[i,j] <<- 0.0
 		}	
@@ -89,13 +89,16 @@ get_current_stock_price <- function(data, index) {
 	tpsa_2010 <- read.table("/home/krzysztof/MSc/data-source/tpsa.data", sep="", na.strings="NA", dec=".", strip.white=TRUE)
 	kghm_2009 <- read.table("/home/krzysztof/MSc/data-source/kghm_2009", sep="", na.strings="NA", dec=".", strip.white=TRUE)
 	tpsa_2009 <- read.table("/home/krzysztof/MSc/data-source/tpsa_2009", sep="", na.strings="NA", dec=".", strip.white=TRUE)
+	pko_2009  <- read.table("/home/krzysztof/MSc/data-source/pko_2009", sep="", na.strings="NA", dec=".", strip.white=TRUE)
+	pko_2010  <- read.table("/home/krzysztof/MSc/data-source/pko.data", sep="", na.strings="NA", dec=".", strip.white=TRUE)
 
 #
 #merging data sets
 #
 	kghm_all <- rbind(kghm_2009,kghm_2010)
 	tpsa_all <- rbind(tpsa_2009,tpsa_2010)	
-	stock_prices <- cbind(kghm_all,tpsa_all)
+	pko_all  <- rbind(pko_2009 ,pko_2010) 
+	stock_prices <- cbind(kghm_all,tpsa_all,pko_all)
 	colnames(stock_prices) <- c("V1","V2")
 	#dim(stock_prices) <- c(length(kghm_all$V1), 2)
 
@@ -108,13 +111,14 @@ get_current_stock_price <- function(data, index) {
 #
 #other variables initialization
 #
+	number_of_stocks <- 3
 	current_money_ammount <- 100.0
 	initial_money_ammount <- 100.0
-	money_cap_per_single_trade <- 0.5
+	money_cap_per_single_trade <- 0.8
 	maximal_value_loss <- 0.98
 	lower_number_of_days <- 10
 	higher_number_of_days <- 20
-	trades <- array(c(1:2,1:2), dim=c(2,2))
+	trades <- array(c(1:number_of_stocks,1:2), dim=c(number_of_stocks,2))
 	initialize()
 	
 	portfolio_value <- array(c(1:length(kghm_2010$V1)), dim=c(length(kghm_2010$V1), 1))
