@@ -130,25 +130,19 @@ public class StockDataSource implements IDataSource {
 			
 				if (currentMap == null){
 					currentMap = new HashMap<Integer, double[]>();
-					currentMap.put(secondStockId, stockCorrelationCoeffData);
-					correlationCoeffData.put(firstStockId, currentMap);
-				} else {
-					currentMap.put(secondStockId, stockCorrelationCoeffData);
-					correlationCoeffData.put(firstStockId, currentMap);
 				}
+				
+				currentMap.put(secondStockId, stockCorrelationCoeffData);
+				correlationCoeffData.put(firstStockId, currentMap);
 				
 				currentMap = correlationCoeffData.get(secondStockId);
 				
 				if (currentMap == null){
 					currentMap = new HashMap<Integer, double[]>();
-					currentMap.put(firstStockId, stockCorrelationCoeffData);
-					correlationCoeffData.put(secondStockId, currentMap);
-				} else {
-					currentMap.put(secondStockId, stockCorrelationCoeffData);
-					correlationCoeffData.put(secondStockId, currentMap);
-				}
+				} 
 				
-				System.out.println(correlationCoeffData.size());
+				currentMap.put(firstStockId, stockCorrelationCoeffData);
+				correlationCoeffData.put(secondStockId, currentMap);
 				
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block

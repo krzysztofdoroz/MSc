@@ -39,7 +39,7 @@
 		
 		<!-- resource -->
 		<constructor-arg index="0">
-			<value>100.0</value>
+			<value>32.0</value>
 		</constructor-arg>
 		
 		<!-- population size -->

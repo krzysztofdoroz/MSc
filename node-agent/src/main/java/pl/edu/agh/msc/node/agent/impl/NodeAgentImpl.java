@@ -20,25 +20,33 @@ public class NodeAgentImpl implements IComputingNode {
 	private JmsTemplate jmsTopicTemplate;
 	private Environment environment;
 	static Logger logger = Logger.getLogger(NodeAgentImpl.class);
-	private static final int NUMBER_OF_MILIS = 50;
+	private static final int NUMBER_OF_MILIS = 5;
 	private Random rand = new Random();
-	
+	private boolean maySend = true;
+
 	public void sendResultsToAggregatingNode() throws JMSException {
-		
-		logger.info("sending message...");
-		jmsTemplate.convertAndSend(queueName, environment.getBestAgentPortfolio());
-		
+
+		if (maySend) {
+			logger.info("sending message...");
+			jmsTemplate.convertAndSend(queueName,
+					environment.getBestAgentPortfolio());
+			maySend = false;
+		}
+
 		logger.info("receiving message from agg controller..");
 		Message message = jmsTopicTemplate.receive("controllerQueue");
-		
-		System.out.println("received MESSAGE:" +((TextMessage)message).getText());
+
+		System.out.println("received MESSAGE:"
+				+ ((TextMessage) message).getText());
+
+		maySend = true;
 		
 		migrate();
 	}
 
 	public void migrate() throws JMSException {
 		Agent agentToMigrate = environment.getAgentToMigrate();
-		
+
 		long timestamp = new Date().getTime();
 
 		logger.info("migration:" + timestamp + agentToMigrate);
@@ -58,7 +66,7 @@ public class NodeAgentImpl implements IComputingNode {
 		Agent migrant = (Agent) message.getObject();
 		logger.info("new migrant has arrived: " + timestamp + migrant);
 		environment.acceptMigrant(migrant);
-		
+
 	}
 
 	public String getQueueName() {
@@ -68,7 +76,7 @@ public class NodeAgentImpl implements IComputingNode {
 	public void setQueueName(String queueName) {
 		this.queueName = queueName;
 	}
-	
+
 	public JmsTemplate getJmsTemplate() {
 		return jmsTemplate;
 	}
@@ -76,7 +84,7 @@ public class NodeAgentImpl implements IComputingNode {
 	public void setJmsTemplate(JmsTemplate jmsTemplate) {
 		this.jmsTemplate = jmsTemplate;
 	}
-	
+
 	public JmsTemplate getJmsTopicTemplate() {
 		return jmsTopicTemplate;
 	}

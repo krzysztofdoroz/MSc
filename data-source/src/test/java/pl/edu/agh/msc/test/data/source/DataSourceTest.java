@@ -39,6 +39,9 @@ public class DataSourceTest {
 		assertEquals(3, ((StockDataSource)dataSource).getCorrelationCoeffData().size());
 		
 		assertEquals(-0.04407846, dataSource.getCorrelationCoeffData(1, 2, 0), 0.0001);
+		assertEquals(-0.4714231,  dataSource.getCorrelationCoeffData(0, 1, 1), 0.0001);
+		assertEquals(0.8143163, dataSource.getCorrelationCoeffData(2, 0, 2), 0.0001);
+		assertEquals(-0.04407846, dataSource.getCorrelationCoeffData(2, 1, 0), 0.0001);
 	}
 	
 }

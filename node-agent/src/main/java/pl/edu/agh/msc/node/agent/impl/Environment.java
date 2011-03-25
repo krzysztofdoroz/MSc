@@ -39,19 +39,40 @@ public class Environment {
 		initPopulations(populationSize);
 	}
 
-	public void redistributeFreeResource() {
-		int totalPopulationSize = riskOrientedPopulation.size() + returnOrientedPopulation.size();
-		double ammountOfResourcePerAgent = freeResource / totalPopulationSize;
-		
-		for (Agent agent : riskOrientedPopulation){
-			agent.setResource(agent.getResource() + ammountOfResourcePerAgent);
+	public double calculateGlobalResource() {
+		double currentResource = 0.0;
+
+		for (Agent agent : returnOrientedPopulation) {
+			currentResource += agent.getResource();
 		}
-		
-		for (Agent agent : returnOrientedPopulation){
-			agent.setResource(agent.getResource() + ammountOfResourcePerAgent);
+
+		for (Agent agent : riskOrientedPopulation) {
+			currentResource += agent.getResource();
+		}
+
+		return currentResource;
+	}
+
+	public void redistributeFreeResource() {
+
+		if (calculateGlobalResource() < totalResource) {
+			int totalPopulationSize = riskOrientedPopulation.size()
+					+ returnOrientedPopulation.size();
+			double ammountOfResourcePerAgent = freeResource
+					/ totalPopulationSize;
+
+			for (Agent agent : riskOrientedPopulation) {
+				agent.setResource(agent.getResource()
+						+ ammountOfResourcePerAgent);
+			}
+
+			for (Agent agent : returnOrientedPopulation) {
+				agent.setResource(agent.getResource()
+						+ ammountOfResourcePerAgent);
+			}
 		}
 	}
-	
+
 	private void recalculateRiskAndReturn(int day) {
 		for (Agent agent : riskOrientedPopulation) {
 			agent.setRisk(getRisk(agent.getPortfolio(), day));
@@ -69,12 +90,14 @@ public class Environment {
 	private void initPopulations(int populationSize) {
 
 		for (int i = 0; i < populationSize; i += 2) {
-			Agent agent = new Agent(FIRST_SPECIES, totalResource / (populationSize),
-					NUMBER_OF_STOCKS, REPRODUCTION_THRESHOLD);
+			Agent agent = new Agent(FIRST_SPECIES, totalResource
+					/ (populationSize), NUMBER_OF_STOCKS,
+					REPRODUCTION_THRESHOLD);
 			riskOrientedPopulation.add(agent);
 
-			Agent agent2 = new Agent(SECOND_SPECIES, totalResource / (populationSize),
-					NUMBER_OF_STOCKS, REPRODUCTION_THRESHOLD);
+			Agent agent2 = new Agent(SECOND_SPECIES, totalResource
+					/ (populationSize), NUMBER_OF_STOCKS,
+					REPRODUCTION_THRESHOLD);
 			returnOrientedPopulation.add(agent2);
 		}
 
@@ -121,8 +144,24 @@ public class Environment {
 	}
 
 	public MPTPortfolio getBestAgentPortfolio() {
-		recalculateRiskAndReturn(day++);
+		System.out.println("current env:" + returnOrientedPopulation.size()
+				+ " risk:" + riskOrientedPopulation.size());
+		double res = 0.0;
+
+		for (Agent agent : returnOrientedPopulation) {
+			System.out.println(agent);
+			res += agent.getResource();
+		}
+
+		for (Agent agent : riskOrientedPopulation) {
+			System.out.println(agent);
+			res += agent.getResource();
+		}
+		System.out.println("total REsource:" + res);
+
+		recalculateRiskAndReturn(day);
 		simulateInteractions(3);
+		recalculateRiskAndReturn(day++);
 
 		return findNonDominatedSolution().getPortfolio();
 	}
@@ -147,13 +186,13 @@ public class Environment {
 			}
 		}
 	}
-	
-	public Agent getAgentToMigrate(){
+
+	public Agent getAgentToMigrate() {
 		int whichPopulation = Math.abs(rand.nextInt() % 2);
 		Agent result = null;
-		
+
 		int index;
-		if (whichPopulation == 0){
+		if (whichPopulation == 0) {
 			index = Math.abs(rand.nextInt() % riskOrientedPopulation.size());
 			result = riskOrientedPopulation.get(index);
 			riskOrientedPopulation.remove(index);
@@ -186,33 +225,37 @@ public class Environment {
 				case 3:
 				case 4:
 				case 5:
-					//60% chance of rivalry between members of the same species
-					currentAgent.seekAndGet(currentAgent.getSpecies() == FIRST_SPECIES ? riskOrientedPopulation 
-							: returnOrientedPopulation );
+					// 60% chance of rivalry between members of the same species
+					currentAgent
+							.seekAndGet(currentAgent.getSpecies() == FIRST_SPECIES ? riskOrientedPopulation
+									: returnOrientedPopulation);
 					break;
 				case 6:
 				case 7:
-					//finding mate from members of the other species
+					// finding mate from members of the other species
 					IAgent mate = currentAgent
 							.seekPartner(currentAgent.getSpecies() == FIRST_SPECIES ? returnOrientedPopulation
 									: riskOrientedPopulation);
-					List<Agent> children = currentAgent.accept((Agent)mate);
-					
-					for(Agent agent : children){
-						if (agent.getSpecies() == FIRST_SPECIES){
-							riskOrientedPopulation.add(agent);
-						} else {
-							returnOrientedPopulation.add(agent);
+
+					if (mate != null) {
+						List<Agent> children = currentAgent
+								.accept((Agent) mate);
+
+						for (Agent agent : children) {
+							if (agent.getSpecies() == FIRST_SPECIES) {
+								riskOrientedPopulation.add(agent);
+							} else {
+								returnOrientedPopulation.add(agent);
+							}
 						}
 					}
-					
 					break;
 				case 8:
-					//mutation
+					// mutation
 					currentAgent.accept(null);
 				case 9:
-					//migration
-					//NodeAgentImpl takes care of migration...
+					// migration
+					// NodeAgentImpl takes care of migration...
 				}
 			}
 			extinctTheWeakest();
@@ -308,7 +351,7 @@ public class Environment {
 	public void setReturnOrientedPopulation(List<Agent> returnOrientedPopulation) {
 		this.returnOrientedPopulation = returnOrientedPopulation;
 	}
-	
+
 	public double getFreeResource() {
 		return freeResource;
 	}
@@ -318,7 +361,7 @@ public class Environment {
 	}
 
 	public void acceptMigrant(Agent migrant) {
-		if (migrant.getSpecies() == FIRST_SPECIES){
+		if (migrant.getSpecies() == FIRST_SPECIES) {
 			riskOrientedPopulation.add(migrant);
 		} else {
 			returnOrientedPopulation.add(migrant);

@@ -12,7 +12,7 @@ import pl.edu.agh.msc.node.agent.impl.NodeAgentImpl;
 
 public class CoreManager {
 
-	private static final int NUMBER_OF_ROUNDS = 3;
+	private static final int NUMBER_OF_ROUNDS = 253;
 
 	public static void main(String[] args) throws JMSException {
 		Resource resource = new ClassPathResource("nodeAgentContext.xml");

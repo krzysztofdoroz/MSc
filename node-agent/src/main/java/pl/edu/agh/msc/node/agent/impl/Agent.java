@@ -19,6 +19,7 @@ public class Agent implements IAgent, Serializable {
 	private final int NUMBER_OF_STOCKS;
 	private final double REPRODUCTION_THRESHOLD;
 	private final static double REPRODUCTION_RESOURCE_TRANSFER = 0.2;
+	private final static double EATING_COEFF = 0.33;
 
 	public Agent(int species, double resource, int numberOfStocks, double reproductionThreshold){
 		this.species = species;
@@ -80,8 +81,8 @@ public class Agent implements IAgent, Serializable {
 	}
 
 	public double give() {
-		double result = getResource() * 0.2;
-		setResource(getResource() * 0.8);
+		double result = getResource() * EATING_COEFF;
+		setResource(getResource() * (1 - EATING_COEFF));
 		
 		return result;
 	}
@@ -91,6 +92,7 @@ public class Agent implements IAgent, Serializable {
 	}
 
 	public void setRisk(double risk) {
+		this.portfolio.setRisk(risk);
 		this.risk = risk;
 	}
 
@@ -99,6 +101,7 @@ public class Agent implements IAgent, Serializable {
 	}
 
 	public void setExpectedReturn(double expectedReturn) {
+		this.portfolio.setValue(expectedReturn);
 		this.expectedReturn = expectedReturn;
 	}
 
