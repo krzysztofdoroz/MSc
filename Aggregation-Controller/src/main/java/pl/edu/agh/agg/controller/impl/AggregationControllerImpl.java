@@ -154,7 +154,6 @@ public class AggregationControllerImpl implements IAggregationController {
 				bestPortfolio = portfolio;
 			}
 		}
-
 		return (MPTPortfolio) bestPortfolio;
 	}
 

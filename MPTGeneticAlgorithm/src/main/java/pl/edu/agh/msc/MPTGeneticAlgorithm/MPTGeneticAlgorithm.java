@@ -193,6 +193,34 @@ public class MPTGeneticAlgorithm implements IGeneticAlgorithm {
 			}
 		}
 		*/
+		
+		
+		MPTPortfolio nonDominatedSolution = returnOrientedpopulation.get(0);
+
+		for (MPTPortfolio portfolio : riskOrientedPopulation) {
+			if (portfolio.getRisk() <= nonDominatedSolution.getRisk()
+					&& portfolio.getValue() >= nonDominatedSolution
+							.getValue()) {
+
+				nonDominatedSolution = portfolio;
+			}
+		}
+
+		for (MPTPortfolio portfolio : returnOrientedpopulation) {
+			if (portfolio.getRisk() <= nonDominatedSolution.getRisk()
+					&& portfolio.getValue() >= nonDominatedSolution
+							.getValue()) {
+
+				nonDominatedSolution = portfolio;
+			}
+		}
+
+		return nonDominatedSolution;
+		
+		
+		/*
+		 * old version not good enough
+		 * 
 		List<MPTPortfolio> allGenomes = new LinkedList<MPTPortfolio>();
 		allGenomes.addAll(riskOrientedPopulation);
 		allGenomes.addAll(returnOrientedpopulation);
@@ -200,6 +228,8 @@ public class MPTGeneticAlgorithm implements IGeneticAlgorithm {
 		//sorting by expected return, then by risk
 		Collections.sort(allGenomes);
 		Collections.sort(allGenomes, new RiskComparator());
+		*/
+		
 		
 		/*
 		// select portfolio with maximum return
@@ -221,7 +251,7 @@ public class MPTGeneticAlgorithm implements IGeneticAlgorithm {
 			return bestPortfolioRiskOriented;
 		}
 		*/
-			return allGenomes.get(0);
+		//	return allGenomes.get(0);
 	}
 
 	public double calculateFitness(Portfolio portfolio, int day) {

@@ -1,0 +1,64 @@
+%\documentclass[pdflatex,11pt]{aghdpl}
+% \documentclass{aghdpl}               % przy kompilacji programem latex
+\documentclass[pdflatex,en]{aghdpl}  % praca w jzyku angielskim
+\usepackage[polish]{babel}
+\usepackage[latin2]{inputenc}
+
+% dodatkowe pakiety
+\usepackage{enumerate}
+\usepackage{listings}
+\lstloadlanguages{TeX}
+
+%---------------------------------------------------------------------------
+
+\author{Krzysztof Doroz}
+\shortauthor{K. Doroz}
+
+\titlePL{Przygotowanie pracy dyplomowej w~systemie \LaTeX}
+\titleEN{Thesis in \LaTeX}
+
+\shorttitlePL{coev multi-agent ...} % skrona wersja tytuu jeli jest bardzo dugi
+\shorttitleEN{coev multi-agent}
+
+\thesistypePL{Praca magisterska}
+\thesistypeEN{Master of Science Thesis}
+
+\supervisorPL{dr inż Rafał Dreżewski}
+\supervisorEN{Rafał Dreżewski Ph.D}
+
+\date{2011}
+
+\departmentPL{Katedra Informatyki}
+\departmentEN{Department of Computer Science}
+
+\facultyPL{Wydział Elektrotechniki, Automatyki, Informatyki i Elektroniki}
+\facultyEN{Faculty of Electrical Engineering, Automatics, Computer Science and Electronics}
+
+\acknowledgements{Serdecznie dzi \dots tu cig dalszych podzikowa np. dla promotora, ony, ssiada itp.}
+
+
+\setlength{\cftsecnumwidth}{10mm}
+
+%---------------------------------------------------------------------------
+
+\begin{document}
+
+\titlepages
+
+\tableofcontents
+\clearpage
+
+\include{chapter1}
+\include{chapter2}
+\include{chapter3}
+
+% itd.
+% \appendix
+% \include{dodatekA}
+% \include{dodatekB}
+% itd.
+
+\bibliographystyle{amsplain}
+\bibliography{bibliografia}
+
+\end{document}
