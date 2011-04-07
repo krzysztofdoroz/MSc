@@ -10,6 +10,7 @@
 
 Multi-objective optimization is used to solve problems involving more than one objective function.
 Such problems are often encountered in real world so efficient methods of solving them have wide applications.
+(\cite{Deb:2001:MOU:559152})
 
 %TODO: MCDM, MOOP
 
@@ -29,9 +30,65 @@ Pareto front is the set of choices that are Pareto efficient.
 \section{Genetic Algorithms}
 \label{sec:genAlgorithms}
 
+Many computational problems require searching through a huge number of possibilities for solutions.
+Such search problems can often benefit from an effective use of parallelism, in which many different possibilities are explored simultaneously in an efficient way. 
+It turns out that the process of biological evolution could provide the inspiration for addressing these problems.
+(\cite{Mitchell01})
+
+\subsection{Elements of genetic algorithms}
+
+Almost all genetic algorithms have some elements in common \cite{Mitchell01}:
+\begin{itemize}
+  \item populations of chromosomes
+  \item selection according to fitness
+  \item crossover to produce new offspring
+  \item random mutation of new offspring
+  \item fitness function
+\end{itemize}
+
+The GA processes populations of chromosomes, succesively replacing one such population with another (by using GA operators: mutation, selection, crossover, etc.). 
+Each chromosome contains potential solution to problem (e.g. represented as binary string). 
+Fitness functions are used to assess how well specific chromosome solves the problem.
+The better fitting chromosomes are more likely to be involved in reproduction process.
+That mimics the biological process of evolution - fitness of an organism is obtained by means of simple variation (mutation, recombination, etc.) and natural selection
+thus propagating genetic material to future generations.
+These rules seems to be simple but they are in fact responsible for extraordinary variety and complexity of the biosphere.
+\cite{Mitchell01} 
+ 
+
+ 
+
+\subsection{Genetic algorithms operators}
+
+Following \cite{Mitchell01} - the simplest form of genetic algorithm involves three types of operators: selection, crossover and mutation. 
+
+\begin{description}
+
+\item[selection]
+  This operator selects chromosomes in the population for reproduction.
+  The fitter the chromosome, the more times it is likely to be selected to reproduce.
+  
+\item[crossover]
+  This operator randomly chooses a locus and exchanges the subsequences before and after that locus between two chromosomes to create two offspring.
+  For example, the strings 10000100 and 11111111 could be crossed over after the third locus in each to produce the two offspring 10011111 and 11100100.
+  The crossover operator roughly mimics biological recombination between two single-chromosome organisms.
+
+\item[mutation]
+  This operator randomly flips some of the bits in a chromosome.
+  For example, the string 00000100 might be mutated in its second position to yield 01000100.
+  Mutation can occur at each bit position in a string with some probability, usually very small (e.g., 0.001).
+
+
+\end{description}
+
+\subsection{Pseudocode for Genetic Algorithm}
+
+
 %---------------------------------------------------------------------------
 
 \section{Evolutionary Algorithms}
 \label{sec:evolAlgorithms}
 
+Many computational problems require a computer program to be adaptive—to continue to perform well in a
+changing environment.
 

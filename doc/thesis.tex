@@ -1,12 +1,13 @@
 %\documentclass[pdflatex,11pt]{aghdpl}
 % \documentclass{aghdpl}               % przy kompilacji programem latex
 \documentclass[pdflatex,en]{aghdpl}  % praca w jzyku angielskim
-\usepackage[polish]{babel}
 \usepackage[latin2]{inputenc}
+%\usepackage[polish]{babel}
 
 % dodatkowe pakiety
 \usepackage{enumerate}
 \usepackage{listings}
+\usepackage{algorithmic}
 \lstloadlanguages{TeX}
 
 %---------------------------------------------------------------------------
@@ -23,15 +24,15 @@
 \thesistypePL{Praca magisterska}
 \thesistypeEN{Master of Science Thesis}
 
-\supervisorPL{dr inż Rafał Dreżewski}
-\supervisorEN{Rafał Dreżewski Ph.D}
+\supervisorPL{dr in\.z Rafa\l{} Dre\.zewski}
+\supervisorEN{Rafa\l{} Dre\.zewski Ph.D}
 
 \date{2011}
 
 \departmentPL{Katedra Informatyki}
 \departmentEN{Department of Computer Science}
 
-\facultyPL{Wydział Elektrotechniki, Automatyki, Informatyki i Elektroniki}
+\facultyPL{Wydzia\l{} Elektrotechniki, Automatyki, Informatyki i Elektroniki}
 \facultyEN{Faculty of Electrical Engineering, Automatics, Computer Science and Electronics}
 
 \acknowledgements{Serdecznie dzi \dots tu cig dalszych podzikowa np. dla promotora, ony, ssiada itp.}
@@ -51,6 +52,7 @@
 \include{chapter1}
 \include{chapter2}
 \include{chapter3}
+\include{chapter4}
 
 % itd.
 % \appendix
@@ -59,6 +61,6 @@
 % itd.
 
 \bibliographystyle{amsplain}
-\bibliography{bibliografia}
+\bibliography{bibliography}
 
 \end{document}
