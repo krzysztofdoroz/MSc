@@ -1,4 +1,4 @@
-\chapter{Multi-Objective Optimization}
+\chapter{Problem Statement}
 \label{cha:multiObjectiveOptimization}
 
 
@@ -22,8 +22,63 @@ Pareto front is the set of choices that are Pareto efficient.
 
 %---------------------------------------------------------------------------
 
+\section{Modern Portfolio Theory}
+
+%---------------------------------------------------------------------------
+
+\section{Capital Asset Pricing Model}
+
+%---------------------------------------------------------------------------
+
+
 \section{Trend following}
 \label{sec:trendFollowing}
+
+\subsection{Trend following fundamentals}
+\label{sec:trend_following_fundamentals}
+
+The concept of price as the trading cue lays the foundations for trend following. 
+Contrary to other trading strategies based on fundamental analysis (which use factors like: overall state of the economy, interest rates, production, etc. to predict stock price)
+trend following use only price as the key trading variable. 
+
+Trend following basically does not try to predict when the trend will occur. 
+It simply analyses stock prices and decides whether the current situation is suitable for buying or selling a specific stock.
+Market breakouts are a great buying opportunities, when you recognize that you are wrong you exit immediately in order to cut losses.
+Set of predefined rules decides  whether to take any action (they should recognize when the trend starts as well as when to exit) so the entire process can be easily automated.
+Such rules are quite simple but disciplined execution of them could lead to acheiving spectacular returns year after year.
+It is all about cutting the losses and letting the profits run.
+Many leading hedge funds successfully use strategies based on trend following to manage their portfolios. (\cite{Trend01})  
+
+\newpage
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[scale=.4]{trend_following.png}
+  \end{center}
+  \caption{Simple example of how trend following works in practise}
+\end{figure}
+
+Another advantage of this investing method is the fact that investor does not have to know much about what is being traded (it could be stocks, oil, gold, etc.).
+Normally, people tend to gather some information about the company they are willing to invest in. 
+They analyse its market situation, competitors, financial performance, etc. which is time consuming, especially for someone who is not a professional trader.
+With trend following we just have to to focus on elaborating trading rules that should reflect our trading strategy.
+After that we can automate the decision making process by designing and implementing our own trading system.   
+
+
+\subsection{Designing trading system based on trend following} 
+
+Following \cite{Trend01}, the core of each trading system based on trend following strategy is a set of rules governing each buy/sell decision.
+More specifically we have to devise rules to answer the following questions:
+
+\begin{itemize}
+  \item how much money are we willing to put on a single trade
+  \item when to exit (what kind of losses are acceptable)
+  \item when to enter (when the trend has started) 
+  \item what markets are we interested in and how to split money between them (we would like to have a diverse portfolio (stocks, gold, etc.))
+\end{itemize}
+
+These rules should reflect our investing style.
+
+In \ref{trend_following_impl} a system based on trend following strategy is presented in more details.
 
 %---------------------------------------------------------------------------
 
@@ -34,6 +89,12 @@ Many computational problems require searching through a huge number of possibili
 Such search problems can often benefit from an effective use of parallelism, in which many different possibilities are explored simultaneously in an efficient way. 
 It turns out that the process of biological evolution could provide the inspiration for addressing these problems.
 (\cite{Mitchell01})
+
+The genetic algorithm (GA) is an optimization and search technique based on the principles of genetics and natural selection.
+A GA allows a population composed of many individuals to evolve under specified selection rules to a state that maximizes the “fitness” (i.e., minimizes the cost function).
+The method was developed by John Holland (1975) over the course of the 1960s and 1970s.(\cite{Haupt:2004:PGA:1007746})
+
+
 
 \subsection{Elements of genetic algorithms}
 
@@ -46,6 +107,13 @@ Almost all genetic algorithms have some elements in common \cite{Mitchell01}:
   \item fitness function
 \end{itemize}
 
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[scale=.4]{GA_flow.png}
+  \end{center}
+  \caption{GA flow chart \cite{Haupt:2004:PGA:1007746}}
+\end{figure}
+
 The GA processes populations of chromosomes, succesively replacing one such population with another (by using GA operators: mutation, selection, crossover, etc.). 
 Each chromosome contains potential solution to problem (e.g. represented as binary string). 
 Fitness functions are used to assess how well specific chromosome solves the problem.
@@ -55,6 +123,8 @@ thus propagating genetic material to future generations.
 These rules seems to be simple but they are in fact responsible for extraordinary variety and complexity of the biosphere.
 \cite{Mitchell01} 
  
+According to \cite{Mitchell01} , GAs work by discovering, emphasizing, and recombining good "building blocks" of solutions in a highly parallel fashion.
+The idea here is that good solutions tend to be made up of good building blocks-combinations of bit values that confer higher fitness on the strings in which they are present.
 
  
 
@@ -80,9 +150,6 @@ Following \cite{Mitchell01} - the simplest form of genetic algorithm involves th
 
 
 \end{description}
-
-\subsection{Pseudocode for Genetic Algorithm}
-
 
 %---------------------------------------------------------------------------
 
