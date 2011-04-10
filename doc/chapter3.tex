@@ -28,6 +28,65 @@ Pareto front is the set of choices that are Pareto efficient.
 
 \section{Capital Asset Pricing Model}
 
+%\cite{CAPM}
+
+Capital Asset Pricing Model was developed in 1960s by Sharpe (\cite{CAPM-Sharpe}) and Lintner.
+It tries to find the relationship between the price of a single asset and its risk.
+Answering the question of how to calculate a risk as well as return of any asset being a part of portfolio is of paramount importance to each investor.
+
+The Sharpe capital asset pricing model is based on the following assumptions \cite{CAPM}:
+
+\begin{itemize}
+  \item all investors are risk aversing
+  \item all investors have the same information about the market
+  \item capital markets are perfect - no transaction costs, no tax, all assets are infinitely divisible
+  \item all investors view the expected returns and standard deviations of return provided by different portfolios in the same way
+\end{itemize}
+ 
+Lets assume that investor portfolio contains $N$ assets, then according to Capital Asset Pricing expected return of asset $i$ is \cite{CAPM}: 
+
+\begin{equation}
+\label{first_eq}
+ E(R_{i})  = R_{f} + \frac{ [E(R_{m}) - R_{f}]} {(\sigma^2(R_{m}))} cov(R_{i}, R_{m})
+\end{equation} 
+
+\begin{description}
+  \item [$E(R_{i})$]
+    expected return of asset $i$
+  \item [$R_{f}$]
+    risk-free rate of interest (e.g. government bonds)
+  \item [$E(R_{m})$]
+    expected return of the market
+  \item [$\sigma^2(R_{m})$]
+    variance of the market return
+  \item [$cov(R_{i}, R_{m})$]
+    covariance between market return and asset $i$ return
+\end{description}
+
+While the risk associated with entire portfolio is equal to:
+
+\begin{equation}
+\label{sec_eq}
+ \sigma_{p}  = \sqrt{\sum_{i} \sum_{j} w_{i}w_{j} \sigma_{i} \sigma_{j} \rho_{ij}}
+\end{equation} 
+
+\begin{description}
+  \item [$\sigma_{p}$]
+    portfolio risk
+  \item [$w_{i}$]
+    weighting of component asset i
+  \item [$w_{j}$]
+    weighting of component asset j
+  \item [$\sigma_{i}$]
+    standard deviation of asset $i$
+  \item [$\sigma_{j}$]
+    standard deviation of asset $j$
+  \item [$\rho_{ij}$]
+    correlation coefficient between the returns on assets i and j
+\end{description}
+ 
+
+
 %---------------------------------------------------------------------------
 
 

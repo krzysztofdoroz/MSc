@@ -95,13 +95,41 @@ As soon as the exit condition is satisfied we go short.
 \label{sec:implDetails}
 
 \subsection{Precomputation of statistical functions}
+\label{precompute}
 Precomputation of statistical functions (like covariance, standard deviation etc.) from historical data is done by R scripts. 
-Results are stored in files, later used as an input to other algorithms (configuration in Spring).
+Results are stored in files, later used as an input to other algorithms.
+
+\subsection{Data Source component}
+
+Data Source component aggregates all stock historical data as well as all precomputed statistical functions results from \ref{precompute}.   
+Its interface enables access to all data it contains. Data Source is injected as a bean to other components by Spring.
+They use it mainly as a source of data required by various algorithms.
+
+\subsection{Computing Algorithm component}
 
 
+
+\subsection{Multi-agent system architecture}
+
+\newpage
+\begin{figure}[!ht]
+  \begin{center}
+    \includegraphics[scale=.4]{agent_framework.png}
+  \end{center}
+  \caption{Deployment diagram of two Computing Nodes and Aggregation Node (in real situations more Computing Nodes are present)}
+\end{figure}
+
+Data Source as well as Computing Algorithm are created and injected to Computing Node(CN) by Spring. 
+CNs send results of computations to Aggregating Node by JMS. 
+Apart from that, JMS is used to provide migration capability to each CN.
+The sole purpose of Aggregating Node is to gather results from CNs, choose the best non-dominated solution and write the results to file. 
+Based on this file all charts are created and comparison of different algorithms is possible.
+
+  
+
+\subsection{Technologies used}
 
 Trend following algorithm has been implemented as a R script.
-
 
 
 
