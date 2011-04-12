@@ -2,7 +2,6 @@
 \label{cha:implementedAlgorithms}
 
 
-
 %---------------------------------------------------------------------------
 
 \section{Trend following}
@@ -29,7 +28,6 @@ As soon as at least one of the above conditions is satisfied we go long.
 
 As soon as the exit condition is satisfied we go short.
  
-
 \subsection{Pseudocode}
 
 \begin{description}
@@ -83,11 +81,69 @@ As soon as the exit condition is satisfied we go short.
 \end{algorithmic}
 
 
-
 \section{Genetic Algorithm}
 \label{sec:genAlgoImpl}
 
+\subsection{Adjusting GA to solve portfolio optimization problem}
 
+As described in \ref{sec:genAlgorithms} each potential solution shoul be encoded in chromosome. 
+Each chromosome represents portfolio composition (it is a vector of double values representing percentage share of each stock).
+
+The following modified GA operations have been implemented:
+\begin{description}
+  \item [mutation]
+      Mutation operator changes exactly one value $ \alpha_{i} $ representing percentage share of a specific stock $i$ (each time the value $i$ is chosen randomly)
+      to $\alpha_{i}'$ ($\alpha_{i}' \in (0,1)$ is chosen randomly). 
+      After that we have to normalize vector.
+      $Mutation\_coefficient$ ($mutation\_coefficient \in (0,1)$ ) determines what part of population will be subjected to mutation operator.
+  \item [selection]
+      $breeding\_coefficient$ ( $breeding\_coefficient \in (0,1)$ ) determines what part of population will be subjected to crossover operator, selection is based on 
+      fitness function (only the fittest part of the population will be selected)
+  \item [crossover]
+      After selection chromosomes eligible for reproduction, each pair of chromosomes are subjected to crossover operator. As a result new chromosomes are created (each pair
+      produces two new chromosomes) and added to population. Crossover choose points $left$  and $right$ (both are chosen randomly) which cut parent's chromosomes in the following
+      way: 
+	  \begin{figure}[!ht]
+	    \begin{center}
+	      \includegraphics[scale=.4]{parents.png}
+	    \end{center}
+	    \caption{Example of parent's chromosomes split into 3 parts}
+	  \end{figure}
+
+	Now children are created in the following way:    
+	  \begin{figure}[!ht]
+	    \begin{center}
+	      \includegraphics[scale=.4]{children.png}
+	    \end{center}
+	    \caption{Children's chromosomes contain mixed parent's genetic material}
+	  \end{figure}
+
+\end{description}
+
+Apart from that, extinction mechanism has been implemented.
+At the end of each GA round a part of the population that has the lowest fitness is exterminated.
+$Extinction\_coefficient$ defines what part of population will be subjected to extinction.
+ 
+\subsection{Fitness function}
+
+Fitness is calculated according to the following formula (for portfolio with $N$ stocks):
+
+\begin{equation}
+    \gamma_{day} =  \sum_{i=0}^{N} {  \alpha_{i} * \frac{price(i,day)}{price(i,day - 1)} }
+\end{equation}
+
+\begin{description}
+  \item [$\gamma_{day}$] 
+      value of the portfolio's fitness calculated for specific $day$
+  \item [$\alpha_{i}$]
+      percentage share of a specific stock $i$ in the whole portfolio
+  \item [$price(i,day)$]
+      returns the price of stock $i$ for a specific $day$
+\end{description}
+
+Clearly, the fitness function favours the portfolios which have the highest day-to-day increase in value.
+Of course such method of calculating fitness has many drawbacks e.g. it completely omits the aspect of risk associated with investing in highly volatile stocks.
+However, it turns out that in spite of this obvious flaw the algorithm is performing quite well.  
 
 %---------------------------------------------------------------------------
 
@@ -107,11 +163,19 @@ They use it mainly as a source of data required by various algorithms.
 
 \subsection{Computing Algorithm component}
 
+Computing Algorithm component is responsible for carrying out all computations.
+In order to function properly Data Source component as well as all configuration variables (like mutation coefficient etc.) has to be injected by Spring.
 
+\subsection{Aggregating Node}
 
-\subsection{Multi-agent system architecture}
+The sole purpose of Aggregating Node(AG) is to gather results from Computing Nodes(CN), choose the best non-dominated solution and write the results to file. 
+Based on this file all charts are created and comparison of different algorithms is possible.
+Communication between CNs and AG is provided by a single JMS queue (all CNs send results to one specific queue, AG consumes its content).
 
 \newpage
+\subsection{Multi-agent system architecture}
+\label{multi-agent}
+
 \begin{figure}[!ht]
   \begin{center}
     \includegraphics[scale=.4]{agent_framework.png}
@@ -122,17 +186,26 @@ They use it mainly as a source of data required by various algorithms.
 Data Source as well as Computing Algorithm are created and injected to Computing Node(CN) by Spring. 
 CNs send results of computations to Aggregating Node by JMS. 
 Apart from that, JMS is used to provide migration capability to each CN.
-The sole purpose of Aggregating Node is to gather results from CNs, choose the best non-dominated solution and write the results to file. 
-Based on this file all charts are created and comparison of different algorithms is possible.
-
-  
 
 \subsection{Technologies used}
 
-Trend following algorithm has been implemented as a R script.
+\begin{description}
+  \item [R]
+      Trend following algorithm has been implemented as an R script, historical data preprocessing.
+  \item [Apache ActiveMQ]
+      JMS implementation, provides communication between Computing Nodes and Aggregating Agent (\ref{multi-agent})
+  \item [Java]
+      Almost all algorithms are implemented in Java, Computing Nodes as well as Aggregating Node are in fact jar files 
+  \item [Spring Framework]
+      Inversion of Control container (configuration of application components and lifecycle management of Java objects), Messaging (simplifies the use of the JMS API) modules used.
+  \item [Apache Maven]
+      Used primarly for build automation.
+  \item [JUnit]
+      JUnit tests cover the most crucial functions of implemented algorithms.
+  \item [git]
+      Source Code Management tool.
+  \item [bash scripts]
+      Used for conveniently setting up and running test 
+\end{description}
 
-
-
-
-
-
+ 
