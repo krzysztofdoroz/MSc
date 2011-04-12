@@ -8,7 +8,18 @@
 \label{trend_following_impl}
 
 The crux of the trend following method is to choose a set of entry and exit point conditions that determine our trading strategy.
+Simple Moving Average (SMA) is especially useful to highlight longer-term trends in a set of data points.
 
+SMA is formulated as the unweighted mean of the previous $N$ data points:
+
+\begin{equation}
+    SMA_{today,N} = \frac{\sum_{i=1}^{N}p_{today - i}}{N}
+\end{equation}
+
+\begin{description}
+  \item [$p_{j}$] 
+    value of data on day $j$
+\end{description}
 
 
 \textbf{Entry points:}
@@ -145,6 +156,49 @@ Clearly, the fitness function favours the portfolios which have the highest day-
 Of course such method of calculating fitness has many drawbacks e.g. it completely omits the aspect of risk associated with investing in highly volatile stocks.
 However, it turns out that in spite of this obvious flaw the algorithm is performing quite well.  
 
+\subsection{Class Diagram}
+
+%\clearpage
+\begin{figure}[H]   
+	    \begin{center}
+	      \includegraphics[scale=.35]{Simple_gen_UML.png}
+	    \end{center}
+	    \caption{Class diagram of GA described in \ref{sec:genAlgoImpl}} 
+	  \end{figure}
+
+\begin{description}
+  \item [GeneticAlgorithmImpl]
+    An implementation of IGeneticAlgorithm, it is responsible for calculating the most optimal portfolio
+  \item [GeneticAlgorithmUtils]
+    Utility class providing methods used by genetic algorithm (like mutating, crossover etc.)
+  \item [IDataSource]
+    Described in \ref{dataSource}
+  \item [Portfolio]
+    Class representing potential solution.
+
+\end{description}
+
+\section{Co-evol}
+
+\subsection{Adjusting co-evol to portfolio optimization problem}
+
+Contrary to \ref{sec:genAlgoImpl} two subpopulations coexist side by side.
+Risk oriented subpopulation tries to optimize on risk (the lower risk value the better), whereas the return oriented subpopulation tries to maximize expected return.
+
+Risk as well as expected return are calculated according to Capital Asset Pricing Model described in \ref{CAPM} .
+
+
+
+\subsection{Class Diagram}
+
+\begin{figure}[H]   
+	    \begin{center}
+	      \includegraphics[scale=.38]{co-evol.png}
+	    \end{center}
+	    \caption{Class diagram of GA described in \ref{sec:genAlgoImpl}} 
+	  \end{figure}
+
+
 %---------------------------------------------------------------------------
 
 \section{Implementation Details}
@@ -156,6 +210,7 @@ Precomputation of statistical functions (like covariance, standard deviation etc
 Results are stored in files, later used as an input to other algorithms.
 
 \subsection{Data Source component}
+\label{dataSource}
 
 Data Source component aggregates all stock historical data as well as all precomputed statistical functions results from \ref{precompute}.   
 Its interface enables access to all data it contains. Data Source is injected as a bean to other components by Spring.
@@ -172,11 +227,12 @@ The sole purpose of Aggregating Node(AG) is to gather results from Computing Nod
 Based on this file all charts are created and comparison of different algorithms is possible.
 Communication between CNs and AG is provided by a single JMS queue (all CNs send results to one specific queue, AG consumes its content).
 
-\newpage
+
 \subsection{Multi-agent system architecture}
 \label{multi-agent}
 
-\begin{figure}[!ht]
+%\clearpage
+\begin{figure}[H]
   \begin{center}
     \includegraphics[scale=.4]{agent_framework.png}
   \end{center}
