@@ -188,6 +188,27 @@ Risk oriented subpopulation tries to optimize on risk (the lower risk value the 
 Risk as well as expected return are calculated according to Capital Asset Pricing Model described in \ref{CAPM} .
 
 
+\begin{figure}[H]   
+	    \begin{center}
+	      \includegraphics[scale=.35]{co-evol-2-sub.png}
+	    \end{center}
+	    \caption{Class diagram of GA described in \ref{sec:genAlgoImpl}} 
+	  \end{figure}
+
+\subsection{Maintaining Population Diversity}
+
+
+In order to keep both subpopulations diverse the following mechanisms have been implemented:
+
+\begin{itemize}
+  \item crossover is allowed only between the fittest chromosomes from different subpopulations 
+  \item mutations introduce random genetic change
+  \item migration allows chromosomes to travel to different nodes 
+ 
+\end{itemize}
+
+
+
 
 \subsection{Class Diagram}
 

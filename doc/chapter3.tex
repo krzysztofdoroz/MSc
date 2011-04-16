@@ -6,20 +6,49 @@
 %---------------------------------------------------------------------------
 
 \section{Multi-Objective Optimization}
-\label{sec:strukturaDokumentu}
+\label{sec:multi}
 
-Multi-objective optimization is used to solve problems involving more than one objective function.
-Such problems are often encountered in real world so efficient methods of solving them have wide applications.
+Optimization is a procedure of finding and comparing feasible solutions until no better solution can be found.
+Solutions are termed good or bad in terms of an objective, which is often the cost of fabrication, efficiency of a process, product reliability,
+or other factors.
+A significant portion of research and application in the field of optimizations considers a single objective, although most real-world problems involve more than one objective.
+The presence of multiple conflicting objectives is natural in many problems and makes the optimization problem interesting to solve.
+Since no one solution can be termed as an optimum solution to multiple conflicting objectives, the resulting multi-objective optimization problem resorts to a number
+of trade-off optimal solutions.
+Classical optimization methods can at best find one solution in one simulation run, thereby making it inconvenient to solve multi-objective optimization problems.
 (\cite{Deb:2001:MOU:559152})
+
+Evolutionary Algorithms (EAs), on the other hand, can find multiple optimal solutions in a single simulation run due to their population-approach. 
+Thus EAs are ideal candidates for solving multi-objective optimization problems.  
+(\cite{Deb:2001:MOU:559152})
+
+
+Multi-objective optimization problem (MOOP) deals with more than one objective function.
+Following \cite{Deb:2001:MOU:559152} - formal definition of MOOP is being defined as follows:
+
+\begin{equation} 
+MOOP =
+ \begin{cases}
+     Minimize/Maximize  & f_{m}(\bar{x}), \text{ } m = 1,2...,M \\
+     Subject \text{ } to  &  g_{j}(\bar{x}) \geq 0, \text{ } j = 1,2..., J  \\ 
+			  &  h_{k}(\bar{x}) = 0, k = 0,1...,K \\
+			  &  x_{i}^{(L)} \leq x_{i} \leq x_{i}^{(U)}, i = 1,2...,N
+      
+\end{cases}  
+\end{equation}
+
+These constraints and bounds ($g_{j}(x) , h_{k}(x) $ are constraint functions and there are $M$ objective functions) constitute a \emph{decision space}. 
+\cite{Deb:2001:MOU:559152}
+
+
 
 %TODO: MCDM, MOOP
 
-Each conflicting objective corresponds to a different optimal solution.  
-It is obvious that solution that is optimal with respect to one objective requires a compromise in other objectives.
 Because of this reason, in order to compare two solutions we have to introduce ordering relation.
 
 Pareto front is the set of choices that are Pareto efficient. 
 
+\subsection{Portfolio Optimization Problem}
 
 %---------------------------------------------------------------------------
 
@@ -28,8 +57,23 @@ Pareto front is the set of choices that are Pareto efficient.
 
 %\cite{CAPM}
 
-Capital Asset Pricing Model was developed in 1960s by Sharpe (\cite{CAPM-Sharpe}) and Lintner (based on Modern Portfolio Theory introduced by Harry Markowitz in 1952 (\cite{MPT})).
-It tries to find the relationship between the price of a single asset and its risk.
+Modern Portfolio Theory (MPT) (introduced by Harry Markowitz in 1952) was a tremendous breakthrough. 
+Investors could finally use a mathemathical approach to construct their portfolios.
+Most of them used solely diversification as a mean of reducing portfolio's risk.
+With brand new theory they did not have to rely only on common sense - the investment risk was finally expressed in quantitative terms. 
+
+Nevertheless MPT is not perfect, even its creators are fully aware that it has some very important limitations.
+The following assumptions of MPT are responsible for its shortcomings [\cite{MPT}]:
+\begin{itemize}
+  \item variance of portfolio returns is the correct measure of investment risk
+  \item investment returns of all assets can be adequately represented by the normal distribution
+\end{itemize}
+
+  
+
+Capital Asset Pricing Model (CAPM) was developed in 1960s by Sharpe (\cite{CAPM-Sharpe}) and Lintner.
+ 
+As well as MPT it tries to find the relationship between the price of a single asset and its risk.
 Answering the question of how to calculate a risk as well as return of any asset being a part of portfolio is of paramount importance to each investor.
 
 The Sharpe capital asset pricing model is based on the following assumptions \cite{CAPM}:
@@ -45,7 +89,7 @@ Lets assume that investor portfolio contains $N$ assets, then according to Capit
 
 \begin{equation}
 \label{first_eq}
- E(R_{i})  = R_{f} + \frac{ [E(R_{m}) - R_{f}]} {(\sigma^2(R_{m}))} cov(R_{i}, R_{m})
+ E(R_{i})  = R_{f} + \frac{ [E(R_{m}) - R_{f}]} {\sigma^2(R_{m})} cov(R_{i}, R_{m})
 \end{equation} 
 
 \begin{description}
@@ -72,20 +116,18 @@ While the risk associated with entire portfolio is equal to:
   \item [$\sigma_{p}$]
     portfolio risk
   \item [$w_{i}$]
-    weighting of component asset i
+    weighting of component asset $i$
   \item [$w_{j}$]
-    weighting of component asset j
+    weighting of component asset $j$
   \item [$\sigma_{i}$]
     standard deviation of asset $i$
   \item [$\sigma_{j}$]
     standard deviation of asset $j$
   \item [$\rho_{ij}$]
-    correlation coefficient between the returns on assets i and j
+    correlation coefficient between the returns on assets $i$ and $j$
 \end{description}
  
-
 %---------------------------------------------------------------------------
-
 
 \section{Trend following}
 \label{sec:trendFollowing}
@@ -93,15 +135,16 @@ While the risk associated with entire portfolio is equal to:
 \subsection{Trend following fundamentals}
 \label{sec:trend_following_fundamentals}
 
-The concept of price as the trading cue lays the foundations for trend following. 
+The concept of price as the trading cue lays the foundations for trend following (TF). 
 Contrary to other trading strategies based on fundamental analysis (which use factors like: overall state of the economy, interest rates, production, etc. to predict stock price)
-trend following use only price as the key trading variable. 
+TF use only price as the key trading variable. 
 
 Trend following basically does not try to predict when the trend will occur. 
-It simply analyses stock prices and decides whether the current situation is suitable for buying or selling a specific stock.
+Instead of that, trend followers will react to the market's movement and adapt accordingly.
+This strategy simply analyses stock prices and decides whether the current situation is suitable for buying or selling a specific stock.
 Market breakouts are a great buying opportunities, when you recognize that you are wrong you exit immediately in order to cut losses.
 Set of predefined rules decides  whether to take any action (they should recognize when the trend starts as well as when to exit) so the entire process can be easily automated.
-Such rules are quite simple but disciplined execution of them could lead to acheiving spectacular returns year after year.
+Such rules are quite simple but disciplined execution of them could lead to achieving spectacular returns year after year.
 It is all about cutting the losses and letting the profits run.
 Many leading hedge funds successfully use strategies based on trend following to manage their portfolios. (\cite{Trend01})  
 
