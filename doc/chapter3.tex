@@ -8,26 +8,26 @@
 \section{Multi-Objective Optimization}
 \label{sec:multi}
 
-Optimization is a procedure of finding and comparing feasible solutions until no better solution can be found.
-Solutions are termed good or bad in terms of an objective, which is often the cost of fabrication, efficiency of a process, product reliability,
-or other factors.
-A significant portion of research and application in the field of optimizations considers a single objective, although most real-world problems involve more than one objective.
-The presence of multiple conflicting objectives is natural in many problems and makes the optimization problem interesting to solve.
-Since no one solution can be termed as an optimum solution to multiple conflicting objectives, the resulting multi-objective optimization problem resorts to a number
-of trade-off optimal solutions.
-Classical optimization methods can at best find one solution in one simulation run, thereby making it inconvenient to solve multi-objective optimization problems.
-(\cite{Deb:2001:MOU:559152})
+The main goal of optimization is to find the very best solution from a most likely infinite set of possibilities.
+Optimization procedure relies on finding and comparing feasible solutions until no better solution can be found.
+Each solution can be classified as good or bad in terms of a specific objective we are interested in.
+E.g. we could define objective as the cost of fabrication, efficiency of a technological process, etc.
+Contrary to single-objective optimization there is no clearly defined optimum, instead of that we have to deal with a set of trade-off optimal solutions.
+They are generally known as Pareto-optimal solutions (\cite{Phd}).
 
-Evolutionary Algorithms (EAs), on the other hand, can find multiple optimal solutions in a single simulation run due to their population-approach. 
-Thus EAs are ideal candidates for solving multi-objective optimization problems.  
-(\cite{Deb:2001:MOU:559152})
+Vast majority of real-world problems involve more than one objective.
+That's why it is so crucial to develop methods to efficiently solve them.
+(\cite{Phd}, \cite{Deb:2001:MOU:559152})
 
+\subsection{Formal definition}
 
 Multi-objective optimization problem (MOOP) deals with more than one objective function.
+It turns out that objectives are most likely contradictory which makes the MOOP difficult to solve.
+In fact it is the most common situation we will ever encounter. 
 Following \cite{Deb:2001:MOU:559152} - formal definition of MOOP is being defined as follows:
 
 \begin{equation} 
-MOOP =
+MOOP \equiv
  \begin{cases}
      Minimize/Maximize  & f_{m}(\bar{x}), \text{ } m = 1,2...,M \\
      Subject \text{ } to  &  g_{j}(\bar{x}) \geq 0, \text{ } j = 1,2..., J  \\ 
@@ -39,16 +39,45 @@ MOOP =
 
 These constraints and bounds ($g_{j}(x) , h_{k}(x) $ are constraint functions and there are $M$ objective functions) constitute a \emph{decision space}. 
 \cite{Deb:2001:MOU:559152}
+Any solution that satisfies all the constraints and bounds is called a \emph{feasible solution} \cite{Deb:2001:MOU:559152}.
+
+It turns out that the set of feasible solutions is partially ordered.
+In order to compare two solutions we introduce \emph{Pareto dominance} relation \cite{Phd}:
+
+\begin{equation}
+\bar{x}_{A}  \prec \bar{x}_{B} \equiv
+      \begin{cases}
+     \exists{i \in 1..M} : f_{i}(\bar{x}_{A}) < f_{i}(\bar{x}_{B}) \\
+     \neg (\exists{j \in 1..M} : f_{j}(\bar{x}_{A}) > f_{j}(\bar{x}_{B}))  \\ 
+			  
+      
+\end{cases} 
+\end{equation}
+
+Solution that is not dominated by any other solution is called \emph{non-dominated}. 
+The set of \emph{non-dominated} solutions is what we are actually trying to find while dealing with MOOPs.
 
 
 
-%TODO: MCDM, MOOP
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[scale=.9]{pareto_front.png}
+  \end{center}
+  \caption{Pareto-optimal front of portfolio optimization problem}
+\end{figure}
 
-Because of this reason, in order to compare two solutions we have to introduce ordering relation.
 
-Pareto front is the set of choices that are Pareto efficient. 
+Pareto-optimal front is the set of choices that are \emph{non-dominated} (\cite{Dre_01}).
+ 
 
 \subsection{Portfolio Optimization Problem}
+
+Portfolio optimization problem is an example of MOOP.
+Portfolio is a set of assets or equities (e.g. stocks) owned by an investor.
+Investors cannot rely solely on their intuition to make the right choice.
+It is obvious that every investor would like to have the highest return possible.
+Unfortunately, equities with high returns usually correlate with high risk. 
+That is why it is up to the investor to decide what level of risk are acceptable.
 
 %---------------------------------------------------------------------------
 
@@ -148,8 +177,7 @@ Such rules are quite simple but disciplined execution of them could lead to achi
 It is all about cutting the losses and letting the profits run.
 Many leading hedge funds successfully use strategies based on trend following to manage their portfolios. (\cite{Trend01})  
 
-\clearpage
-\begin{figure}[ht]
+\begin{figure}[H]
   \begin{center}
     \includegraphics[scale=.4]{trend_following.png}
   \end{center}
@@ -243,9 +271,9 @@ Following \cite{Mitchell01} - the simplest form of genetic algorithm involves th
   The crossover operator roughly mimics biological recombination between two single-chromosome organisms.
 
 \item[mutation]
-  This operator randomly flips some of the bits in a chromosome.
+  This operator introduces random changes to a chromosome.
   For example, the string 00000100 might be mutated in its second position to yield 01000100.
-  Mutation can occur at each bit position in a string with some probability, usually very small (e.g., 0.001).
+  Mutation can occur at each bit position in a string with some probability, usually very small.
 
 
 \end{description}

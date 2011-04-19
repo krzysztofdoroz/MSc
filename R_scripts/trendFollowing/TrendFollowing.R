@@ -116,8 +116,8 @@ get_current_stock_price <- function(data, index) {
 	initial_money_ammount <- 100.0
 	money_cap_per_single_trade <- 0.8
 	maximal_value_loss <- 0.98
-	lower_number_of_days <- 10
-	higher_number_of_days <- 20
+	lower_number_of_days <- 80
+	higher_number_of_days <- 160
 	trades <- array(c(1:number_of_stocks,1:2), dim=c(number_of_stocks,2))
 	initialize()
 	
@@ -154,4 +154,11 @@ print(trades)
 print(current_money_ammount)
 print(portfolio_value)
 
+		
+png('rplot.png')
 plot(portfolio_value, type='o')
+
+dev.off()
+
+
+

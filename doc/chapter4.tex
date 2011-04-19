@@ -220,6 +220,8 @@ In order to keep both subpopulations diverse the following mechanisms have been 
 	  \end{figure}
 
 
+\section{Agent based approach}
+
 %---------------------------------------------------------------------------
 
 \section{Implementation Details}
@@ -233,7 +235,7 @@ Results are stored in files, later used as an input to other algorithms.
 \subsection{Data Source component}
 \label{dataSource}
 
-Data Source component aggregates all stock historical data as well as all precomputed statistical functions results from \ref{precompute}.   
+Data Source component aggregates all stocks historical data as well as all precomputed statistical functions results from \ref{precompute}.   
 Its interface enables access to all data it contains. Data Source is injected as a bean to other components by Spring.
 They use it mainly as a source of data required by various algorithms.
 
