@@ -114,7 +114,7 @@ The following modified GA operations have been implemented:
       After selection chromosomes eligible for reproduction, each pair of chromosomes are subjected to crossover operator. As a result new chromosomes are created (each pair
       produces two new chromosomes) and added to population. Crossover choose points $left$  and $right$ (both are chosen randomly) which cut parent's chromosomes in the following
       way: 
-	  \begin{figure}[!ht]
+	  \begin{figure}[H]
 	    \begin{center}
 	      \includegraphics[scale=.4]{parents.png}
 	    \end{center}
@@ -122,7 +122,7 @@ The following modified GA operations have been implemented:
 	  \end{figure}
 
 	Now children are created in the following way:    
-	  \begin{figure}[!ht]
+	  \begin{figure}[H]
 	    \begin{center}
 	      \includegraphics[scale=.4]{children.png}
 	    \end{center}
@@ -174,53 +174,110 @@ However, it turns out that in spite of this obvious flaw the algorithm is perfor
   \item [IDataSource]
     Described in \ref{dataSource}
   \item [Portfolio]
-    Class representing potential solution.
+    Class representing potential solution - it stores all the information about our assets and the current value of them.
 
 \end{description}
 
-\section{Co-evol}
+\section{Co-evolutionary System}
+\label{sec:co-evol-sys}
 
-\subsection{Adjusting co-evol to portfolio optimization problem}
+\subsection{Co-evolutionary approach to portfolio optimization problem}
 
-Contrary to \ref{sec:genAlgoImpl} two subpopulations coexist side by side.
+Contrary to \ref{sec:genAlgoImpl}, two subpopulations coexist side by side.
+Each individual represent potential solution to portfolio optimization problem.
 Risk oriented subpopulation tries to optimize on risk (the lower risk value the better), whereas the return oriented subpopulation tries to maximize expected return.
+Usually the greater the expected return the riskier the investment so our solutions will involve some trade-offs.
+However that should not startle us, as we have already predicted in \ref{sec:multi} that optimization under such circumstances is not easy.
 
-Risk as well as expected return are calculated according to Capital Asset Pricing Model described in \ref{CAPM} .
+As presented in figure~\ref{fig:co-evol}, reproduction is allowed only between members of different subpopulations.
+Not every member of a particular subpopulation is allowed to reproduce - only the fittest (fitness of a particular member depends on the subpopulation it belongs to - the fittest one
+ in one subpopulation would probably be considered as one of the weakest in the other one).
+Thanks to this approach the offspring that is created is very diverse. 
+Some part of the weakest members of both subpopulations is subjected to extinction.
+Because of that we do not end up with too big population full of useless solutions.
+In place of extinct members, offspring of the fittest is introduced to both subpopulations.
+
+Apart from that, some members are subjected to mutations in order to maintain subpopulation diversity.
+The migration mechanism has the same purpose - to avoid local extrema.
+Risk as well as expected return are calculated according to Capital Asset Pricing Model (described in \ref{CAPM}) .
 
 
-\begin{figure}[H]   
+\begin{figure}[H]  
 	    \begin{center}
 	      \includegraphics[scale=.35]{co-evol-2-sub.png}
 	    \end{center}
-	    \caption{Class diagram of GA described in \ref{sec:genAlgoImpl}} 
+	    \caption{Co-evolutionary system overview} 
+	    \label{fig:co-evol}
 	  \end{figure}
 
 \subsection{Maintaining Population Diversity}
 
-
-In order to keep both subpopulations diverse the following mechanisms have been implemented:
+To sum up several mechanisms have been implemented to keep both subpopulations diverse:
 
 \begin{itemize}
   \item crossover is allowed only between the fittest chromosomes from different subpopulations 
-  \item mutations introduce random genetic change
-  \item migration allows chromosomes to travel to different nodes 
- 
+  \item mutations introducing random genetic change
+  \item migration allows chromosomes to travel to different nodes  
 \end{itemize}
-
-
-
 
 \subsection{Class Diagram}
 
 \begin{figure}[H]   
 	    \begin{center}
-	      \includegraphics[scale=.38]{co-evol.png}
+	      \includegraphics[scale=.35]{co-evol.png}
 	    \end{center}
 	    \caption{Class diagram of GA described in \ref{sec:genAlgoImpl}} 
 	  \end{figure}
 
 
-\section{Agent based approach}
+\section{Co-Evolutionary Multi-agent System - CoEMAS}
+
+Co-evolutionary Multi-agent System (CoEMAS) is the most sophisticated system that has been implemented.
+As described in \ref{sec:multi} and \ref{sec:co-evol} such systems need environment as well as a set of autonomous agents interacting with each other.
+Potential solution to portfolio optimization problem is stored inside each agent.
+
+
+\begin{figure}[H]   
+	    \begin{center}
+	      \includegraphics[scale=.38]{agent.png}
+	    \end{center}
+	    \caption{Overview of CoEMAS} 
+	  \end{figure}
+
+Contrary to \ref{sec:co-evol-sys} there are no subpopulations.
+Instead of them we introduced individuals of two different species.
+Each species focus on different task:
+
+\begin{itemize}
+  \item species number 1 - tries to achieve the lowest risk possible
+  \item species number 2 - tries to achieve the highest expected return possible
+\end{itemize}
+
+Risk as well as expected return is calculated due to Capital Asset Pricing Model (defined in \ref{CAPM}).
+
+Implemented actions that each agent can perform include (\ref{sec:CoEMAS}):
+
+\begin{description}
+  \item [death]
+      if amount of resource that agent posses is lower than threshold value the agent dies
+  \item [migration]
+      agent is allowed to migrate but the probability of this action is low
+  \item [reproduction]
+      agents from different species are allowed to reproduce provided that they both exceed the minimum amount of resource allowing to reproduce
+  \item [give/get]
+      agent can get resource from other, dominated agent
+  \item [recombination]
+      agents produce offspring by the means of recombination
+  \item [mutation]
+      mutation introduces random change to potential solution, normalization of solution vector is then required 
+  \item [seek]
+      agents appropriate  to reproduction as well as get operation
+\end{description}
+
+
+
+\subsection{Class Diagram}
+
 
 %---------------------------------------------------------------------------
 

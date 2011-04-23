@@ -190,6 +190,20 @@ They analyse its market situation, competitors, financial performance, etc. whic
 With trend following we just have to to focus on elaborating trading rules that should reflect our trading strategy.
 After that we can automate the decision making process by designing and implementing our own trading system.   
 
+\subsection{Types of trends}
+
+There are three main types of trends:
+
+\begin{description}
+  \item [short-term trend]
+      Any price movement that occurs over a few hours or days.
+  \item [intermediate-term trend]
+      General movement in price data that lasts from three weeks to six months.
+  \item [long-term trend]
+      Any price movement that occurs over a significant period of time, often over one year or several years.
+\end{description}
+
+
 
 \subsection{Designing trading system based on trend following} 
 
@@ -209,19 +223,73 @@ In \ref{trend_following_impl} a system based on trend following strategy is pres
 
 %---------------------------------------------------------------------------
 
+\section{Evolutionary Algorithms}
+\label{sec:evolAlgorithms}
+
+Each stochastic optimization method based on a simulation of evolution process (natural evolution is simulated by an iterative computation process)
+can be termed as the Evolutionary Algorithm (EA).
+Most commonly known examples of EA include genetic algorithms and evolutionary programming.
+A set of candidate solutions, which is modified by the principles of evolution (selection and variation), is used by all above approaches.
+Some of solutions present in the population set are better than others (we can assign a fitness value to each solution).
+The fitter the solution the more likely it will reproduce.
+By means of recombination and mutation new chromosomes are introduced into existing population.
+Despite the fact that the principles are quite simple, the resulting algorithm is a powerful search mechanism.  
+
+Apart from all advantages mentioned above, evolutionary algorithms are especially usefull to solve \emph{Multi Objective Optimization Problems} because they
+can find multiple \emph{non-dominated} solutions at once. 
+According to some researchers evolutionary algorithms are much better suited for MOOPs than strategies based on blind search \cite{Phd}.
+
+\subsection{Basic Principles of Evolutionary Algorithms}
+
+Following \cite{Phd}, EA can be characterized by:
+
+\begin{itemize}
+  \item set of possible solutions is kept throughout the algorithm execution
+  \item selection process (low quality individuals are removed while well fitted are allowed to reproduce)
+  \item set of possible solutions is manipulated by genetic operators (e.g. mutation and recombination)
+\end{itemize}
+
+Solution candidates are usually called \emph{individuals} and the entire set of them is called a \emph{population}. 
+   
+\section{Co-evolutionary Algorithms}
+\label{sec:co-evol}
+
+Co-evolutionary algorithms rely on process of co-evolution (two or more species coexist and interact in the same environment).
+Individuals of one species interact with each other as well as with members of other species (which simulates the process of adaptation of different species cohabitating the same 
+ecosystem).
+  
+Following \cite{Dre}, co-evolutionary interactions could include:
+
+\begin{itemize}
+  \item competition for limited resources
+  \item predator-prey interactions
+  \item host-parasite interactions
+  \item mutualism
+  \item commensalism
+\end{itemize}
+
+The fitness of each individual simultaneously depends on fitness of the solution as well as other individuals' quality.
+The biggest advantage of co-evolutionary algorithms is their ability to maintain population diversity which is crucial to obtain many good solutions in a single algorithm run.    
+
+  
+
+%-------------------------------------------------------------------------------------------------
+
 \section{Genetic Algorithms}
 \label{sec:genAlgorithms}
 
-Many computational problems require searching through a huge number of possibilities for solutions.
-Such search problems can often benefit from an effective use of parallelism, in which many different possibilities are explored simultaneously in an efficient way. 
-It turns out that the process of biological evolution could provide the inspiration for addressing these problems.
-(\cite{Mitchell01})
+Many computational problems require searching through a huge search space.
+Such problems can substantially benefit from an effective use of parallelism.
+In that case, many different possibilities are explored simultaneously. 
+It turns out that the process of biological evolution could provide an efficient method for addressing these problems.(\cite{Mitchell01})
+Because of this genetic algorithms belong to a class of Evolutionary Algorithms (\ref{sec:evolAlgorithms}).
 
-The genetic algorithm (GA) is an optimization and search technique based on the principles of genetics and natural selection.
-A GA allows a population composed of many individuals to evolve under specified selection rules to a state that maximizes the “fitness” (i.e., minimizes the cost function).
+
+The principles of genetics and natural selection lay the foundations for genetic algorithms (GAs).
+GAs are very powerfull tool to solve search and optimization problems.
+
+GAs rely on an evolving population composed of many individuals trying to maximize their \emph{fitness} (i.e., maximizes the return, minimizes cost of fabrication).  
 The method was developed by John Holland (1975) over the course of the 1960s and 1970s.(\cite{Haupt:2004:PGA:1007746})
-
-
 
 \subsection{Elements of genetic algorithms}
 
@@ -234,25 +302,23 @@ Almost all genetic algorithms have some elements in common \cite{Mitchell01}:
   \item fitness function
 \end{itemize}
 
-\begin{figure}[ht]
+\begin{figure}[H]
   \begin{center}
     \includegraphics[scale=.4]{GA_flow.png}
   \end{center}
   \caption{GA flow chart \cite{Haupt:2004:PGA:1007746}}
 \end{figure}
 
-The GA processes populations of chromosomes, succesively replacing one such population with another (by using GA operators: mutation, selection, crossover, etc.). 
-Each chromosome contains potential solution to problem (e.g. represented as binary string). 
+The GA operates on populations of chromosomes, successively changing one such population to another (by using GA operators: mutation, selection, crossover, etc.). 
+Each chromosome contains potential solution to a problem (e.g. represented as binary string). 
 Fitness functions are used to assess how well specific chromosome solves the problem.
 The better fitting chromosomes are more likely to be involved in reproduction process.
-That mimics the biological process of evolution - fitness of an organism is obtained by means of simple variation (mutation, recombination, etc.) and natural selection
+That mimics the biological process of evolution - fitness of an organism is obtained by means of random variation (mutation, recombination, etc.) and natural selection
 thus propagating genetic material to future generations.
 These rules seems to be simple but they are in fact responsible for extraordinary variety and complexity of the biosphere.
 \cite{Mitchell01} 
  
-According to \cite{Mitchell01} , GAs work by discovering, emphasizing, and recombining good "building blocks" of solutions in a highly parallel fashion.
-The idea here is that good solutions tend to be made up of good building blocks-combinations of bit values that confer higher fitness on the strings in which they are present.
-
+According to \cite{Mitchell01} , high parallelism, discovering and emphasizing solutions that are already quite good are the main reason why GAs work.  
  
 
 \subsection{Genetic algorithms operators}
@@ -262,27 +328,79 @@ Following \cite{Mitchell01} - the simplest form of genetic algorithm involves th
 \begin{description}
 
 \item[selection]
-  This operator selects chromosomes in the population for reproduction.
-  The fitter the chromosome, the more times it is likely to be selected to reproduce.
+  This operator is responsible for selecting chromosomes from the population for reproduction.
+  Likelihood of being chosen is based on the value of fitness function (the fitter the chromosome the better).
   
 \item[crossover]
-  This operator randomly chooses a locus and exchanges the subsequences before and after that locus between two chromosomes to create two offspring.
-  For example, the strings 10000100 and 11111111 could be crossed over after the third locus in each to produce the two offspring 10011111 and 11100100.
-  The crossover operator roughly mimics biological recombination between two single-chromosome organisms.
+  The crossover operator is responsible for exchanging genetic material between chromosomes.
+  Implemantation involves cutting points selection and then cut parts of chromosomes are exchanged.
 
 \item[mutation]
   This operator introduces random changes to a chromosome.
-  For example, the string 00000100 might be mutated in its second position to yield 01000100.
-  Mutation can occur at each bit position in a string with some probability, usually very small.
-
+  The probability of random change introduction is usually very small.  
 
 \end{description}
 
 %---------------------------------------------------------------------------
 
-\section{Evolutionary Algorithms}
-\label{sec:evolAlgorithms}
+\section{Multiagent Systems}
+\label{sec:multi}
 
-Many computational problems require a computer program to be adaptive—to continue to perform well in a
-changing environment.
+There is no universally accepted definition of the term \emph{agent}.
+Nevertheless majority of researchers agree that \emph{agent} operates inside some \emph{environment} and should be capable of \emph{autonomous action}.
+There is little agreement beyond this. (\cite{Weiss}) 
+ 
+In theory it is possible to imagine a single agent working in an environment but it is quite rare.
+The most common situation is a group of autonomous agents interacting inside the environment.
+In order to be capable of fulfilling all the above requirements environments have to provide means of communications and interactions to all agents within.
+
+\subsection{Intelligent agents}
+
+The most usefull type of \emph{agents} is called \emph{intelligent agent}.
+The \emph{intelligent agent} is capable of (\cite{Weiss}):
+
+\begin{description}
+  \item [reactivity]
+	  agents can respond to changes in the environment and properly adjust to new conditions
+  \item [pro-activeness]
+	  agents take the initiative to accomplish their goals
+  \item [social ability]
+	  agents are capable of intelligent interaction with other agents to satisfy their objectives
+\end{description}
+
+\subsection{Co-evolutionary Multi-agent System (CoEMAS)}
+\label{sec:CoEMAS}
+
+According to  \cite{Dre}, CoEMAS contains the following elements:
+
+\begin{itemize}
+  \item the environment 
+  \item the set of species that co-evolve 
+  \item the set of different resource types (there should be at least one resource type)
+\end{itemize}
+
+  
+Additionally we define the set of actions that agent can perform :
+
+\begin{description}
+  \item [die]
+      agent dies when the amount of resources it helds is too low to sustain life (freed resource is given back to environment)
+  \item [accept]
+      agent accepts partner for reproduction (only agents having more than threshold amount of resources are taken into account)
+  \item [give]
+      agent is obliged to give some resource to other agent
+  \item [get]
+      agent is allowed to get some resource from other agent
+  \item [seek]
+      agent finds another agent so actions like get and finding appropriate partner for reproduction can be perform
+  \item [clone]
+      action of producing offspring - some amount of resources is passed to newly created agents from parents
+  \item [mutation]
+      this action is responsible for mutating the agent (introduces random genetic change)
+  \item [migration]
+      agent is allowed to migrate from the current node to another
+  \item [recombination]
+      recombination operator is applied
+      
+\end{description}
 
