@@ -91,6 +91,12 @@ As soon as the exit condition is satisfied we go short.
 
 \end{algorithmic}
 
+\subsection{R}
+
+R is a programming language designed to deal with building systems based on statistical computation.
+Apart from that it offers command line interpreter.
+Working with vectors and matrices of data is straightforward and robust.
+Its robustness and vast library of already implemented statistical functions are the main advantages of R (\cite{R}).    
 
 \section{Genetic Algorithm}
 \label{sec:genAlgoImpl}
@@ -157,8 +163,8 @@ Of course such method of calculating fitness has many drawbacks e.g. it complete
 However, it turns out that in spite of this obvious flaw the algorithm is performing quite well.  
 
 \subsection{Class Diagram}
+\label{gen-class-diagram}
 
-%\clearpage
 \begin{figure}[H]   
 	    \begin{center}
 	      \includegraphics[scale=.35]{Simple_gen_UML.png}
@@ -221,6 +227,7 @@ To sum up several mechanisms have been implemented to keep both subpopulations d
 \end{itemize}
 
 \subsection{Class Diagram}
+\label{Co-evol-class-diagram}
 
 \begin{figure}[H]   
 	    \begin{center}
@@ -271,12 +278,46 @@ Implemented actions that each agent can perform include (\ref{sec:CoEMAS}):
   \item [mutation]
       mutation introduces random change to potential solution, normalization of solution vector is then required 
   \item [seek]
-      agents appropriate  to reproduction as well as get operation
+      agents appropriate  to reproduction as well as get operation can be found thanks to this action
 \end{description}
+
+Interactions between agents are implemented in the following way:
+\begin{itemize}
+  \item co-evolution is implemented as a sequence of \emph{turns}
+  \item in each \emph{turn} every agent perform its action (action to perform at any particular turn is chosen with some well defined probability, e.g. there is a 10\% chance that agent will try to find
+	a partner to reproduce, 60\% chance that the agent will try to get some resource from dominated agent)
+  \item when every agent performed some action the \emph{turn} ends and entire population of agents is checked whether some of them should die (not enough resource left after other agents got resource
+	from it)
+\end{itemize}
+
+
+Each agent performs one of the above actions with some probability.
 
 
 
 \subsection{Class Diagram}
+\label{CoEMAS-class-diagram}
+
+\begin{figure}[H]   
+	    \begin{center}
+	      \includegraphics[scale=.3]{CoEMAS-UML.png}
+	    \end{center}
+	    \caption{Class diagram of CoEMAS} 
+	  \end{figure}
+
+\begin{description}
+  \item [Environment]
+      aggregates all agents, responsible for population init at the start of algorithm and extinction of agents which resource level are too low, etc.
+  \item [AgentUtils]
+      utility class providing functions to Agent class
+  \item [IAgent]
+      interface specifying all methods that agent in CoEMAS should be capable of doing
+  \item [Agent]
+      implementation of agent that is autonomous and interact with other agents
+  \item [IDataSource]
+      provides easy access to historical data and computed statistical functions
+ 
+\end{description}
 
 
 %---------------------------------------------------------------------------
@@ -284,31 +325,8 @@ Implemented actions that each agent can perform include (\ref{sec:CoEMAS}):
 \section{Implementation Details}
 \label{sec:implDetails}
 
-\subsection{Precomputation of statistical functions}
-\label{precompute}
-Precomputation of statistical functions (like covariance, standard deviation etc.) from historical data is done by R scripts. 
-Results are stored in files, later used as an input to other algorithms.
 
-\subsection{Data Source component}
-\label{dataSource}
-
-Data Source component aggregates all stocks historical data as well as all precomputed statistical functions results from \ref{precompute}.   
-Its interface enables access to all data it contains. Data Source is injected as a bean to other components by Spring.
-They use it mainly as a source of data required by various algorithms.
-
-\subsection{Computing Algorithm component}
-
-Computing Algorithm component is responsible for carrying out all computations.
-In order to function properly Data Source component as well as all configuration variables (like mutation coefficient etc.) has to be injected by Spring.
-
-\subsection{Aggregating Node}
-
-The sole purpose of Aggregating Node(AG) is to gather results from Computing Nodes(CN), choose the best non-dominated solution and write the results to file. 
-Based on this file all charts are created and comparison of different algorithms is possible.
-Communication between CNs and AG is provided by a single JMS queue (all CNs send results to one specific queue, AG consumes its content).
-
-
-\subsection{Multi-agent system architecture}
+\subsection{Multi-agent running platform architecture}
 \label{multi-agent}
 
 %\clearpage
@@ -322,6 +340,36 @@ Communication between CNs and AG is provided by a single JMS queue (all CNs send
 Data Source as well as Computing Algorithm are created and injected to Computing Node(CN) by Spring. 
 CNs send results of computations to Aggregating Node by JMS. 
 Apart from that, JMS is used to provide migration capability to each CN.
+
+
+\subsection{Precomputation of statistical functions}
+\label{precompute}
+Precomputation of statistical functions (like covariance, standard deviation etc.) from historical data is done by R scripts. 
+Results are stored in files, later used as an input to other algorithms.
+In order to provide easy and centralised access to historical data and precomputed statistical functions Data Source component has been introduced. 
+
+\subsection{Data Source component}
+\label{dataSource}
+
+Data Source component aggregates all stocks historical data as well as all precomputed statistical functions results from \ref{precompute}.   
+Its interface enables access to all data it contains. Data Source is injected as a bean to other components by Spring.
+They use it mainly as a source of data required by various algorithms.
+
+\subsection{Computing Algorithm component}
+
+Computing Algorithm component is responsible for carrying out all computations.
+In order to function properly Data Source component as well as all configuration variables (like mutation coefficient etc.) has to be injected by Spring.
+Apart from trend following algorithm, all the remaining approaches (CoEMAS (\ref{CoEMAS-class-diagram}), co-evolutionary (\ref{Co-evol-class-diagram}),
+ genetic algorithm (\ref{gen-class-diagram})) can be injected to Computing Algorithm component so they can be run
+ in a multi-agent system as a working horse of a Computing Node.
+
+
+\subsection{Aggregating Node}
+
+The sole purpose of Aggregating Node(AG) is to gather results from Computing Nodes(CN), choose the best non-dominated solution and write the results to file. 
+Based on this file all charts are created and comparison of different algorithms is possible.
+Communication between CNs and AG is provided by a single JMS queue (all CNs send results to one specific queue, AG consumes its content).
+
 
 \subsection{Technologies used}
 
