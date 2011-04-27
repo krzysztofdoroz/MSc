@@ -4,7 +4,7 @@
 \section{First Set of Tests}
 
 First set of tests uses historical data from year 2009 (data of 3 different stocks have been used). 
-Portfolio contained 3 assets:
+Portfolio contained 3 assets (they are one of the biggest companies present on WSE):
 
 \begin{itemize} 
   \item KGHM
@@ -12,13 +12,14 @@ Portfolio contained 3 assets:
   \item PKO
 \end{itemize}
 
-Multi-agent platform has been used to run algorithms .
+Multi-agent platform has been used to run algorithms.
 It was configured in the following way: 
 
 \begin{itemize}
   \item configured to simulate trading strategy throughout the entire year 2009
+  \item all investing decisions are solely based on results from algorithms
   \item migration mechanism between Computing Nodes has been enabled
-  \item two Computing Nodes (with appropriate algorithms) has been used to gather results
+  \item two Computing Nodes (with appropriate algorithms) have been used to obtain results
 \end{itemize}
 
 Trend following algorithm has been tested without multi-agent running platform as it is a standalone R script.
@@ -32,18 +33,18 @@ As described in \ref{trend_following_impl} and \ref{sec:trendFollowing}, we can 
 With values $N = 10$, $M = 20$ the SMA method focused on short-term trends.
  
 
-\begin{figure}[H]
+\begin{figure}[ht]
   
   \begin{center}
     \includegraphics[scale=.4]{rplot0.png}
   \end{center}
-  \caption{Chart shows value of portfolio in time}
+  \caption{Chart showing value of our portfolio in time}
   \label{fig:trend-short}
 \end{figure}
 
 There are easily visible periods of time (figure~\ref{fig:trend-short}) when the portfolio value is not changing. 
 It is a time when our portfolio does not contain any assets (but we still have money). 
-After a while conditions change and trend following algorithm decides to buy some assets.
+After a while, conditions change and trend following algorithm decides to buy some assets.
 
 
 \subsubsection{Intermediate-term trend results}
@@ -54,22 +55,90 @@ In this particular test (with values: $N = 20$, $M = 40$), trend following algor
   \begin{center}
     \includegraphics[scale=.4]{rplot.png}
   \end{center}
-  \caption{Chart shows value of portfolio in time}
+  \caption{Chart showing value of our portfolio in time}
+  \label{fig:trend-int}
 \end{figure}
 
-\subsection{Conclusions}
+Results are presented in figure~\ref{fig:trend-int}, as can be seen they are slightly better compared with short-term trends approach.  
 
-It turned out that focusing on short-term or intermediate-term 
+\subsubsection{Conclusions}
+
+It turned out that focusing on short-term or intermediate-term trends leads to almost the same results.
+Intermediate-term trend approach offers slightly better return from the investment.
+In both cases we encountered periods of time when portfolio contained no assets because situation on the market was not good enough to invest in any of the available stocks.
+
 
 %---------------------------------------------------------------------------
 
 \subsection{Genetic Algorithm}
 
-\begin{figure}[H]
+Results are presented in figure ~\ref{fig:gen-algo}.
+
+\begin{figure}[ht]
   \begin{center}
     \includegraphics[scale=.5]{simple-genetic-algo.png}
   \end{center}
-  \caption{GA flow chart \cite{Haupt:2004:PGA:1007746}}
+  \caption{Chart showing value of our portfolio in time}
+  \label{fig:gen-algo}
 \end{figure}
 
+\subsection{Co-evolutionary algorithm}
+
+Results presented in figure~\ref{fig:co_eval_return} clearly show that the return of our investment is much higher than any other algorithm could achieve.  
+Analysing figure~\ref{fig:co_eval_risk} explains why the results are so good - the risk associated with our portfolio is substantially higher compared to other methods.
+In this case algorithm was tuned to treat non-dominated solutions from return oriented subpopulation - this explains why the results provide so much return and risk. 
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[scale=.5]{co-evol-value-oriented.png}
+  \end{center}
+  \caption{Chart showing value of our portfolio in time}
+  \label{fig:co_eval_return}
+\end{figure}
+
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[scale=.5]{co-evol-risk-value-oriented.png}
+  \end{center}
+  \caption{Chart showing value of risk in time}
+  \label{fig:co_eval_risk}
+\end{figure}
+
+\subsection{CoEMAS}
+
+Figure~\ref{fig:agent_return} presents portfolio value in time while  figure~\ref{fig:agent_risk} presents the risk associated with our investments.
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[scale=.5]{agent-return.png}
+  \end{center}
+  \caption{Chart showing value of our portfolio in time (CoEMAS)}
+  \label{fig:agent_return}
+\end{figure}
+
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[scale=.5]{agent-risk.png}
+  \end{center}
+  \caption{Chart showing value of risk in time (CoEMAS)}
+  \label{fig:agent_risk}
+\end{figure}
+
+\subsection{Conclusions}
+
+First set of tests showed that all algorithms give reasonable results.
+It is very hard to pinpoint one approach that is much better than others.
+Co-evolutionary system (\ref{sec:co-evol-sys}) outperformed other algorithms in terms of return.
+Such good results can be explained by the fact that trading strategy proposed by this algorithm is much riskier than using CoEMAS.
+  
+On the other hand, CoEMAS offers substantially lower return but is much more safer.
+As figure~\ref{fig:agent_risk} shows, the risky moves are mixed with safe ones resulting in much more balanced strategy.
+
+Trend following as well as genetic algorithm can not give us any information about the risk we are taking by investing according to results they provide.
+On the other hand, we can specify rules (in the trend following approach) that should reflect our attitude to risk taking (\ref{sec:trend_following_fundamentals}).
+With genetic algorithm (GA) we have no such option - as described in \ref{sec:gen_fitness_fun}, our ability to customize GA is limited.
+Obviously we could test different values of coefficients responsible for simulating evolution process but it turns out that the fitness function that does not take risk into
+account is the most serious limitation.
 
