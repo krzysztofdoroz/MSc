@@ -5,7 +5,7 @@ rm -r sandbox/
 mkdir sandbox
 mkdir sandbox/data
 
-number_of_computing_nodes=2
+number_of_computing_nodes=8
 dir='node-'
 
 cp node-agent/target/node-agent-0.0.1-SNAPSHOT.jar sandbox/

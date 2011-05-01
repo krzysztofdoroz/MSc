@@ -2,6 +2,7 @@
 \label{cha:pierwszyDokument}
 
 \section{First Set of Tests}
+\label{sec:first_set_of_tests}
 
 First set of tests uses historical data from year 2009 (data of 3 different stocks have been used). 
 Portfolio contained 3 assets (they are one of the biggest companies present on WSE):
@@ -83,6 +84,7 @@ Results are presented in figure ~\ref{fig:gen-algo}.
 \end{figure}
 
 \subsection{Co-evolutionary algorithm}
+\label{sec:co-evol-2}
 
 Results presented in figure~\ref{fig:co_eval_return} clearly show that the return of our investment is much higher than any other algorithm could achieve.  
 Analysing figure~\ref{fig:co_eval_risk} explains why the results are so good - the risk associated with our portfolio is substantially higher compared to other methods.
@@ -94,6 +96,25 @@ In this case algorithm was tuned to treat non-dominated solutions from return or
   \end{center}
   \caption{Chart showing value of our portfolio in time}
   \label{fig:co_eval_return}
+\end{figure}
+
+\subsubsection{Pareto front}
+
+Because co-evolutionary algorithm operates in terms of risk and return we can check if the non dominated solutions (in Pareto sense) are used to construct our portfolio.
+Figure~\ref{fig:pareto_co_evol} shows the results of computation (results from a period of 6 days are presented for the sake of clarity). 
+Portfolio is built according to the solutions that are connected with red line.
+All of them are non dominated and all have the maximum return possible from all available feasible solutions at any particular day.
+
+Solutions from two different computing nodes are shown.
+It turns out that results from the second node are much better than from the first.
+In fact all of the selected solutions come from the second one.
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[scale=.5]{pareto_co_evol.png}
+  \end{center}
+  \caption{Chart showing the relation between return and risk of the particular solution}
+  \label{fig:pareto_co_evol}
 \end{figure}
 
 
@@ -117,6 +138,22 @@ Figure~\ref{fig:agent_return} presents portfolio value in time while  figure~\re
   \label{fig:agent_return}
 \end{figure}
 
+\subsubsection{Pareto front}
+
+CoEMAS like co-evolutionary algorithm gives us the opportunity to check if the non dominated solutions (in Pareto sense) are used to construct our portfolio.
+Figure~\ref{fig:pareto_coemas} shows the results of computation (because of the fact that populations are quite numerous,
+ results from a period of 3 days are presented for the sake of clarity). 
+Solutions chosen to be a blueprint for our portfolio are shown as big black dots.
+We can easily spot that they are non dominated (in Pareto sense). 
+
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[scale=.4]{pareto_coemas.png}
+  \end{center}
+  \caption{Chart showing the relation between return and risk of the particular solution}
+  \label{fig:pareto_coemas}
+\end{figure}
 
 \begin{figure}[ht]
   \begin{center}
@@ -142,3 +179,82 @@ With genetic algorithm (GA) we have no such option - as described in \ref{sec:ge
 Obviously we could test different values of coefficients responsible for simulating evolution process but it turns out that the fitness function that does not take risk into
 account is the most serious limitation.
 
+
+\section{Second Set of Tests}
+
+The main goal of this set of tests is to chech the impact of increasing the number of computing nodes to the quality of solutions we obtain from implemented algorithms.
+
+Besides the number of computing nodes (now 8 computing nodes will be running at once), the same historical data and configuration has been
+ used (as in \ref{sec:first_set_of_tests}) to produce results.
+
+
+
+\subsection{Co-evolutionary algorithm}
+
+Figure~\ref{fig:co_evol_8_risk} presents risk associated with our portfolio.
+
+
+Comparing with results presented in \ref{sec:co-evol-2} we can easily spot that additional computing nodes allowed us to find a solution that is much more risk free.
+Apart from that higher number of nodes offer similar performance in terms of return (figure~\ref{co_evol_8_return}).
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[scale=.5]{co-evol-8.png}
+  \end{center}
+  \caption{Chart showing value of risk in time}
+  \label{fig:co_evol_8_risk}
+\end{figure}
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[scale=.5]{co_evol_8_return.png}
+  \end{center}
+  \caption{Chart showing portfolio value in time}
+  \label{fig:co_evol_8_return}
+\end{figure}
+
+\subsection{CoEMAS}
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[scale=.5]{agent_8_risk.png}
+  \end{center}
+  \caption{Chart showing portfolio value in time}
+  \label{fig:agent_8_risk}
+\end{figure}
+
+In case of CoEMAS adding more computing nodes seems to have little effect.
+Risk associated with our portfolio is almost the same as before (figure~\ref{fig:agent_8_risk}).
+There is no significant improvement in terms of return (as shown in figure~\ref{fig:agent_8_return}). 
+
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[scale=.5]{agent_return_8.png}
+  \end{center}
+  \caption{Chart showing portfolio value in time}
+  \label{fig:agent_8_return}
+\end{figure}
+
+\subsection{Conclusions}
+
+Adding additional computing nodes tends to improve the performance of co-evolutionary algorithm, whereas there is almost no impact on CoEMAS.
+It can be explained by the fact that each CoEMAS node has a significantly large and diverse population that is not prone to fall in local minima.
+Co-evolutionary algorithm benefits a lot from a larger number of computing nodes.  
+
+\section{Third Set of Tests}
+
+\subsection{Trend Following}
+
+\subsubsection{Short-term trend results}
+\subsubsection{Intermediate-term trend results}
+\subsubsection{Conclusions}
+
+\subsection{Genetic Algorithm}
+
+\subsection{Co-evolutionary algorithm}
+
+\subsection{CoEMAS}
+
+
+\subsection{Conclusions}

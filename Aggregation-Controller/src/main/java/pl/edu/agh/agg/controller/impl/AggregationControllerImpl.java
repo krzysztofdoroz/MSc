@@ -88,8 +88,8 @@ public class AggregationControllerImpl implements IAggregationController {
 				MPTPortfolio bestPortfolio = selectBestPortfolio(portfolios);
 				bufferedWriter.write(round + " " + money + " "
 						+ stocskBought[0] + " " + stocskBought[1] + " "
-						+ stocskBought[2] + " " + bestPortfolio.getRisk()
-						/ 100.0 + " " + bestPortfolio.getValue() + "\n");
+						+ stocskBought[2] + " " + bestPortfolio.getRisk() / 100.0
+						 + " " + bestPortfolio.getValue() + "\n");
 
 				// buy stocks according to best portfolio
 				stocskBought[0] = (bestPortfolio.getPortfolio().get(0) * money)

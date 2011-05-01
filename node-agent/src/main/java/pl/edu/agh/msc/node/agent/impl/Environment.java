@@ -1,5 +1,9 @@
 package pl.edu.agh.msc.node.agent.impl;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,6 +28,7 @@ public class Environment {
 	private int day = 0;
 	private Random rand = new Random();
 	private double REPRODUCTION_THRESHOLD;
+	private BufferedWriter output;
 
 	public Environment(double totalResource, int populationSize,
 			int numberOfStocks, double dyingThreshold,
@@ -36,6 +41,13 @@ public class Environment {
 		this.DYING_THRESHOLD = dyingThreshold;
 		this.REPRODUCTION_THRESHOLD = reproductionThreshold;
 
+		try {
+			output = new BufferedWriter(
+					new FileWriter(new File("pareto_front")));
+		} catch (IOException e) {
+			System.out.println("EXCEPTION!!!");
+		}
+		
 		initPopulations(populationSize);
 	}
 
@@ -159,10 +171,29 @@ public class Environment {
 		}
 		System.out.println("total REsource:" + res);
 
+		
+		
 		recalculateRiskAndReturn(day);
 		simulateInteractions(3);
-		recalculateRiskAndReturn(day++);
+		recalculateRiskAndReturn(day);
 
+		try{
+			// dump all subpopulations to a file
+			for (Agent portfolio : riskOrientedPopulation) {
+				output.write(day + " " + portfolio.getRisk()  + " "
+						+ portfolio.getExpectedReturn() + "\n");
+			}
+
+			for (Agent portfolio : returnOrientedPopulation) {
+				output.write(day + " " + portfolio.getRisk()  + " "
+						+ portfolio.getExpectedReturn() + "\n");
+			}
+			} catch (IOException e) {
+				System.out.println("EXCEPTION WHILE DUMPING TO A FILE!");
+			}
+		
+		day++;	
+		
 		return findNonDominatedSolution().getPortfolio();
 	}
 
