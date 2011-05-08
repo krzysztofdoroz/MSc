@@ -5,7 +5,7 @@
 
 %---------------------------------------------------------------------------
 
-\section{Multi-Objective Optimization}
+\section{Multi-objective optimization}
 \label{sec:multi}
 
 The main goal of optimization is to find the very best solution from a most likely infinite set of possibilities.
@@ -59,7 +59,7 @@ The set of \emph{non-dominated} solutions is what we are actually trying to find
 
 
 
-\begin{figure}[H]
+\begin{figure}[ht]
   \begin{center}
     \includegraphics[scale=.9]{pareto_front.png}
   \end{center}
@@ -70,14 +70,18 @@ The set of \emph{non-dominated} solutions is what we are actually trying to find
 Pareto-optimal front is the set of choices that are \emph{non-dominated} (\cite{Dre}).
  
 
-\subsection{Portfolio Optimization Problem}
+\subsection{Portfolio optimization problem}
+
+First of all, let us introduce the definition of $portfolio$.
+	$Portfolio$ is a set of assets or equities (e.g. stocks, bonds) owned by an investor.
+	Usually the more diversified the $portfolio$ the safer our investments tend to be.
+	$Portfolio$ composition should reflect our willingness to take risk.
 
 Portfolio optimization problem is an example of MOOP.
-Portfolio is a set of assets or equities (e.g. stocks) owned by an investor.
 Investors cannot rely solely on their intuition to make the right choice.
 It is obvious that every investor would like to have the highest return possible.
 Unfortunately, equities with high returns usually correlate with high risk. 
-That is why it is up to the investor to decide what level of risk are acceptable.
+That is why it is up to the investor to decide what level of risk is acceptable.
 
 %---------------------------------------------------------------------------
 
@@ -88,7 +92,7 @@ That is why it is up to the investor to decide what level of risk are acceptable
 
 Modern Portfolio Theory (MPT) (introduced by Harry Markowitz in 1952) was a tremendous breakthrough. 
 Investors could finally use a mathemathical approach to construct their portfolios.
-Most of them used solely diversification as a mean of reducing portfolio's risk.
+Most of them used solely diversification as a mean of reducing portfolio risk.
 With brand new theory they did not have to rely only on common sense - the investment risk was finally expressed in quantitative terms. 
 
 Nevertheless MPT is not perfect, even its creators are fully aware that it has some very important limitations.
@@ -114,6 +118,46 @@ The Sharpe capital asset pricing model is based on the following assumptions \ci
   \item all investors view the expected returns and standard deviations of return provided by different portfolios in the same way
 \end{itemize}
  
+In order to fully understand CAPM, we have to introduce some definitions.
+
+First of all, we define $population$ (statistics) as a set containing all entities that are relevant in a statistical study of a particular problem \cite{Oxford}.
+The concept of $population$ is crucial to define the rest of definitions that are used.
+
+$Population$ $mean$ is the mean of an observation variable is a numerical measure of the central location of the data values.
+	The $population$ $mean$ is defined as:
+	 \begin{equation}
+			\mu = \frac{1}{N} \sum_{i=1}^{N}{(x_{i})} 
+		      \end{equation}
+
+The next important function is $population$ $variance$, it is a numerical measure of how the data values is dispersed around the mean.
+	The $population$ $variance$ is defined as:  
+	      \begin{equation}
+			\sigma^2 = \frac{1}{N} \sum_{i=1}^{N}{(x_{i} - \mu)} 
+		      \end{equation}
+	where $\mu$ is a population mean.
+
+The $standard$ $deviation$ of a population ($\sigma$) is defined as a square root of the population variance.
+	
+The $covariance$ of two variables $x$ and $y$ in a data sample measures how the two are linearly related.
+	A positive $covariance$ would indicates a positive linear relationship between the variables, and a negative $covariance$ would indicate the opposite. 
+	The population $covariance$ is defined as:
+
+	\begin{equation}
+			\sigma_{xy} = \frac{1}{N} \sum_{i=1}^{N}{(x_{i} - \mu_{x})(y_{i} - \mu_{y})} 
+		      \end{equation}
+	where $\mu_{x}$ and $\mu_{y}$ are population means.
+
+Last but not least, we introduce $correlation$ $coefficient$ as a normalized measurement of how the two variables in a data sample are linearly related.
+	The population $correlation$ $coefficient$ is defined as:
+
+	\begin{equation}
+	  \rho_{xy} = \frac{\sigma_{xy}}{\sigma_{x} \sigma_{y}}
+	\end{equation}
+	where $\sigma_{x}$ and $\sigma_{x}$ are the population standard deviations and $\sigma_{xy}$ is the population covariance.
+	
+
+Now we are ready to finally give formulas for expected return and risk.
+
 Lets assume that investor portfolio contains $N$ assets, then according to Capital Asset Pricing expected return of asset $i$ is \cite{CAPM}: 
 
 \begin{equation}
@@ -171,24 +215,24 @@ TF use only price as the key trading variable.
 Trend following basically does not try to predict when the trend will occur. 
 Instead of that, trend followers will react to the market's movement and adapt accordingly.
 This strategy simply analyses stock prices and decides whether the current situation is suitable for buying or selling a specific stock.
-Market breakouts are a great buying opportunities, when you recognize that you are wrong you exit immediately in order to cut losses.
+Market breakouts are a great buying opportunities, on the other hand when you recognize that you are wrong you exit immediately in order to cut losses.
 Set of predefined rules decides  whether to take any action (they should recognize when the trend starts as well as when to exit) so the entire process can be easily automated.
 Such rules are quite simple but disciplined execution of them could lead to achieving spectacular returns year after year.
 It is all about cutting the losses and letting the profits run.
 Many leading hedge funds successfully use strategies based on trend following to manage their portfolios. (\cite{Trend01})  
 
-\begin{figure}[H]
+\begin{figure}[ht]
   \begin{center}
     \includegraphics[scale=.4]{trend_following.png}
   \end{center}
-  \caption{Simple example of how trend following works in practise}
+  \caption{Simple example of how trend following works in practise (\cite{Trend01})}
 \end{figure}
 
 Another advantage of this investing method is the fact that investor does not have to know much about what is being traded (it could be stocks, oil, gold, etc.).
 Normally, people tend to gather some information about the company they are willing to invest in. 
 They analyse its market situation, competitors, financial performance, etc. which is time consuming, especially for someone who is not a professional trader.
-With trend following we just have to to focus on elaborating trading rules that should reflect our trading strategy.
-After that we can automate the decision making process by designing and implementing our own trading system.   
+With trend following we just have to focus on elaborating trading rules that should reflect our trading strategy.
+After that, we can automate the decision making process by designing and implementing our own trading system.   
 
 \subsection{Types of trends}
 
@@ -223,7 +267,7 @@ In \ref{trend_following_impl} a system based on trend following strategy is pres
 
 %---------------------------------------------------------------------------
 
-\section{Evolutionary Algorithms}
+\section{Evolutionary algorithms}
 \label{sec:evolAlgorithms}
 
 Each stochastic optimization method based on a simulation of evolution process (natural evolution is simulated by an iterative computation process)
@@ -239,7 +283,7 @@ Apart from all advantages mentioned above, evolutionary algorithms are especiall
 can find multiple \emph{non-dominated} solutions at once. 
 According to some researchers evolutionary algorithms are much better suited for MOOPs than strategies based on blind search \cite{Phd}.
 
-\subsection{Basic Principles of Evolutionary Algorithms}
+\subsection{Basic principles of evolutionary algorithms}
 
 Following \cite{Phd}, EA can be characterized by:
 
@@ -251,31 +295,16 @@ Following \cite{Phd}, EA can be characterized by:
 
 Solution candidates are usually called \emph{individuals} and the entire set of them is called a \emph{population}. 
    
-\section{Co-evolutionary Algorithms}
-\label{sec:co-evol}
+Population diversity is essential for finding a large number of Pareto-optimal solutions in a single run of an algorithm.
+There are some well established methods of overcoming the problem of premature convergence towards a single solution. 
 
-Co-evolutionary algorithms rely on process of co-evolution (two or more species coexist and interact in the same environment).
-Individuals of one species interact with each other as well as with members of other species (which simulates the process of adaptation of different species cohabitating the same 
-ecosystem).
-  
-Following \cite{Dre}, co-evolutionary interactions could include:
+Following \cite{Phd}, the most common methods of maintaining population diversity include:
 
-\begin{itemize}
-  \item competition for limited resources
-  \item predator-prey interactions
-  \item host-parasite interactions
-  \item mutualism
-  \item commensalism
-\end{itemize}
-
-The fitness of each individual simultaneously depends on fitness of the solution as well as other individuals' quality.
-The biggest advantage of co-evolutionary algorithms is their ability to maintain population diversity which is crucial to obtain many good solutions in a single algorithm run.    
-
-  
+\begin{}
 
 %-------------------------------------------------------------------------------------------------
 
-\section{Genetic Algorithms}
+\section{Genetic algorithms}
 \label{sec:genAlgorithms}
 
 Many computational problems require searching through a huge search space.
@@ -302,7 +331,7 @@ Almost all genetic algorithms have some elements in common \cite{Mitchell01}:
   \item fitness function
 \end{itemize}
 
-\begin{figure}[H]
+\begin{figure}[ht]
   \begin{center}
     \includegraphics[scale=.4]{GA_flow.png}
   \end{center}
@@ -315,7 +344,7 @@ Fitness functions are used to assess how well specific chromosome solves the pro
 The better fitting chromosomes are more likely to be involved in reproduction process.
 That mimics the biological process of evolution - fitness of an organism is obtained by means of random variation (mutation, recombination, etc.) and natural selection
 thus propagating genetic material to future generations.
-These rules seems to be simple but they are in fact responsible for extraordinary variety and complexity of the biosphere.
+These rules seems to be simple, but they are in fact responsible for extraordinary variety and complexity of the biosphere.
 \cite{Mitchell01} 
  
 According to \cite{Mitchell01} , high parallelism, discovering and emphasizing solutions that are already quite good are the main reason why GAs work.  
@@ -343,7 +372,30 @@ Following \cite{Mitchell01} - the simplest form of genetic algorithm involves th
 
 %---------------------------------------------------------------------------
 
-\section{Multiagent Systems}
+\section{Co-evolutionary algorithms}
+\label{sec:co-evol}
+
+Co-evolutionary algorithms rely on process of co-evolution (two or more species coexist and interact in the same environment).
+Individuals of one species interact with each other as well as with members of other species (which simulates the process of adaptation of different species cohabitating the same 
+ecosystem).
+  
+Following \cite{Dre}, co-evolutionary interactions could include:
+
+\begin{itemize}
+  \item competition for limited resources
+  \item predator-prey interactions
+  \item host-parasite interactions
+  \item mutualism
+  \item commensalism
+\end{itemize}
+
+The fitness of each individual simultaneously depends on fitness of the solution as well as other individuals' quality.
+The biggest advantage of co-evolutionary algorithms is their ability to maintain population diversity which is crucial to obtain many good solutions in a single algorithm run.    
+
+  
+
+
+\section{Multi-agent systems}
 \label{sec:multi}
 
 There is no universally accepted definition of the term \emph{agent}.

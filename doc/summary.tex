@@ -1,0 +1,51 @@
+\chapter{Summary}
+
+\section{Main goals}
+
+One of the main goal of this thesis was to find efficient ways of tackling the portfolio optimization problem.
+Apart from co-evolutionary multi-agent system, many other approaches have been taken into consideration.
+The essential part of work at that stage consisted of gathering information about any feasible algorithm that could be adjusted to solve the problem. 
+The main source of knowledge were books and papers devoted to the same or very similar problem. 
+
+
+The second goal was to implement the most promising algorithms.
+Four genuine approaches have been implemented: genetic algorithm, trend following, co-evolutionary and co-evolutionary multi-agent system.
+The last two of mentioned algorithms were run on multi-agent platform. 
+
+Last but not least, all implemented algorithms were supposed to be tested. 
+Three sets of tests have been performed in order to assess the usefulness of each of them.
+
+
+\section{Results}
+
+As mentioned before, four algorithms have been implemented.
+Trend following has been implemented as R script.
+In case if the other three, Java was used.
+In order to provide user friendliness, a group of shell scripts was created.
+They build all necessary artifacts and deploy them.
+   
+Three sets of tests have been performed to assess each algorithm performance during substantially different overall situation on a market.
+Obtained results shown that it is difficult to pinpoint one approach that outperforms all others.
+It pretty clear that each of them has some pros and cons.
+
+
+\section{Future work}
+
+All tests have been performed in a way that mimicks real trading on a stock exchange.
+Historical stock data have been used, but it is fairly obvious that the systems could be changed to actually invest money in a real world.
+Right now the biggest obstacles to use them are:
+
+\begin{itemize}
+  \item feeding data to algorithms is a little bit cumbersome
+  \item they are implemented as independent entities
+\end{itemize}
+ 
+New system should incorporate all implemented algorithms and use them as strategies.
+User should check what each of them is suggesting and make a decision about a portfolio composition.
+Apart from that, access to charts comparing all proposed strategies would be provided.
+
+
+All stock data should be downloaded during the start of application from Yahoo! (via YQL - Yahoo Query Language).
+After downloading it would be stored in an underlying database.
+In that case algorithm could fetch all the data they need (historical as well as most recent one).
+ 

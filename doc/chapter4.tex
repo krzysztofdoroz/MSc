@@ -98,7 +98,7 @@ Apart from that it offers command line interpreter.
 Working with vectors and matrices of data is straightforward and robust.
 Its robustness and vast library of already implemented statistical functions are the main advantages of R (\cite{R}).    
 
-\section{Genetic Algorithm}
+\section{Genetic algorithm}
 \label{sec:genAlgoImpl}
 
 \subsection{Adjusting GA to solve portfolio optimization problem}
@@ -163,10 +163,10 @@ Clearly, the fitness function favours the portfolios which have the highest day-
 Of course such method of calculating fitness has many drawbacks e.g. it completely omits the aspect of risk associated with investing in highly volatile stocks.
 However, it turns out that in spite of this obvious flaw the algorithm is performing quite well.  
 
-\subsection{Class Diagram}
+\subsection{Class diagram}
 \label{gen-class-diagram}
 
-\begin{figure}[H]   
+\begin{figure}[ht]   
 	    \begin{center}
 	      \includegraphics[scale=.35]{Simple_gen_UML.png}
 	    \end{center}
@@ -185,13 +185,13 @@ However, it turns out that in spite of this obvious flaw the algorithm is perfor
 
 \end{description}
 
-\section{Co-evolutionary System}
+\section{Co-evolutionary system}
 \label{sec:co-evol-sys}
 
 \subsection{Co-evolutionary approach to portfolio optimization problem}
 
 Contrary to \ref{sec:genAlgoImpl}, two subpopulations coexist side by side.
-Each individual represent potential solution to portfolio optimization problem.
+Each individual represents potential solution to portfolio optimization problem.
 Risk oriented subpopulation tries to optimize on risk (the lower risk value the better), whereas the return oriented subpopulation tries to maximize expected return.
 Usually the greater the expected return the riskier the investment so our solutions will involve some trade-offs.
 However that should not startle us, as we have already predicted in \ref{sec:multi} that optimization under such circumstances is not easy.
@@ -209,7 +209,7 @@ The migration mechanism has the same purpose - to avoid local extrema.
 Risk as well as expected return are calculated according to Capital Asset Pricing Model (described in \ref{CAPM}) .
 
 
-\begin{figure}[H]  
+\begin{figure}[ht]  
 	    \begin{center}
 	      \includegraphics[scale=.35]{co-evol-2-sub.png}
 	    \end{center}
@@ -217,7 +217,7 @@ Risk as well as expected return are calculated according to Capital Asset Pricin
 	    \label{fig:co-evol}
 	  \end{figure}
 
-\subsection{Maintaining Population Diversity}
+\subsection{Maintaining population diversity}
 
 To sum up several mechanisms have been implemented to keep both subpopulations diverse:
 
@@ -227,10 +227,10 @@ To sum up several mechanisms have been implemented to keep both subpopulations d
   \item migration allows chromosomes to travel to different nodes  
 \end{itemize}
 
-\subsection{Class Diagram}
+\subsection{Class diagram}
 \label{Co-evol-class-diagram}
 
-\begin{figure}[H]   
+\begin{figure}[ht]   
 	    \begin{center}
 	      \includegraphics[scale=.35]{co-evol.png}
 	    \end{center}
@@ -245,7 +245,7 @@ As described in \ref{sec:multi} and \ref{sec:co-evol} such systems need environm
 Potential solution to portfolio optimization problem is stored inside each agent.
 
 
-\begin{figure}[H]   
+\begin{figure}[ht]   
 	    \begin{center}
 	      \includegraphics[scale=.38]{agent.png}
 	    \end{center}
@@ -296,10 +296,10 @@ Each agent performs one of the above actions with some probability.
 
 
 
-\subsection{Class Diagram}
+\subsection{Class diagram}
 \label{CoEMAS-class-diagram}
 
-\begin{figure}[H]   
+\begin{figure}[ht]   
 	    \begin{center}
 	      \includegraphics[scale=.3]{CoEMAS-UML.png}
 	    \end{center}
@@ -323,7 +323,7 @@ Each agent performs one of the above actions with some probability.
 
 %---------------------------------------------------------------------------
 
-\section{Implementation Details}
+\section{Implementation details}
 \label{sec:implDetails}
 
 
@@ -331,7 +331,7 @@ Each agent performs one of the above actions with some probability.
 \label{multi-agent}
 
 %\clearpage
-\begin{figure}[H]
+\begin{figure}[ht]
   \begin{center}
     \includegraphics[scale=.4]{agent_framework.png}
   \end{center}
@@ -347,12 +347,12 @@ Apart from that, JMS is used to provide migration capability to each CN.
 \label{precompute}
 Precomputation of statistical functions (like covariance, standard deviation etc.) from historical data is done by R scripts. 
 Results are stored in files, later used as an input to other algorithms.
-In order to provide easy and centralised access to historical data and precomputed statistical functions Data Source component has been introduced. 
+In order to provide easy and centralized access to historical data and precomputed statistical functions Data Source component has been introduced. 
 
 \subsection{Data Source component}
 \label{dataSource}
 
-Data Source component aggregates all stocks historical data as well as all precomputed statistical functions results from \ref{precompute}.   
+Data Source component aggregates all historical stock data as well as all precomputed statistical functions results from \ref{precompute}.   
 Its interface enables access to all data it contains. Data Source is injected as a bean to other components by Spring.
 They use it mainly as a source of data required by various algorithms.
 
@@ -380,7 +380,17 @@ Communication between CNs and AG is provided by a single JMS queue (all CNs send
   \item [Apache ActiveMQ]
       JMS implementation, provides communication between Computing Nodes and Aggregating Agent (\ref{multi-agent})
   \item [Java]
-      Almost all algorithms are implemented in Java, Computing Nodes as well as Aggregating Node are in fact jar files 
+      Almost all algorithms are implemented in Java, Computing Nodes as well as Aggregating Node are in fact jar files.
+      Java is an object oriented programming language that is portable, secure and robust.
+      Java code is compiled to byte code interpeted by Java Virtual Machine. 
+      It is very popular thanks to ease of application development. 
+  \item [Inversion of Control]
+	Inversion of Control (IoC) is an architectural pattern.
+	It relies on concept of having an outside entity (usually it is called IoC container) that is responsible for wiring objects together. \cite{Spring} 
+  \item [JMS]
+	Java Message Service, it allows application to create, read, send and receive messages.
+	Implementations of JMS provide reliable and asynchronous communication for distributed systems. 
+
   \item [Spring Framework]
       Inversion of Control container (configuration of application components and lifecycle management of Java objects), Messaging (simplifies the use of the JMS API) modules used.
   \item [Apache Maven]

@@ -1,23 +1,23 @@
 \chapter{Test Results}
-\label{cha:pierwszyDokument}
+\label{cha:tests}
 
 \section{First Set of Tests}
 \label{sec:first_set_of_tests}
 
-First set of tests uses historical data from year 2009 (data of 3 different stocks have been used). 
+First set of tests uses historical data from year 2010 (data of 3 different stocks have been used). 
 Portfolio contained 3 assets (they are one of the biggest companies present on WSE):
 
 \begin{itemize} 
   \item KGHM
   \item TPSA
-  \item PKO
+  \item PKO BP
 \end{itemize}
 
 Multi-agent platform has been used to run algorithms.
 It was configured in the following way: 
 
 \begin{itemize}
-  \item configured to simulate trading strategy throughout the entire year 2009
+  \item configured to simulate trading strategy throughout the entire year 2010
   \item all investing decisions are solely based on results from algorithms
   \item migration mechanism between Computing Nodes has been enabled
   \item two Computing Nodes (with appropriate algorithms) have been used to obtain results
@@ -28,6 +28,7 @@ Trend following algorithm has been tested without multi-agent running platform a
 \subsection{Trend Following}
 
 \subsubsection{Short-term trend results}
+\label{short-term}
 
 As described in \ref{trend_following_impl} and \ref{sec:trendFollowing}, we can adjust our trading rules to seek out short-term trends
  (by changing the values of $N$ and $M$ in the \emph{Simple Moving Average} method).
@@ -49,6 +50,7 @@ After a while, conditions change and trend following algorithm decides to buy so
 
 
 \subsubsection{Intermediate-term trend results}
+\label{trend-foll-inter}
 
 In this particular test (with values: $N = 20$, $M = 40$), trend following algorithm has been adjusted to focus on intermediate-term trends.
  
@@ -71,9 +73,17 @@ In both cases we encountered periods of time when portfolio contained no assets 
 
 %---------------------------------------------------------------------------
 
-\subsection{Genetic Algorithm}
+\subsection{Genetic algorithm}
 
 Results are presented in figure ~\ref{fig:gen-algo}.
+The following configuration was used:
+\begin{itemize}
+  \item $reproduction\_$ $coeff$ was set to 0.2
+  \item population size is 512
+  \item $mutation$ $\_$ $coeff$ was set to 0.1
+  \item $extinction$ $\_$ $coeff$ was set to 0.3
+\end{itemize}
+
 
 \begin{figure}[ht]
   \begin{center}
@@ -85,6 +95,15 @@ Results are presented in figure ~\ref{fig:gen-algo}.
 
 \subsection{Co-evolutionary algorithm}
 \label{sec:co-evol-2}
+
+The following configuration was used:
+\begin{itemize}
+  \item $reproduction\_$ $coeff$ was set to 0.2
+  \item subpopulation size in each computing node was set to 64
+  \item number of computing nodes was set to 2
+  \item $mutation$ $\_$ $coeff$ was set to 0.1
+  \item $extinction$ $\_$ $coeff$ was set to 0.3
+\end{itemize}
 
 Results presented in figure~\ref{fig:co_eval_return} clearly show that the return of our investment is much higher than any other algorithm could achieve.  
 Analysing figure~\ref{fig:co_eval_risk} explains why the results are so good - the risk associated with our portfolio is substantially higher compared to other methods.
@@ -127,6 +146,15 @@ In fact all of the selected solutions come from the second one.
 \end{figure}
 
 \subsection{CoEMAS}
+
+The following configuration was used:
+\begin{itemize}
+  \item $reproduction\_$ $coeff$ was set to 0.2
+  \item each species was represented initially by 64 agents (in each computing node)
+  \item number of computing nodes was set to 2
+  \item $mutation$ $\_$ $coeff$ was set to 0.1
+  \item $extinction$ $\_$ $coeff$ was set to 0.3
+\end{itemize}
 
 Figure~\ref{fig:agent_return} presents portfolio value in time while  figure~\ref{fig:agent_risk} presents the risk associated with our investments.
 
@@ -191,11 +219,19 @@ Besides the number of computing nodes (now 8 computing nodes will be running at 
 
 \subsection{Co-evolutionary algorithm}
 
+The following configuration was used:
+\begin{itemize}
+  \item $reproduction\_$ $coeff$ was set to 0.2
+  \item subpopulation size in each computing node was set to 64
+  \item number of computing nodes was set to 8
+  \item $mutation$ $\_$ $coeff$ was set to 0.1
+  \item $extinction$ $\_$ $coeff$ was set to 0.3
+\end{itemize}
+
 Figure~\ref{fig:co_evol_8_risk} presents risk associated with our portfolio.
 
-
 Comparing with results presented in \ref{sec:co-evol-2} we can easily spot that additional computing nodes allowed us to find a solution that is much more risk free.
-Apart from that higher number of nodes offer similar performance in terms of return (figure~\ref{co_evol_8_return}).
+Apart from that, higher number of nodes offer similar performance in terms of return (figure~\ref{fig:co_evol_8_return}).
 
 \begin{figure}[ht]
   \begin{center}
@@ -214,6 +250,16 @@ Apart from that higher number of nodes offer similar performance in terms of ret
 \end{figure}
 
 \subsection{CoEMAS}
+
+The following configuration was used:
+\begin{itemize}
+  \item $reproduction\_$ $coeff$ was set to 0.2
+  \item each species was represented initially by 64 agents (in each computing node)
+  \item number of computing nodes was set to 8
+  \item $mutation$ $\_$ $coeff$ was set to 0.1
+  \item $extinction$ $\_$ $coeff$ was set to 0.3
+\end{itemize}
+
 
 \begin{figure}[ht]
   \begin{center}
@@ -244,17 +290,141 @@ Co-evolutionary algorithm benefits a lot from a larger number of computing nodes
 
 \section{Third Set of Tests}
 
+Third set of tests uses historical data from year 2008.
+The same 3 companies stocks have been selected to construct our portfolio as in previous tests.
+Year 2008 was extremely hard for investors due to crisis caused by credit crunch back in 2007.
+During 2008, WIG 20 lost over 47\% in value.
+Under such difficult circumstances it is tempting to run tests in order to asssess each algorithm ability to minimize losses.
+
 \subsection{Trend Following}
 
 \subsubsection{Short-term trend results}
+
+Algorithm is configured in the same manner as in \ref{short-term}.
+Results are presented in figure~\ref{fig:trend_foll_short}.
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[scale=.5]{trend_following_short.png}
+  \end{center}
+  \caption{Chart showing portfolio value in time}
+  \label{fig:trend_foll_short}
+\end{figure}
+
+
 \subsubsection{Intermediate-term trend results}
+
+Algorithm is configured in the same manner as in \ref{trend-foll-inter}.
+Results are presented in figure~\ref{fig:trend_foll_inter}.
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[scale=.5]{trend_following_inter.png}
+  \end{center}
+  \caption{Chart showing portfolio value in time}
+  \label{fig:trend_foll_inter}
+\end{figure}
+
+
 \subsubsection{Conclusions}
 
-\subsection{Genetic Algorithm}
+Intermediate-term trend seeking tends to give much better results than focusing on short-term trends.
+We managed to minimize the losses thanks to the fact that we completely ceased trading during the worst time on the market.
+
+\subsection{Genetic algorithm}
+
+The following configuration was used:
+\begin{itemize}
+  \item $reproduction\_$ $coeff$ was set to 0.2
+  \item population size is 512
+  \item $mutation$ $\_$ $coeff$ was set to 0.1
+  \item $extinction$ $\_$ $coeff$ was set to 0.3
+\end{itemize}
+
+Results are presented in figure ~\ref{fig:gen_2008}.
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[scale=.5]{genetic-value-2008.png}
+  \end{center}
+  \caption{Chart showing portfolio value in time}
+  \label{fig:gen_2008}
+\end{figure}
+
 
 \subsection{Co-evolutionary algorithm}
 
+The following configuration was used:
+\begin{itemize}
+  \item $reproduction\_$ $coeff$ was set to 0.2
+  \item subpopulation size in each computing node was set to 64
+  \item number of computing nodes was set to 2
+  \item $mutation$ $\_$ $coeff$ was set to 0.1
+  \item $extinction$ $\_$ $coeff$ was set to 0.3
+\end{itemize}
+
+Results presented in figure ~\ref{fig:co_evol_return} are catastrophic.
+We have lost almost all our money - approximately 70\% of it.
+Risk associated with our portfolio is presented in figure ~\ref{fig:co-evol-risk}.
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[scale=.5]{co-evol-return.png}
+  \end{center}
+  \caption{Chart showing portfolio value in time}
+  \label{fig:co_evol_return}
+\end{figure}
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[scale=.5]{co-evol-risk.png}
+  \end{center}
+  \caption{Chart showing portfolio risk in time}
+  \label{fig:co-evol-risk}
+\end{figure}
+
+
 \subsection{CoEMAS}
 
+The following configuration was used:
+\begin{itemize}
+  \item $reproduction\_$ $coeff$ was set to 0.2
+  \item each species was represented initially by 64 agents (in each computing node)
+  \item number of computing nodes was set to 2
+  \item $mutation$ $\_$ $coeff$ was set to 0.1
+  \item $extinction$ $\_$ $coeff$ was set to 0.3
+\end{itemize}
+
+Figure~\ref{fig:agent_2008_return} presents portfolio value in time while  figure~\ref{fig:agent_2008_risk} presents the risk associated with our investments.
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[scale=.5]{coemas-return.png}
+  \end{center}
+  \caption{Chart showing portfolio value in time}
+  \label{fig:agent_2008_return}
+\end{figure}
+
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[scale=.5]{coemas-risk.png}
+  \end{center}
+  \caption{Chart showing portfolio risk in time}
+  \label{fig:agent_2008_risk}
+\end{figure}
 
 \subsection{Conclusions}
+
+Clearly, trend following approach managed to save almost our entire capital.
+Losses that we had to experience due to this algorithm seems to be almost negligible comparing with other methods.
+
+In spite of the fact that fitness function used in genetic algorithm completely ignores the risk associated with assets in portfolio,       it actually performed better then solution taking risk into consideration.
+
+Co-evolutionary algorithm is particularly bad. 
+Almost 70\% of initial money is lost. CoEMAS performs slightly better, but it is still worse than simple genetic algorithm approach.
+
+Summing up, it turns out that algorithms performing exceptionally well in a bull market can potentially lead to catastrophic losses during
+difficult times. 
+Trend following algorithm has one major advantage among all discussed methods - it allows to withdraw all our money during periods of time
+that are not investor friendly.
