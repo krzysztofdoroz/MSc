@@ -7,7 +7,8 @@
 \section{Trend following}
 \label{trend_following_impl}
 
-The crux of the trend following method is to choose a set of entry and exit point conditions that determine our trading strategy.
+The crux of the trend following method is to choose a set of entry and exit point conditions that determine our trading strategy (predefined set of rules 
+responsible for making buy/sell decisions).
 Simple Moving Average (SMA) is especially useful to highlight longer-term trends in a set of data points.
 
 SMA is formulated as the unweighted mean of the previous $N$ data points:
@@ -21,27 +22,40 @@ SMA is formulated as the unweighted mean of the previous $N$ data points:
     value of data on day $j$
 \end{description}
 
+In this case, data points will represent closing stock prices. 
+ 
+
 
 \textbf{Entry points:}
   \begin{itemize}
-    \item Simple moving average (SMA) of last $N$ days is greater than SMA of last $M$ days
-    \item Current stock price is max of last $N$ days
+    \item Simple moving average (SMA) of last $N$ days is greater than SMA of last $M$ days ($N$ < $M$)
+    \item Current stock price is max of last $N$ days (that is usually a good indicator of lucrative opportunity on the market)
   \end{itemize}
 
-As soon as at least one of the above conditions is satisfied we go long.
+As soon as at least one of the above conditions is satisfied we go long (we buy a particular asset).
 
 
 \textbf{Exit points:}
   \begin{itemize}
-    \item Losses on a single trade are greater than 2 \% 
-    \item Simple moving average (SMA) of last $N$ days is lesser than SMA of last $M$ days
+    \item Losses on a single trade are greater than 2 \% (this rule is used to quickly abandon an investment that we were wrong about its trend direction,
+	  the amount of tolerable loss solely depends on our strategy and does not have to be exactly 2\%)
+    \item Simple moving average (SMA) of last $N$ days is lesser than SMA of last $M$ days ($N$ < $M$)
   \end{itemize}
 
-As soon as the exit condition is satisfied we go short.
+As soon as the exit condition is satisfied we go short (we sell a particular asset).
  
+Obviously the above rules are very simple and quite straightforward.
+Nonetheless, the system based on them proves to be robust, as shown in chapter \ref{cha:tests}.
+   
+By manipulating the value of $N$ we can seek out different types of trends, as mentioned in \ref{sec:types_of_trends}. 
+
 \subsection{Pseudocode}
 
+Algorithm~\ref{fig:tf_pseudo} shows pseudocode of trend following.
+
+
 \begin{description}
+
 
 \item[SMA(i,N)]
   calculates Simple Moving Average for stock $i$, $N$ last days are taken into account  
@@ -56,62 +70,113 @@ As soon as the exit condition is satisfied we go short.
 \item[max(i,N)]
   returns the maximum price for stock $i$ in the last $N$ days
 \item[N, M, maximal\_value\_loss]
-  parameters 
+  modifiable parameters
 \end{description}
 % 
 
 
-\begin{algorithmic}
+% \begin{algorithmic}
+% 
+% \STATE $maximal\_value\_loss \gets 0.98$
+% 
+% \FOR{$day = 1$ to $max\_day$} 
+% 
+%   \FOR{$i = 1$ to $number\_of\_stocks$}
+% 
+%     \IF {$ get\_most\_recent\_trade\_price(i) < maximal\_value\_loss * get\_current\_stock\_price(i, day) $} 
+% 	    \STATE $go\_short(i)$
+%     \ELSE
+% 	    \IF {$SMA(i,N) < SMA(i,M)$}
+% 		    \STATE $go\_short(i)$
+% 	    \ENDIF
+%     \ENDIF
+% 
+%     \IF {$SMA(i,N) > SMA(i,M)$} 
+% 	    \STATE $go\_long(i)$
+%     \ELSE
+% 	    \IF {$max(i,N)) <= get\_current\_stock\_price(i, day)$}
+% 		    \STATE $go\_long(i)$
+% 	    \ENDIF
+%     \ENDIF
+% 
+%   \ENDFOR
+% 
+% \ENDFOR
+% 
+% \end{algorithmic}
 
-\STATE $maximal\_value\_loss \gets 0.98$
+\begin{algorithm}
+  \SetKwData{parents}{parents}
+  \SetKwData{maxDays}{maxDays}
+  \SetKwData{numberOfStocks}{numberOfStocks}
+  \SetKwData{maximumValueLoss}{maximumValueLoss}
+ 
+  \SetKwFunction{SMA}{SMA}
+  \SetKwFunction{getMaxStockPrice}{getMaxStockPrice}
+  \SetKwFunction{goShort}{goShort}
+  \SetKwFunction{goLong}{goLong}
+  \SetKwFunction{getMostRecentTradePrice}{getMostRecentTradePrice}
+  \SetKwFunction{getCurrentStockPrice}{getCurrentStockPrice}
+  \SetKwFunction{mutateLeastFitIndividuals}{mutateLeastFitIndividuals}
+  \SetKwFunction{extinctLeastFitIndividuals}{extinctLeastFitIndividuals}
+  \SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
+ 
+  \Input{$N$, $M$}
+  \BlankLine
+  \maximumValueLoss $\leftarrow$ 0.98 \;
+  
+  \For{$day\leftarrow 1$ \KwTo \maxDays}{
 
-\FOR{$day = 1$ to $max\_day$} 
+     \For{$i\leftarrow 1$ \KwTo \numberOfStocks}{
+      
+      \BlankLine
 
-  \FOR{$i = 1$ to $number\_of\_stocks$}
+	\If(){\getMostRecentTradePrice{$i$} < \maximumValueLoss * \getCurrentStockPrice{$i$, $day$} }{
+	  \goShort{$i$} \;
+      }
+      \ElseIf{\SMA{$i$, $N$} < \SMA{$i$, $M$}}{
+	   \goShort{$i$} \;
+	}
 
-    \IF {$ get\_most\_recent\_trade\_price(i) < maximal\_value\_loss * get\_current\_stock\_price(i, day) $} 
-	    \STATE $go\_short(i)$
-    \ELSE
-	    \IF {$SMA(i,N) < SMA(i,M)$}
-		    \STATE $go\_short(i)$
-	    \ENDIF
-    \ENDIF
+      \BlankLine
 
-    \IF {$SMA(i,N) > SMA(i,M)$} 
-	    \STATE $go\_long(i)$
-    \ELSE
-	    \IF {$max(i,N)) < get\_current\_stock\_price(i, day)$}
-		    \STATE $go\_long(i)$
-	    \ENDIF
-    \ENDIF
+      \If(){\SMA{$i$, $N$} > \SMA{$i$, $M$} }{
+	  \goLong{$i$} \;
+      }
+      \ElseIf{\getMaxStockPrice{$i$, $N$} <= \getCurrentStockPrice{$i$, $day$} }{
+	   \goLong{$i$} \;
+	}
 
-  \ENDFOR
 
-\ENDFOR
+    }
+  }
+  \caption{Trend following pseudocode}\label{fig:tf_pseudo}
+\end{algorithm}
 
-\end{algorithmic}
+
 
 \subsection{R}
 
 R is a programming language designed to deal with building systems based on statistical computation.
 Apart from that it offers command line interpreter.
 Working with vectors and matrices of data is straightforward and robust.
-Its robustness and vast library of already implemented statistical functions are the main advantages of R (\cite{R}).    
+Its high performance and vast library of already implemented statistical functions are the main advantages of R (\cite{R}).    
 
 \section{Genetic algorithm}
 \label{sec:genAlgoImpl}
 
 \subsection{Adjusting GA to solve portfolio optimization problem}
 
-As described in \ref{sec:genAlgorithms} each potential solution shoul be encoded in chromosome. 
-Each chromosome represents portfolio composition (it is a vector of double values representing percentage share of each stock).
+As described in \ref{sec:genAlgorithms} each potential solution shoul be encoded inside a chromosome. 
+Each chromosome represents portfolio composition (it is a normalized vector of double values representing percentage share of each stock).
+Before first round of computation, the entire population is created from scratch using random values in chromosomes.
 
 The following modified GA operations have been implemented:
 \begin{description}
   \item [mutation]
       Mutation operator changes exactly one value $ \alpha_{i} $ representing percentage share of a specific stock $i$ (each time the value $i$ is chosen randomly)
       to $\alpha_{i}'$ ($\alpha_{i}' \in (0,1)$ is chosen randomly). 
-      After that we have to normalize vector.
+      After that, we have to normalize vector.
       $Mutation\_coefficient$ ($mutation\_coefficient \in (0,1)$ ) determines what part of population will be subjected to mutation operator.
   \item [selection]
       $breeding\_coefficient$ ( $breeding\_coefficient \in (0,1)$ ) determines what part of population will be subjected to crossover operator, selection is based on 
@@ -139,15 +204,87 @@ The following modified GA operations have been implemented:
 
 Apart from that, extinction mechanism has been implemented.
 At the end of each GA round a part of the population that has the lowest fitness is exterminated.
-$Extinction\_coefficient$ defines what part of population will be subjected to extinction.
+$Extinction\_coefficient$ determines what part of population will be subjected to extinction.
  
+\subsection{Pseudocode}
+
+% \begin{algorithmic}
+% 
+% \STATE randomly INITIALISE the $population$ 
+% \FORALL{ $day$ }
+%   \STATE EVALUATE each individual
+%   \STATE SELECT parents
+%   \STATE RECOMBINE pairs of parents to create offspring
+%   \STATE MERGE existing population with newly created offspring
+%   \STATE MUTATE part of the least fit population
+%   \STATE EVALUATE each individual
+%   \STATE EXTINCT part of the least fit population 
+%   \RETURN the fittest individual  
+% \ENDFOR
+% 
+% \end{algorithmic}
+
+\begin{algorithm}
+  \SetKwData{returnOrientedSubpopulation}{returnOrientedSubpopulation}
+  \SetKwData{riskOrientedSubpopulation}{riskOrientedSubpopulation}
+  \SetKwData{parents}{parents}
+  \SetKwData{offspring}{offspring}
+  \SetKwData{population}{population}
+  \SetKwData{mutants}{mutants}
+  \SetKwFunction{evaluate}{evaluate}
+  \SetKwFunction{initialise}{initialise}
+  \SetKwFunction{selectParents}{selectParents}
+  \SetKwFunction{recombine}{recombine}
+  \SetKwFunction{merge}{merge}
+  \SetKwFunction{mutateLeastFitIndividuals}{mutateLeastFitIndividuals}
+  \SetKwFunction{extinctLeastFitIndividuals}{extinctLeastFitIndividuals}
+  \SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
+ 
+  \BlankLine
+  \initialise{\population} \;
+  
+  \ForEach{$day$}{ 
+
+      \ForEach{$individual$ $\in$ \population}{
+	  \evaluate($individual$)\;
+      }
+     
+      \parents $\leftarrow$  \selectParents{\population} \;
+      \offspring $\leftarrow$ \recombine{\parents} \;
+      \population  $\leftarrow$ \merge{\offspring, \population} \;
+
+      \mutateLeastFitIndividuals{\population} \;
+
+      \ForEach{$individual$ $\in$ \population}{
+	  \evaluate($individual$)\;
+      }
+
+      \extinctLeastFitIndividuals{\population} \;
+      \Return{the fittest individual} 
+  }
+  \caption{GA pseudocode}\label{coemas_pseudo}
+\end{algorithm}
+
+
+
+As can be easily spotted there are some minor changes to GA pseudocode compared with the generic one mentioned in \ref{sec:genAlgorithms}.
+We start by evaluating each chromosome using fitness function described in \ref{sec:gen_fitness_fun}, which uses current stock prices.
+The fittest individuals are allowed to reproduce (this is further controlled by $breeding\_coefficient$).
+New individuals are merged to existing population.
+After that, mutation is applied to a part of the least fit population to assure that population is diverse (in fact it is a way of implementing $reinitialization$
+method, mentioned in \ref{sec:population_diversity}) and we do not miss any potentially better solutions.
+Then we destroy some of the worst fit individuals which is useful because we can control the overall population size and we get rid of individual with chromosomes
+not likely being successful in the future.
+Finally, we return the best individual which becomes our trading strategy for next day (we adjust our current portfolio to the fittest individual solution). 
+
+
 \subsection{Fitness function}
 \label{sec:gen_fitness_fun}
 
 Fitness is calculated according to the following formula (for portfolio with $N$ stocks):
 
 \begin{equation}
-    \gamma_{day} =  \sum_{i=0}^{N} {  \alpha_{i} * \frac{price(i,day)}{price(i,day - 1)} }
+    \gamma_{day} =  \sum_{i=1}^{N} {  \alpha_{i} * \frac{price(i,day)}{price(i,day - 1)} }
 \end{equation}
 
 \begin{description}
@@ -166,20 +303,23 @@ However, it turns out that in spite of this obvious flaw the algorithm is perfor
 \subsection{Class diagram}
 \label{gen-class-diagram}
 
+Figure~\ref{fig:GA_diag} presents UML class diagram of the GA implementation.
+
 \begin{figure}[ht]   
 	    \begin{center}
 	      \includegraphics[scale=.35]{Simple_gen_UML.png}
 	    \end{center}
 	    \caption{Class diagram of GA described in \ref{sec:genAlgoImpl}} 
+	    \label{fig:GA_diag}
 	  \end{figure}
 
 \begin{description}
   \item [GeneticAlgorithmImpl]
     An implementation of IGeneticAlgorithm, it is responsible for calculating the most optimal portfolio
   \item [GeneticAlgorithmUtils]
-    Utility class providing methods used by genetic algorithm (like mutating, crossover etc.)
+    Utility class providing methods used by genetic algorithm (like mutating, crossover, etc.)
   \item [IDataSource]
-    Described in \ref{dataSource}
+    Any class implementing this interface would expose convenient access to all data needed to calculate fitness.
   \item [Portfolio]
     Class representing potential solution - it stores all the information about our assets and the current value of them.
 
@@ -199,15 +339,17 @@ However that should not startle us, as we have already predicted in \ref{sec:mul
 As presented in figure~\ref{fig:co-evol}, reproduction is allowed only between members of different subpopulations.
 Not every member of a particular subpopulation is allowed to reproduce - only the fittest (fitness of a particular member depends on the subpopulation it belongs to - the fittest one
  in one subpopulation would probably be considered as one of the weakest in the other one).
-Thanks to this approach the offspring that is created is very diverse. 
+Thanks to this approach the offspring that is created is very diverse.
+In fact it is an application of $restricted$ $mating$ described in \ref{sec:population_diversity}. 
 Some part of the weakest members of both subpopulations is subjected to extinction.
 Because of that we do not end up with too big population full of useless solutions.
 In place of extinct members, offspring of the fittest is introduced to both subpopulations.
 
-Apart from that, some members are subjected to mutations in order to maintain subpopulation diversity.
+Apart from that, some members are subjected to mutations in order to even further maintain subpopulation diversity.
 The migration mechanism has the same purpose - to avoid local extrema.
+It is also described in \ref{sec:population_diversity} as an $isolation$ $by$ $distance$.
 Risk as well as expected return are calculated according to Capital Asset Pricing Model (described in \ref{CAPM}) .
-
+ 
 
 \begin{figure}[ht]  
 	    \begin{center}
@@ -227,18 +369,109 @@ To sum up several mechanisms have been implemented to keep both subpopulations d
   \item migration allows chromosomes to travel to different nodes  
 \end{itemize}
 
+\subsection{Pseudocode}
+
+% \begin{algorithmic}
+% 
+% \STATE randomly INITIALISE both subpopulations (risk oriented and return oriented) 
+% \FORALL{ $day$ }
+%   \STATE EVALUATE each individual from both subpopulations
+%   \STATE SELECT parents from both subpopulations
+%   \STATE RECOMBINE pairs of parents to create offspring
+%   \STATE MERGE existing subpopulations with newly created offspring
+%   \STATE MUTATE part of the least fit population in both subpopulations
+%   \STATE EVALUATE each individual from both subpopulations
+%   \STATE EXTINCT part of the least fit population 
+%   \RETURN non-dominated individual as a solution  
+% \ENDFOR
+% 
+% \end{algorithmic}
+
+
+\begin{algorithm}
+  \SetKwData{returnOrientedSubpopulation}{returnOrientedSubpopulation}
+  \SetKwData{riskOrientedSubpopulation}{riskOrientedSubpopulation}
+  \SetKwData{parents}{parents}
+  \SetKwData{offspring}{offspring}
+  \SetKwData{population}{population}
+  \SetKwData{mutants}{mutants}
+  \SetKwFunction{evaluate}{evaluate}
+  \SetKwFunction{initialise}{initialise}
+  \SetKwFunction{selectParents}{selectParents}
+  \SetKwFunction{recombine}{recombine}
+  \SetKwFunction{merge}{merge}
+  \SetKwFunction{mutateLeastFitIndividuals}{mutateLeastFitIndividuals}
+  \SetKwFunction{extinctLeastFitIndividuals}{extinctLeastFitIndividuals}
+  \SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
+ 
+  \BlankLine
+  \initialise{\riskOrientedSubpopulation} \;
+  \initialise{\returnOrientedSubpopulation} \;
+  
+  \ForEach{$day$}{ 
+
+      \ForEach{$individual$ $\in$ \population}{
+	  \evaluate($individual$)\;
+      }
+     
+      \parents $\leftarrow$  \selectParents{\riskOrientedSubpopulation, \returnOrientedSubpopulation} \;
+      \offspring $\leftarrow$ \recombine{\parents} \;
+      \population  $\leftarrow$ \merge{\offspring, \riskOrientedSubpopulation, \returnOrientedSubpopulation} \;
+
+      \mutateLeastFitIndividuals{\population} \;
+
+      \ForEach{$individual$ $\in$ \population}{
+	  \evaluate($individual$)\;
+      }
+
+      \extinctLeastFitIndividuals{\population} \;
+      \Return{non-dominated solution} 
+  }
+  \caption{CoEMAS pseudocode}\label{coemas_pseudo}
+\end{algorithm}
+
+Contrary to GA, we are dealing with two populations (with different objectives) at once.
+Apart from that, the pseudocode looks very similar.
+Reproduction is only allowed between individuals from different subpopulations (which is a direct application of $restricted$ $mating$ method
+ described in \ref{sec:population_diversity}).
+To even further assure that populations remain diverse, we mutate part of the least fit individuals.
+Extinction helps to control population size and get rid of useless individuals.
+Non-dominated solution (in Pareto sense) is returned as a result.
+
 \subsection{Class diagram}
 \label{Co-evol-class-diagram}
+
+Figure~\ref{fig:GA_UML} presents the UML class diagram of Genetic Algorithm.
 
 \begin{figure}[ht]   
 	    \begin{center}
 	      \includegraphics[scale=.35]{co-evol.png}
 	    \end{center}
-	    \caption{Class diagram of GA described in \ref{sec:genAlgoImpl}} 
+	    \caption{Class diagram of co-evolutionary system} 
+	    \label{fig:GA_UML}
 	  \end{figure}
+
+\begin{description}
+    \item [MPTPortfolio]
+	This class represents the solution to the portfolio optimization problem - it contains portfolio composition as well as risk and expected return calculated
+	due to CAPM formulas.
+    \item [IDataSource]
+	Any class implementing this interface would expose convenient access to all data (historical data as well as precomputed values of statistical functions)
+	needed to calculate risk and expected return according to CAPM.
+    \item [MPTGeneticAlgorithmImpl]
+	Two subpopulations are present in this class as well as methods responsible for calculating risk and expected return according to CAPM. 
+	    
+    \item [MPTGeneticAlgorithmUtils]
+	Utility class providing methods responsible for: mutating individuals, breeding new individuals, extincting the worst, etc. 
+    
+\end{description}
+
+
 
 
 \section{Co-Evolutionary Multi-agent System - CoEMAS}
+
+\subsection{Overview}
 
 Co-evolutionary Multi-agent System (CoEMAS) is the most sophisticated system that has been implemented.
 As described in \ref{sec:multi} and \ref{sec:co-evol} such systems need environment as well as a set of autonomous agents interacting with each other.
@@ -262,6 +495,8 @@ Each species focuses on different task:
 \end{itemize}
 
 Risk as well as expected return is calculated due to Capital Asset Pricing Model (defined in \ref{CAPM}).
+
+\subsection{Implemented actions}
 
 Implemented actions that each agent can perform include (\ref{sec:CoEMAS}):
 
@@ -294,16 +529,77 @@ Interactions between agents are implemented in the following way:
 
 Each agent performs one of the above actions with some probability.
 
+\subsection{Pseudocode}
+
+
+% \STATE randomly INITIALISE agents of two different species (risk oriented and return oriented) 
+% \FORALL{ $day$ }
+% 
+%   \FOR{$round = 1$ $to$  $number\_of\_rounds$}  
+%       \FORALL{ $agent$ $\in$ population }
+%   \STATE choose a profile for $agent$
+%   \STATE $agent$ should act according to a selected profile  
+%       \ENDFOR
+%   \ENDFOR
+%   \RETURN non-dominated agent as a solution  
+% \ENDFOR
+
+
+\begin{algorithm}
+  \SetKwData{Profile}{profile}\SetKwData{This}{this}\SetKwData{Up}{up}
+  \SetKwFunction{Union}{Union}\SetKwFunction{chooseProfile}{chooseProfile}
+  \SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
+ 
+  \BlankLine
+  \emph{randomly INITIALISE agents of two different species (risk oriented and return oriented)}\;
+  \ForEach{$day$}{ 
+
+    \For{$round\leftarrow 1$ \KwTo $number\_of\_rounds$}{\label{forins}
+      \ForEach{$agent$ $\in$ population}{
+      
+      \Profile$\leftarrow$ \chooseProfile{}\;
+
+      \If(){\Profile is $resource\_profile$ }{\label{lt}
+        perform actions specified in $resource\_profile$ 
+      }
+
+      \If(){\Profile is $reproduction\_profile$ }{\label{lt}
+        perform actions specified in $reproduction\_profile$ 
+      }
+
+      \If(){\Profile is $migration\_profile$ }{\label{lt}
+        perform actions specified in $migration\_profile$ 
+      }
+      
+    }
+}
+  }
+  \caption{CoEMAS pseudocode}\label{coemas_pseudo}
+\end{algorithm}
+
+
+Profiles are chosen with following probabilities:
+\begin{itemize}
+  \item $resource$ $profile$ - with probability 0.6
+  \item $reproduction$ $profile$ - with probability 0.2
+  \item $migration$ $profile$ with probability 0.1
+  \item $mutation$ $profile$ with probability 0.1
+\end{itemize}
+
+Similarly to \ref{sec:co-evol-sys}, mutation is used as a mean of maintaining population diversity.
 
 
 \subsection{Class diagram}
 \label{CoEMAS-class-diagram}
+
+Figure~\ref{fig:coemas-uml} presents UML class diagram of CoEMAS.
 
 \begin{figure}[ht]   
 	    \begin{center}
 	      \includegraphics[scale=.3]{CoEMAS-UML.png}
 	    \end{center}
 	    \caption{Class diagram of CoEMAS} 
+	    \label{fig:coemas-uml}
 	  \end{figure}
 
 \begin{description}

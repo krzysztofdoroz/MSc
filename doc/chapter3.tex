@@ -235,6 +235,7 @@ With trend following we just have to focus on elaborating trading rules that sho
 After that, we can automate the decision making process by designing and implementing our own trading system.   
 
 \subsection{Types of trends}
+\label{sec:types_of_trends}
 
 There are three main types of trends:
 
@@ -270,6 +271,14 @@ In \ref{trend_following_impl} a system based on trend following strategy is pres
 \section{Evolutionary algorithms}
 \label{sec:evolAlgorithms}
 
+Darwin's theory of evolution introduces the concept of survival of the fittest - in environments with limited resources individuals have to compete for them and
+only the best adapted to environmental conditions survive.
+Each individual has a set of traits that determine its fitness.
+The fitter the individual the more likely its genetic information will be further propagated.
+Darwin observed that small random changes in genotype (mutations), which introduce completely new traits, could be beneficial to an individual.
+In that case, they would most likely be inherited by its children \cite{evo}.
+
+
 Each stochastic optimization method based on a simulation of evolution process (natural evolution is simulated by an iterative computation process)
 can be termed as the Evolutionary Algorithm (EA).
 Most commonly known examples of EA include genetic algorithms and evolutionary programming.
@@ -294,13 +303,152 @@ Following \cite{Phd}, EA can be characterized by:
 \end{itemize}
 
 Solution candidates are usually called \emph{individuals} and the entire set of them is called a \emph{population}. 
+Fitness function (evaluation function) has one main role - it is responsible for assessing individuals, thus it defines what does it mean to be fit in a particular
+environment.
+
+There are theorems stating that an evolutionary algorithm will reach a global optimum of a particular problem if we can guarantee that every genotype representing
+potential solution can be obtained by the application of genetic operators.
+Mutation can be used to asure that property, as it is introducing random changes to a solution, thus allowing us to literally jump into parts of the solution space
+that we would not discover \cite{evo}.       
+
+Recombination simply merges the genetic information of both parents in order to produce offspring.
+The merging operation depends on random values, therefore the the whole process is stochastic.
+Because we are merging two individuals with good traits we hope to get similarly well adjusted individual.
+That strategy is a base for animal husbandry used since ancient times.
    
+
+\subsection{Pseudocode of an evolutionary algorithm}
+
+Following \cite{evo}, the general scheme of evolutionary algorithm is presented in Algotithm~\ref{pseudo_EA}:
+ 
+% \begin{algorithmic}
+% 
+% \STATE INITIALISE $population$ with random candidate solutions
+% \STATE EVALUATE each candidate
+% \REPEAT
+%   \STATE SELECT parents
+%   \STATE RECOMBINE pairs of parents
+%   \STATE MUTATE the resulting offspring
+%   \STATE EVALUATE new candidates
+%   \STATE SELECT individuals for the next generation
+% \UNTIL{TERMINATION CONDITION is satisfied}
+% 
+% 
+% \end{algorithmic}
+
+
+\begin{algorithm}
+  \SetKwData{returnOrientedSubpopulation}{returnOrientedSubpopulation}
+  \SetKwData{riskOrientedSubpopulation}{riskOrientedSubpopulation}
+  \SetKwData{parents}{parents}
+  \SetKwData{offspring}{offspring}
+  \SetKwData{population}{population}
+  \SetKwData{mutants}{mutants}
+  \SetKwFunction{evaluate}{evaluate}
+  \SetKwFunction{initialise}{initialise}
+  \SetKwFunction{selectParents}{selectParents}
+  \SetKwFunction{recombine}{recombine}
+  \SetKwFunction{merge}{merge}
+  \SetKwFunction{mutate}{mutate}
+  \SetKwFunction{select}{select}
+  \SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
+ 
+  \BlankLine
+  \initialise{\population} \;
+  
+  \ForEach{$individual$ $\in$ \population}{
+	  \evaluate($individual$)\;
+  }
+
+  \Repeat{TERMINATION CONDITION is satisfied}{
+     
+      \parents $\leftarrow$  \selectParents{\population} \;
+      \offspring $\leftarrow$ \recombine{\parents} \;
+      \mutate{\offspring} \;
+
+      \ForEach{$individual$ $\in$ \offspring}{
+	  \evaluate($individual$)\;
+      }
+
+      \population $\leftarrow$ \select{\population,\offspring} \;
+      
+  }
+  \caption{Pseudocode of generic EA}\label{pseudo_EA}
+\end{algorithm}
+
+We start each round of computation by selecting parents from the entire population.
+As mentioned previously, the fitter the individual the more likely it will participate in process of reproduction.
+Mutation is applied to newly created offspring, but with very low probability.
+After new individuals evaluation, we have to decide which organisms will survive to next round of computation. 
+
+
+\subsection{Population diversity}
+\label{sec:population_diversity}
+
 Population diversity is essential for finding a large number of Pareto-optimal solutions in a single run of an algorithm.
-There are some well established methods of overcoming the problem of premature convergence towards a single solution. 
+There are some well established methods of overcoming the problem of premature convergence towards a single solution \cite{Phd}. 
 
 Following \cite{Phd}, the most common methods of maintaining population diversity include:
 
-\begin{}
+\begin{description}
+  \item [fitness sharing]
+	The main idea behind this method is to divide the entire population of individuals into subpopulations.
+	Individuals in subpopulations have to share resources.
+	If an individual has many close neighbours (in terms of predefined distance measure) its fitness is lower compared to situation when there are
+	no other individuals in vicinity. 
+	
+  \item [restricted mating]
+	The gist of this method is to allow two individuals to mate only if they are substantially different (different in terms of some predefined metric).
+  \item [isolation by distance]
+	The concept of location is introduced so distinct subpopulations can exchange individuals by the process of migration. 
+  \item [overspecification]
+	Apart from solution to the problem, each individual contains unused part of information that can manifest itself at some point in the future.
+  \item [reinitialization]
+	The whole population or at least a significant part is reinitialized after some time or when the search process stagnates.
+  \item [crowding]
+	Only a part of the entire population is subjected to process of selection, recombination and mutation. 
+\end{description}
+
+
+\subsection{Elitism}
+
+The foundations of elitism strategy are quite straightforward - we keep some part of best individuals to the next generation.
+In some cases it can cause premature convergence, but still elitism is an important concept.
+When we deal with MOOPs, we have to decide what amount of population is considered good enough to survive and be copied intact to next generation.
+Sometimes we maintain an external set of non-dominated individuals that could replace existing individuals in the population at some point in the future.
+   
+\subsection{Application of evolutionary algorithms to economic problems}
+
+Evolutionary algorithms are widely used to solve real-world economic problems.
+
+Following \cite{EA-bankruptcy}, genetic algorithm programming, which belongs to a class of EAs, were used to predict bankruptcy .
+Authors used historical data to build a function assessing whether the particular company is heading to financial problems.
+Approximately 75\% of test data was clasified correctly.
+
+Evolutionary algorithms are used to design and optimize the artificial neural networks designated to automate trading (trading is a process of buying and
+ selling financial instruments).
+Such system is described in \cite{trading}, authors point out that trading rules are unsophisticated but the systematic execution of them may lead to substantial 
+returns.
+
+Authors of \cite{intro_to_finance} claim that evolutionary algorithms are used to: 
+
+\begin{itemize}
+  \item forecast corporate earnings, exchange rate volatility, etc.
+  \item build adaptive trading strategies
+  \item optimize portfolio composition
+  \item market risk computation
+  \item derivatives modelling
+\end{itemize}
+
+An interesting application of EAs is presented in \cite{Dre_Sep}, authors tried to generate investment strategies using EAs, CEAs and CoEMAS.
+Generally speaking this problem is quite difficult because of the sheer amount of parameters and conditions that have to be taken into account.
+Formulas suggesting when to enter or exit the market are composed of other functions (divided into 4 groups: functions returning stock data, mathemathical functions
+(e.g. sine, cosine, etc),tool functions (e.g. calculating error, etc.) and indicator functions).  
+Entire system was implemented from scratch and it turned out to provide profitable strategies. 
+
+To conclude, it turns out that evolutionary algorithms have been successfully used to deal with one of the most difficult problems encountered in economics.
+Almost all researchers praise them for their adaptiveness, robustness and flexibilty.
+Obtained results clearly show that EAs are capable of delivering exceptionally good returns.      
 
 %-------------------------------------------------------------------------------------------------
 
@@ -375,10 +523,26 @@ Following \cite{Mitchell01} - the simplest form of genetic algorithm involves th
 \section{Co-evolutionary algorithms}
 \label{sec:co-evol}
 
-Co-evolutionary algorithms rely on process of co-evolution (two or more species coexist and interact in the same environment).
+Co-evolutionary algorithms seems to have a huge advantage over evolutionary algorithms (EAs) - they can be applied to problems which do not have easily formulated 
+fitness function (e.g. game-playing strategies).
+It commonly believed that they tend to perform better when dealing with infinite search spaces than regular EAs \cite{co-evol}.
+Because of these advantages many researchers believe that they have a great potential.
+
+Co-evolutionary algorithms rely on process of co-evolution (two or more species coexist and interact with each others in the same environment).
 Individuals of one species interact with each other as well as with members of other species (which simulates the process of adaptation of different species cohabitating the same 
 ecosystem).
+
+The most widespread types of co-evolutionary algorithms include cooperative and competitive ones.
+Cooperative algorithms tend to favour individuals working well with others.
+Competetive methods are quite similar to the process of $arm$ $race$ - minor adaptations in some individuals will force adjustment in others.
+Because each subpopulation has to make changes in order to remain competetive, overall progress is guaranteed. 
   
+It is possible that the population would seem to be changing but our fitness criteria may not register any improvement.
+This could mean stagnation as well as arms race and is known as $red$ $queen$ $effect$ \cite{co-evol}.
+In fact, this phenomena is a diagnostic problem because observing fitness measurements does not provide meaningful information about overall behaviour of the system.
+ 
+
+
 Following \cite{Dre}, co-evolutionary interactions could include:
 
 \begin{itemize}
@@ -393,7 +557,91 @@ The fitness of each individual simultaneously depends on fitness of the solution
 The biggest advantage of co-evolutionary algorithms is their ability to maintain population diversity which is crucial to obtain many good solutions in a single algorithm run.    
 
   
+\subsection{Pseudocode of cooperative co-evolutionary algorithm}
 
+According to \cite{co-evol}, the pseudocode of cooperative co-evolutionary algorithm is presented in Algorithm~\ref{pseudo_CEA}.
+
+% \begin{algorithmic}
+% 
+% \FORALL{ population $p_s$ $\in$ $P$, all populations } 
+% \STATE INITIALISE $p_s$
+% \ENDFOR
+% 
+% \FORALL{ population $p_s$ $\in$ $P$, all populations } 
+% \STATE EVALUATE $p_s$
+% \ENDFOR
+% 
+% \STATE t := 0
+% 
+% \REPEAT
+%   \FORALL{ population $p_s$ $\in$ $P$, all populations } 
+%     \STATE SELECT parents from population $p_s$
+%     \STATE GENERATE offspring from parents
+%     \STATE SELECT collaborators $P$
+%     \STATE EVALUATE offspring with collaborators
+%     \STATE SELECT survivors for new population $P_s$
+%   \ENDFOR  
+%   \STATE t := t + 1
+% \UNTIL{TERMINATING CRITERIA is met}
+% 
+% \end{algorithmic}
+
+\begin{algorithm}
+  \SetKwData{returnOrientedSubpopulation}{returnOrientedSubpopulation}
+  \SetKwData{riskOrientedSubpopulation}{riskOrientedSubpopulation}
+  \SetKwData{parents}{parents}
+  \SetKwData{T}{T}
+  \SetKwData{offspring}{offspring}
+  \SetKwData{population}{population}
+  \SetKwData{mutants}{mutants}
+  \SetKwFunction{evaluate}{evaluate}
+  \SetKwFunction{evaluateWithCollaborators}{evaluateWithCollaborators}
+  \SetKwFunction{initialise}{initialise}
+  \SetKwFunction{selectParents}{selectParents}
+  \SetKwFunction{recombine}{recombine}
+  \SetKwFunction{merge}{merge}
+  \SetKwFunction{mutate}{mutate}
+  \SetKwFunction{selectSurvivors}{selectSurvivors}
+  \SetKwFunction{selectCollaborators}{selectCollaborators}
+
+  \SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
+ 
+
+  \Input{a set of populations $P$}
+  \BlankLine
+  
+  \ForEach{population $p_s$ $\in$ $P$}{
+	  \initialise($p_s$)\;
+  }
+
+  \ForEach{population $p_s$ $\in$ $P$}{
+	  \evaluate($p_s$)\;
+   }
+
+  \T $\leftarrow$ 0 \;
+
+  \Repeat{TERMINATION CONDITION is satisfied}{
+      \ForEach{population $p_s$ $\in$ $P$}{
+	\parents $\leftarrow$  \selectParents{$p_s$} \;
+	\offspring $\leftarrow$ \recombine{\parents} \;
+	\selectCollaborators{$P$}
+	\evaluateWithCollaborators{\offspring}  
+
+	\ForEach{$individual$ $\in$ \offspring}{
+	    \evaluate($individual$)\;
+	}
+
+	$p_s$ $\leftarrow$ \selectSurvivors{$p_s$} \;
+      }
+      \T $\leftarrow$ T + 1 \;
+  }
+  \caption{Pseudocode of generic CEA}\label{pseudo_CEA}
+\end{algorithm}
+
+
+
+A complete solution is formed by an individual combined with its collaborators.
+ 
 
 \section{Multi-agent systems}
 \label{sec:multi}
@@ -408,7 +656,7 @@ In order to be capable of fulfilling all the above requirements environments hav
 
 \subsection{Intelligent agents}
 
-The most usefull type of \emph{agents} is called \emph{intelligent agent}.
+The most useful type of \emph{agents} is called \emph{intelligent agent}.
 The \emph{intelligent agent} is capable of (\cite{Weiss}):
 
 \begin{description}
@@ -431,7 +679,11 @@ According to  \cite{Dre} ,\cite{Dre2}, CoEMAS contains the following elements:
   \item the set of different resource types (there should be at least one resource type)
 \end{itemize}
 
-  
+The environment contains information about available resources, its topography (usually represented as a weighted directed graph).
+The species must coexist together, actions that any individual can perform depends on the nature of their coexistance.
+In case od predator-prey model, prey individuals are capable of different actions than predators agents.
+
+
 Additionally we define the set of actions that agent can perform :
 
 \begin{description}
@@ -444,7 +696,7 @@ Additionally we define the set of actions that agent can perform :
   \item [get]
       agent is allowed to get some resource from other agent
   \item [seek]
-      agent finds another agent so actions like get and finding appropriate partner for reproduction can be perform
+      agent finds another agent so actions like get and finding appropriate partner for reproduction can be performed
   \item [clone]
       action of producing offspring - some amount of resources is passed to newly created agents from parents
   \item [mutation]
@@ -453,6 +705,52 @@ Additionally we define the set of actions that agent can perform :
       agent is allowed to migrate from the current node to another
   \item [recombination]
       recombination operator is applied
-      
+
 \end{description}
 
+
+According to \cite{Dre}, the prey agent is allowed to perform one of the following operations : die, get, give, accept, seek, clone, recombination, mutation,
+ migrate. Predator agent can perform seek, get, migrate actions.
+
+Each agent has to realize its goals by following some predefined strategies.
+Priority can be assigned to each strategy.
+We can think of a strategy with a sheer goal of reproduction (only actions like seek, clone, recombination, mutation are allowed) or keeping individual alive
+(actions like seek and get are performed).
+After performing actions assigned to a particular strategy, a new strategy is elected. 
+
+\subsection{Basic activities of agent in CoEMAS}
+
+
+\begin{algorithmic}
+
+\STATE $r^{\gamma}$ := $r^{\gamma}_{init}$ \COMMENT{assign initial amount of resource to the agent}
+
+\WHILE{$r^{\gamma}$ > 0}
+
+\STATE \COMMENT{choose a profile $pr_{i}$} 
+
+\IF{$pr_{i}$ is the $resource$ $profile$} 
+  
+\STATE perform actions defined in $resource$ $profile$ which means obtaining more resources from other agents or environment
+
+\ELSE
+        \IF {$pr_{i}$ is the $reproduction$ $profile$}
+                \STATE perform actions defined in $reproduction$ $profile$ if amount of resource allows reproduction, 
+			after reproduction the amount of resource possessed by an individual is lowered by a certain amount, which is given to offspring
+        \ENDIF
+
+\ELSE 
+	\IF {$pr_{i}$ is the $migration$ $profile$}
+                \STATE perform actions defined in $migration$ $profile$ if amount of resource allows migration, some of the resource held by an individual is
+			passed to the environment (the migration process is not free)
+        \ENDIF
+
+\ENDIF
+
+\ENDWHILE
+
+\end{algorithmic}
+
+It is obvious that applying above strategies we try to mimick behaviour of real organisms struggling in a hostile environment.
+
+ 

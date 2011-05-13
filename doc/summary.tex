@@ -4,11 +4,10 @@
 
 One of the main goal of this thesis was to find efficient ways of tackling the portfolio optimization problem.
 Apart from co-evolutionary multi-agent system, many other approaches have been taken into consideration.
-The essential part of work at that stage consisted of gathering information about any feasible algorithm that could be adjusted to solve the problem. 
-The main source of knowledge were books and papers devoted to the same or very similar problem. 
+The essential part of work at the beginning consisted of gathering information about any feasible algorithm that could be adjusted to solve the problem. 
+The main source of knowledge were books and papers devoted to the identical or very similar problem. 
 
-
-The second goal was to implement the most promising algorithms.
+The second goal was to implement the most promising algorithms found during first stage.
 Four genuine approaches have been implemented: genetic algorithm, trend following, co-evolutionary and co-evolutionary multi-agent system.
 The last two of mentioned algorithms were run on multi-agent platform. 
 
@@ -20,16 +19,32 @@ Three sets of tests have been performed in order to assess the usefulness of eac
 
 As mentioned before, four algorithms have been implemented.
 Trend following has been implemented as R script.
-In case if the other three, Java was used.
-In order to provide user friendliness, a group of shell scripts was created.
+In case of the other three, Java was used.
+Some are run on a multi-agent running platform implemented in Java.
+Its architecture seems to be very simple but it provides all functionality that is needed.
+Apart from that, to provide user friendliness, a group of shell scripts was created.
 They build all necessary artifacts and deploy them.
+They are further discussed in appendix A.
    
 Three sets of tests have been performed to assess each algorithm performance during substantially different overall situation on a market.
 Obtained results shown that it is difficult to pinpoint one approach that outperforms all others.
 It pretty clear that each of them has some pros and cons.
+Results are discusses in more detail in chapter \ref{cha:tests}.
+
+
+\section{Conclusions}
+
+All implemented algorithms have been exhaustively tested using historical data reflecting completely different situation on tha market.
+Taking into consideration both good and bad times leads to conclusions that all approaches have advantages as well as disadvantages.
+That raises a question what algorithm to use if we want to build our own portfolio.
+Trend following is good for unstable times because it somehow guarantees that the losses would be minimalised according to our wish.
+However, during market rise it is outperformed by other algorithms.
+Because of all that inconvenience, new system is proposed in \ref{sec:future}.
+That system should expose all strengths of implemented approaches and be user friendly for a casual investor. 
 
 
 \section{Future work}
+\label{sec:future}
 
 All tests have been performed in a way that mimicks real trading on a stock exchange.
 Historical stock data have been used, but it is fairly obvious that the systems could be changed to actually invest money in a real world.
