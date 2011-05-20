@@ -7,7 +7,7 @@
 \section{Trend following}
 \label{trend_following_impl}
 
-The crux of the trend following method is to choose a set of entry and exit point conditions that determine our trading strategy (predefined set of rules 
+The crux of the trend following method is to choose a set of entry and exit point conditions that determine our \emph{trading strategy} (predefined set of rules 
 responsible for making buy/sell decisions).
 Simple Moving Average (SMA) is especially useful to highlight longer-term trends in a set of data points.
 
@@ -177,9 +177,9 @@ The following modified GA operations have been implemented:
       Mutation operator changes exactly one value $ \alpha_{i} $ representing percentage share of a specific stock $i$ (each time the value $i$ is chosen randomly)
       to $\alpha_{i}'$ ($\alpha_{i}' \in (0,1)$ is chosen randomly). 
       After that, we have to normalize vector.
-      $Mutation\_coefficient$ ($mutation\_coefficient \in (0,1)$ ) determines what part of population will be subjected to mutation operator.
+      \emph{Mutation\_coefficient} (\emph{mutation\_coefficient} $ \in (0,1)$ ) determines what part of population will be subjected to mutation operator.
   \item [selection]
-      $breeding\_coefficient$ ( $breeding\_coefficient \in (0,1)$ ) determines what part of population will be subjected to crossover operator, selection is based on 
+      \emph{breeding\_coefficient} ( \emph{breeding\_coefficient} $ \in (0,1)$ ) determines what part of population will be subjected to crossover operator, selection is based on 
       fitness function (only the fittest part of the population will be selected)
   \item [crossover]
       After selection chromosomes eligible for reproduction, each pair of chromosomes are subjected to crossover operator. As a result new chromosomes are created (each pair
@@ -204,7 +204,7 @@ The following modified GA operations have been implemented:
 
 Apart from that, extinction mechanism has been implemented.
 At the end of each GA round a part of the population that has the lowest fitness is exterminated.
-$Extinction\_coefficient$ determines what part of population will be subjected to extinction.
+\emph{Extinction\_coefficient} determines what part of population will be subjected to extinction.
  
 \subsection{Pseudocode}
 
@@ -234,7 +234,7 @@ $Extinction\_coefficient$ determines what part of population will be subjected t
   \SetKwFunction{evaluate}{evaluate}
   \SetKwFunction{initialise}{initialise}
   \SetKwFunction{selectParents}{selectParents}
-  \SetKwFunction{recombine}{recombine}
+  \SetKwFunction{crossover}{crossover}
   \SetKwFunction{merge}{merge}
   \SetKwFunction{mutateLeastFitIndividuals}{mutateLeastFitIndividuals}
   \SetKwFunction{extinctLeastFitIndividuals}{extinctLeastFitIndividuals}
@@ -250,7 +250,7 @@ $Extinction\_coefficient$ determines what part of population will be subjected t
       }
      
       \parents $\leftarrow$  \selectParents{\population} \;
-      \offspring $\leftarrow$ \recombine{\parents} \;
+      \offspring $\leftarrow$ \crossover{\parents} \;
       \population  $\leftarrow$ \merge{\offspring, \population} \;
 
       \mutateLeastFitIndividuals{\population} \;
@@ -269,7 +269,7 @@ $Extinction\_coefficient$ determines what part of population will be subjected t
 
 As can be easily spotted there are some minor changes to GA pseudocode compared with the generic one mentioned in \ref{sec:genAlgorithms}.
 We start by evaluating each chromosome using fitness function described in \ref{sec:gen_fitness_fun}, which uses current stock prices.
-The fittest individuals are allowed to reproduce (this is further controlled by $breeding\_coefficient$).
+The fittest individuals are allowed to reproduce (this is further controlled by \emph{breeding\_coefficient}).
 New individuals are merged to existing population.
 After that, mutation is applied to a part of the least fit population to assure that population is diverse (in fact it is a way of implementing $reinitialization$
 method, mentioned in \ref{sec:population_diversity}) and we do not miss any potentially better solutions.

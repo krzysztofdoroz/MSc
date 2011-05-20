@@ -37,8 +37,8 @@ MOOP \equiv
 \end{cases}  
 \end{equation}
 
-These constraints and bounds ($g_{j}(x) , h_{k}(x) $ are constraint functions and there are $M$ objective functions) constitute a \emph{decision space}. 
-\cite{Deb:2001:MOU:559152}
+These constraints and bounds ($g_{j}(x) , h_{k}(x) $ are constraint functions and there are $M$ objective functions) constitute a \emph{decision space}  
+\cite{Deb:2001:MOU:559152}.
 Any solution that satisfies all the constraints and bounds is called a \emph{feasible solution} \cite{Deb:2001:MOU:559152}.
 
 It turns out that the set of feasible solutions is partially ordered.
@@ -72,10 +72,10 @@ Pareto-optimal front is the set of choices that are \emph{non-dominated} (\cite{
 
 \subsection{Portfolio optimization problem}
 
-First of all, let us introduce the definition of $portfolio$.
-	$Portfolio$ is a set of assets or equities (e.g. stocks, bonds) owned by an investor.
-	Usually the more diversified the $portfolio$ the safer our investments tend to be.
-	$Portfolio$ composition should reflect our willingness to take risk.
+First of all, let us introduce the definition of \emph{portfolio}.
+	\emph{Portfolio} is a set of assets or equities (e.g. stocks, bonds) owned by an investor.
+	Usually the more diversified the  \emph{portfolio} the safer our investments tend to be.
+	\emph{Portfolio} composition should reflect our willingness to take risk.
 
 Portfolio optimization problem is an example of MOOP.
 Investors cannot rely solely on their intuition to make the right choice.
@@ -316,6 +316,16 @@ The merging operation depends on random values, therefore the the whole process 
 Because we are merging two individuals with good traits we hope to get similarly well adjusted individual.
 That strategy is a base for animal husbandry used since ancient times.
    
+Obviously evolutionary algorithms resemble other general algorithm construction techniques like greedy algorithms (at each step we choose locally optimal decision, which 
+turns out to be globally optimal) or dynamic programming (thanks to remembering results of some of the subresults we are able to solve some problems 
+in polynomial time, but often with additional memory needed).
+All of them have to be adjusted to actually solve our problem.
+Greedy approach is certainly the simplest and most straightforward but we have to careful as many problems do not have $optimal$ $substructure$ (optimal solution
+to problem contains optimal solution to sub-problem).
+If our optimisation problem does not have that property we may end up with completely wrong solution.
+Dynamic programming demands $optimal$ $substructure$ from problems as well.
+It is a much more complicated way of contructing algorithms and some problems are really hard to adapt to that method.
+ 
 
 \subsection{Pseudocode of an evolutionary algorithm}
 
@@ -446,6 +456,30 @@ Formulas suggesting when to enter or exit the market are composed of other funct
 (e.g. sine, cosine, etc),tool functions (e.g. calculating error, etc.) and indicator functions).  
 Entire system was implemented from scratch and it turned out to provide profitable strategies. 
 
+Quantum-inspired EAs are used for option pricing model calibration, which is a very interesting modification of standard evolutionary approach.
+Authors of \cite{quantum} point out that quantum based evolutionary algorithm has not been widely used in financial problems so far.
+Qubits (quantum bits) are used as a mean of representing chromosomes instead of standard binary representation.
+Quantum bit is defined as follows:
+$$
+  \Ket{q^{i}} = \alpha \Ket{0} + \beta \Ket{1} \\
+$$
+where $\alpha$ and $\beta$ are complex numbers and
+$$
+  |\alpha^2| + |\beta^2| = 1 
+$$
+
+Contrary to bits, qubits can assume either of two states (0 or 1) as well as superpositions of them.
+Because of that, a quantum system based on $k$ qubits can represent $2^{k}$ states simultaneously.
+First of all, we initialise the population of quantum chromosomes.
+In order to transform this unusual data representation we have to somehow translate qubits into binary.
+This can be achieved by performing an observation operation on quantum bits.
+We need to pick some random number $r$ $\in [0,1]$ and use it as a threshold to determine whether $r$ > $|\alpha|^2$, if it is true then we set bit in our solution
+ to 1, otherwise we set it to 0.
+We have to apply such operation to each qubit in the quantum chromosome.
+Obviously other operations like mutation and recombination have to be adjusted to new data representation.
+Finally, authors performed some tests showing that quantum based approach is as powerful as previously used algorithms.
+  
+
 To conclude, it turns out that evolutionary algorithms have been successfully used to deal with one of the most difficult problems encountered in economics.
 Almost all researchers praise them for their adaptiveness, robustness and flexibilty.
 Obtained results clearly show that EAs are capable of delivering exceptionally good returns.      
@@ -534,11 +568,11 @@ ecosystem).
 
 The most widespread types of co-evolutionary algorithms include cooperative and competitive ones.
 Cooperative algorithms tend to favour individuals working well with others.
-Competetive methods are quite similar to the process of $arm$ $race$ - minor adaptations in some individuals will force adjustment in others.
+Competetive methods are quite similar to the process of \emph{arm race} - minor adaptations in some individuals will force adjustment in others.
 Because each subpopulation has to make changes in order to remain competetive, overall progress is guaranteed. 
   
 It is possible that the population would seem to be changing but our fitness criteria may not register any improvement.
-This could mean stagnation as well as arms race and is known as $red$ $queen$ $effect$ \cite{co-evol}.
+This could mean stagnation as well as arms race and is known as \emph{red queen effect} \cite{co-evol}.
 In fact, this phenomena is a diagnostic problem because observing fitness measurements does not provide meaningful information about overall behaviour of the system.
  
 

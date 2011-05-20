@@ -34,12 +34,13 @@ Results are discusses in more detail in chapter \ref{cha:tests}.
 
 \section{Conclusions}
 
-All implemented algorithms have been exhaustively tested using historical data reflecting completely different situation on tha market.
+All implemented algorithms have been exhaustively tested using historical data reflecting completely different situations on the market.
 Taking into consideration both good and bad times leads to conclusions that all approaches have advantages as well as disadvantages.
 That raises a question what algorithm to use if we want to build our own portfolio.
-Trend following is good for unstable times because it somehow guarantees that the losses would be minimalised according to our wish.
-However, during market rise it is outperformed by other algorithms.
-Because of all that inconvenience, new system is proposed in \ref{sec:future}.
+Trend following is good for unstable times because it somehow guarantees that the losses would be minimalised according to our preferences.
+However, during stock market rise it is outperformed by other algorithms.
+Clearly we would like to have means to highlight good aspects of each algorithm.  
+Right now it is a little bit inconvenient therefore new system is proposed in \ref{sec:future}.
 That system should expose all strengths of implemented approaches and be user friendly for a casual investor. 
 
 
@@ -48,19 +49,25 @@ That system should expose all strengths of implemented approaches and be user fr
 
 All tests have been performed in a way that mimicks real trading on a stock exchange.
 Historical stock data have been used, but it is fairly obvious that the systems could be changed to actually invest money in a real world.
-Right now the biggest obstacles to use them are:
+Right now the biggest obstacles to efficiently use them are:
 
 \begin{itemize}
   \item feeding data to algorithms is a little bit cumbersome
-  \item they are implemented as independent entities
+  \item each algorithm is implemented as an independent entity
+  \item systems are not user-friendly - running them requires using shell scripts
+  \item modification of algorithms' parameters is inconvenient
+  \item interpreting results is time consuming and could be enhanced
 \end{itemize}
  
-New system should incorporate all implemented algorithms and use them as strategies.
+New system should combat all the problems mentioned above.
+It should incorporate all implemented algorithms and use them as strategies.
+Obviously investors should be able to modify parameters of running strategies via user-friendly GUI.
+They could set them manually or they could choose from a set of predefined sets of parameters.
 User should check what each of them is suggesting and make a decision about a portfolio composition.
 Apart from that, access to charts comparing all proposed strategies would be provided.
-
+That should give further insight into situation on the stock market and ease decision making.
 
 All stock data should be downloaded during the start of application from Yahoo! (via YQL - Yahoo Query Language).
 After downloading it would be stored in an underlying database.
-In that case algorithm could fetch all the data they need (historical as well as most recent one).
+In that case algorithms could fetch all the data they need (historical as well as most recent one) from one, central database.
  
