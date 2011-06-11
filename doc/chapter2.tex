@@ -38,7 +38,7 @@ With values $N = 10$, $M = 20$ the SMA method focused on short-term trends.
 \begin{figure}[ht]
   
   \begin{center}
-    \includegraphics[scale=.4]{rplot0.png}
+    \includegraphics[scale=.5]{rplot0.png}
   \end{center}
   \caption{Chart showing value of our portfolio in time}
   \label{fig:trend-short}
@@ -56,7 +56,7 @@ In this particular test (with values: $N = 20$, $M = 40$), trend following algor
  
 \begin{figure}[H]
   \begin{center}
-    \includegraphics[scale=.4]{rplot.png}
+    \includegraphics[scale=.5]{rplot.png}
   \end{center}
   \caption{Chart showing value of our portfolio in time}
   \label{fig:trend-int}
@@ -87,10 +87,18 @@ The following configuration was used:
 
 \begin{figure}[ht]
   \begin{center}
-    \includegraphics[scale=.5]{simple-genetic-algo.png}
+    \includegraphics[scale=.5]{best_2010_gen.png}
   \end{center}
   \caption{Chart showing value of our portfolio in time}
   \label{fig:gen-algo}
+\end{figure}
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[scale=.5]{ave_2010_gen.png}
+  \end{center}
+  \caption{Chart showing value of our portfolio in time}
+  \label{fig:gen-algo-ave-2010}
 \end{figure}
 
 \subsection{Co-evolutionary algorithm}
@@ -341,16 +349,23 @@ The following configuration was used:
   \item $extinction$ $\_$ $coeff$ was set to 0.3
 \end{itemize}
 
-Results are presented in figure ~\ref{fig:gen_2008}.
+Results are presented in figure ~\ref{fig:gen_ave_2008}.
 
 \begin{figure}[ht]
   \begin{center}
-    \includegraphics[scale=.5]{genetic-value-2008.png}
+    \includegraphics[scale=.5]{gen_ave_2008.png}
   \end{center}
   \caption{Chart showing portfolio value in time}
-  \label{fig:gen_2008}
+  \label{fig:gen_ave_2008}
 \end{figure}
 
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[scale=.5]{best_gen_2008.png}
+  \end{center}
+  \caption{Chart showing portfolio value in time}
+  \label{fig:gen_best_2008}
+\end{figure}
 
 \subsection{Co-evolutionary algorithm}
 
