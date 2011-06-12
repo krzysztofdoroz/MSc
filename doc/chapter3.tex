@@ -13,11 +13,11 @@ Optimization procedure relies on finding and comparing feasible solutions until 
 Each solution can be classified as good or bad in terms of a specific objective we are interested in.
 E.g. we could define objective as the cost of fabrication, efficiency of a technological process, etc.
 Contrary to single-objective optimization there is no clearly defined optimum, instead of that we have to deal with a set of trade-off optimal solutions.
-They are generally known as Pareto-optimal solutions (\cite{Phd}).
+They are generally known as Pareto-optimal solutions \cite{Phd}.
 
 Vast majority of real-world problems involve more than one objective.
-That's why it is so crucial to develop methods to efficiently solve them.
-(\cite{Phd}, \cite{Deb:2001:MOU:559152})
+That's why it is so crucial to develop methods to efficiently solve them 
+\cite{Phd}, \cite{Deb:2001:MOU:559152}.
 
 \subsection{Formal definition}
 
@@ -96,10 +96,10 @@ Most of them used solely diversification as a mean of reducing portfolio risk.
 With brand new theory they did not have to rely only on common sense - the investment risk was finally expressed in quantitative terms. 
 
 Nevertheless MPT is not perfect, even its creators are fully aware that it has some very important limitations.
-The following assumptions of MPT are responsible for its shortcomings [\cite{MPT}]:
+The following assumptions of MPT are responsible for its shortcomings \cite{MPT}, such as:
 \begin{itemize}
-  \item variance of portfolio returns is the correct measure of investment risk
-  \item investment returns of all assets can be adequately represented by the normal distribution
+  \item variance of portfolio returns is the correct measure of investment risk;
+  \item investment returns of all assets can be adequately represented by the normal distribution.
 \end{itemize}
 
   
@@ -107,15 +107,15 @@ The following assumptions of MPT are responsible for its shortcomings [\cite{MPT
 Capital Asset Pricing Model (CAPM) was developed in 1960s by Sharpe (\cite{CAPM-Sharpe}) and Lintner.
  
 As well as MPT it tries to find the relationship between the price of a single asset and its risk.
-Answering the question of how to calculate a risk as well as return of any asset being a part of portfolio is of paramount importance to each investor.
+Answering the question of how to calculate a risk as well as return of any asset being a part of portfolio is of great importance to each investor.
 
 The Sharpe capital asset pricing model is based on the following assumptions \cite{CAPM}:
 
 \begin{itemize}
-  \item all investors are risk aversing
-  \item all investors have the same information about the market
-  \item capital markets are perfect - no transaction costs, no tax, all assets are infinitely divisible
-  \item all investors view the expected returns and standard deviations of return provided by different portfolios in the same way
+  \item all investors are risk aversing;
+  \item all investors have the same information about the market;
+  \item capital markets are perfect - no transaction costs, no tax, all assets are infinitely divisible;
+  \item all investors view the expected returns and standard deviations of return provided by different portfolios in the same way.
 \end{itemize}
  
 In order to fully understand CAPM, we have to introduce some definitions.
@@ -139,7 +139,7 @@ The next important function is $population$ $variance$, it is a numerical measur
 The $standard$ $deviation$ of a population ($\sigma$) is defined as a square root of the population variance.
 	
 The $covariance$ of two variables $x$ and $y$ in a data sample measures how the two are linearly related.
-	A positive $covariance$ would indicates a positive linear relationship between the variables, and a negative $covariance$ would indicate the opposite. 
+	A positive $covariance$ would indicate a positive linear relationship between the variables, and a negative $covariance$ would indicate the opposite. 
 	The population $covariance$ is defined as:
 
 	\begin{equation}
@@ -153,7 +153,7 @@ Last but not least, we introduce $correlation$ $coefficient$ as a normalized mea
 	\begin{equation}
 	  \rho_{xy} = \frac{\sigma_{xy}}{\sigma_{x} \sigma_{y}}
 	\end{equation}
-	where $\sigma_{x}$ and $\sigma_{x}$ are the population standard deviations and $\sigma_{xy}$ is the population covariance.
+	where $\sigma_{x}$ and $\sigma_{y}$ are the population standard deviations and $\sigma_{xy}$ is the population covariance.
 	
 
 Now we are ready to finally give formulas for expected return and risk.
@@ -165,17 +165,18 @@ Lets assume that investor portfolio contains $N$ assets, then according to Capit
  E(R_{i})  = R_{f} + \frac{ [E(R_{m}) - R_{f}]} {\sigma^2(R_{m})} cov(R_{i}, R_{m})
 \end{equation} 
 
+where:
 \begin{description}
   \item [$E(R_{i})$]
-    expected return of asset $i$
+    - expected return of asset $i$;
   \item [$R_{f}$]
-    risk-free rate of interest (e.g. government bonds)
+    - risk-free rate of interest (e.g. government bonds);
   \item [$E(R_{m})$]
-    expected return of the market
+    - expected return of the market;
   \item [$\sigma^2(R_{m})$]
-    variance of the market return
+    - variance of the market return;
   \item [$cov(R_{i}, R_{m})$]
-    covariance between market return and asset $i$ return
+    - covariance between market return and asset $i$ return.
 \end{description}
 
 While the risk associated with entire portfolio is equal to:
@@ -185,19 +186,21 @@ While the risk associated with entire portfolio is equal to:
  \sigma_{p}  = \sqrt{\sum_{i} \sum_{j} w_{i}w_{j} \sigma_{i} \sigma_{j} \rho_{ij}}
 \end{equation} 
 
+where:
+
 \begin{description}
   \item [$\sigma_{p}$]
-    portfolio risk
+    - portfolio risk;
   \item [$w_{i}$]
-    weighting of component asset $i$
+    - weighting of component asset $i$;
   \item [$w_{j}$]
-    weighting of component asset $j$
+    - weighting of component asset $j$;
   \item [$\sigma_{i}$]
-    standard deviation of asset $i$
+    - standard deviation of asset $i$;
   \item [$\sigma_{j}$]
-    standard deviation of asset $j$
+    - standard deviation of asset $j$;
   \item [$\rho_{ij}$]
-    correlation coefficient between the returns on assets $i$ and $j$
+    - correlation coefficient between the returns on assets $i$ and $j$.
 \end{description}
  
 %---------------------------------------------------------------------------
@@ -219,7 +222,7 @@ Market breakouts are a great buying opportunities, on the other hand when you re
 Set of predefined rules decides  whether to take any action (they should recognize when the trend starts as well as when to exit) so the entire process can be easily automated.
 Such rules are quite simple but disciplined execution of them could lead to achieving spectacular returns year after year.
 It is all about cutting the losses and letting the profits run.
-Many leading hedge funds successfully use strategies based on trend following to manage their portfolios. (\cite{Trend01})  
+Many leading hedge funds successfully use strategies based on trend following to manage their portfolios \cite{Trend01}.  
 
 \begin{figure}[ht]
   \begin{center}
@@ -239,14 +242,11 @@ After that, we can automate the decision making process by designing and impleme
 
 There are three main types of trends:
 
-\begin{description}
-  \item [short-term trend]
-      Any price movement that occurs over a few hours or days.
-  \item [intermediate-term trend]
-      General movement in price data that lasts from three weeks to six months.
-  \item [long-term trend]
-      Any price movement that occurs over a significant period of time, often over one year or several years.
-\end{description}
+\begin{enumerate}
+  \item \textbf{Short-term trend}: any price movement that occurs over a few hours or days.
+  \item \textbf{Intermediate-term trend}: general movement in price data that lasts from three weeks to six months.
+  \item \textbf{Long-term trend}: any price movement that occurs over a significant period of time, often over one year or several years.
+\end{enumerate}
 
 
 
@@ -256,10 +256,10 @@ Following \cite{Trend01}, the core of each trading system based on trend followi
 More specifically we have to devise rules to answer the following questions:
 
 \begin{itemize}
-  \item how much money are we willing to put on a single trade
-  \item when to exit (what kind of losses are acceptable)
-  \item when to enter (when the trend has started) 
-  \item what markets are we interested in and how to split money between them (we would like to have a diverse portfolio (stocks, gold, etc.))
+  \item how much money are we willing to put on a single trade;
+  \item when to exit (what kind of losses are acceptable);
+  \item when to enter (when the trend has started); 
+  \item what markets are we interested in and how to split money between them (we would like to have a diverse portfolio (stocks, gold, etc.)).
 \end{itemize}
 
 These rules should reflect our investing style.
@@ -297,9 +297,9 @@ According to some researchers evolutionary algorithms are much better suited for
 Following \cite{Phd}, EA can be characterized by:
 
 \begin{itemize}
-  \item set of possible solutions is kept throughout the algorithm execution
-  \item selection process (low quality individuals are removed while well fitted are allowed to reproduce)
-  \item set of possible solutions is manipulated by genetic operators (e.g. mutation and recombination)
+  \item set of possible solutions is kept throughout the algorithm execution;
+  \item selection process (low quality individuals are removed while well fitted are allowed to reproduce);
+  \item set of possible solutions is manipulated by genetic operators (e.g. mutation and recombination).
 \end{itemize}
 
 Solution candidates are usually called \emph{individuals} and the entire set of them is called a \emph{population}. 
@@ -312,7 +312,7 @@ Mutation can be used to asure that property, as it is introducing random changes
 that we would not discover \cite{evo}.       
 
 Recombination simply merges the genetic information of both parents in order to produce offspring.
-The merging operation depends on random values, therefore the the whole process is stochastic.
+The merging operation depends on random values, therefore the whole process is stochastic.
 Because we are merging two individuals with good traits we hope to get similarly well adjusted individual.
 That strategy is a base for animal husbandry used since ancient times.
    
@@ -320,7 +320,7 @@ Obviously evolutionary algorithms resemble other general algorithm construction 
 turns out to be globally optimal) or dynamic programming (thanks to remembering results of some of the subresults we are able to solve some problems 
 in polynomial time, but often with additional memory needed).
 All of them have to be adjusted to actually solve our problem.
-Greedy approach is certainly the simplest and most straightforward but we have to careful as many problems do not have $optimal$ $substructure$ (optimal solution
+Greedy approach is certainly the simplest and most straightforward but we have to be careful because many problems do not have $optimal$ $substructure$ (optimal solution
 to problem contains optimal solution to sub-problem).
 If our optimisation problem does not have that property we may end up with completely wrong solution.
 Dynamic programming demands $optimal$ $substructure$ from problems as well.
@@ -329,7 +329,7 @@ It is a much more complicated way of contructing algorithms and some problems ar
 
 \subsection{Pseudocode of an evolutionary algorithm}
 
-Following \cite{evo}, the general scheme of evolutionary algorithm is presented in Algotithm~\ref{pseudo_EA}:
+Following \cite{evo}, the general scheme of evolutionary algorithm is presented in Algotithm~\ref{pseudo_EA}.
  
 % \begin{algorithmic}
 % 
@@ -383,11 +383,11 @@ Following \cite{evo}, the general scheme of evolutionary algorithm is presented 
       \population $\leftarrow$ \select{\population,\offspring} \;
       
   }
-  \caption{Pseudocode of generic EA}\label{pseudo_EA}
+  \caption{Pseudocode of generic EA (\cite{evo})}\label{pseudo_EA}  
 \end{algorithm}
 
 We start each round of computation by selecting parents from the entire population.
-As mentioned previously, the fitter the individual the more likely it will participate in process of reproduction.
+As mentioned previously, the fitter the individual the more likely it will participate in the process of reproduction.
 Mutation is applied to newly created offspring, but with very low probability.
 After new individuals evaluation, we have to decide which organisms will survive to next round of computation. 
 
@@ -400,25 +400,25 @@ There are some well established methods of overcoming the problem of premature c
 
 Following \cite{Phd}, the most common methods of maintaining population diversity include:
 
-\begin{description}
-  \item [fitness sharing]
-	The main idea behind this method is to divide the entire population of individuals into subpopulations.
+\begin{enumerate}
+
+  \item \textbf{Fitness sharing}:
+	the main idea behind this method is to divide the entire population of individuals into subpopulations.
 	Individuals in subpopulations have to share resources.
 	If an individual has many close neighbours (in terms of predefined distance measure) its fitness is lower compared to situation when there are
 	no other individuals in vicinity. 
 	
-  \item [restricted mating]
-	The gist of this method is to allow two individuals to mate only if they are substantially different (different in terms of some predefined metric).
-  \item [isolation by distance]
-	The concept of location is introduced so distinct subpopulations can exchange individuals by the process of migration. 
-  \item [overspecification]
-	Apart from solution to the problem, each individual contains unused part of information that can manifest itself at some point in the future.
-  \item [reinitialization]
+  \item \textbf{Restricted mating}:
+	the gist of this method is to allow two individuals to mate only if they are substantially different (different in terms of some predefined metric).
+  \item \textbf{Isolation by distance}:
+	the concept of location is introduced so distinct subpopulations can exchange individuals by the process of migration. 
+  \item \textbf{Overspecification}:
+	apart from solution to the problem, each individual contains unused part of information that can manifest itself at some point in the future.
+  \item \textbf{Reinitialization}:
 	The whole population or at least a significant part is reinitialized after some time or when the search process stagnates.
-  \item [crowding]
-	Only a part of the entire population is subjected to process of selection, recombination and mutation. 
-\end{description}
-
+  \item \textbf{Crowding}:
+	only a part of the entire population is subjected to process of selection, recombination and mutation. 
+\end{enumerate}
 
 \subsection{Elitism}
 
@@ -431,7 +431,7 @@ Sometimes we maintain an external set of non-dominated individuals that could re
 
 Evolutionary algorithms are widely used to solve real-world economic problems.
 
-Following \cite{EA-bankruptcy}, genetic algorithm programming, which belongs to a class of EAs, were used to predict bankruptcy .
+Following \cite{EA-bankruptcy}, genetic algorithm programming, which belongs to a class of EAs, were used to predict bankruptcy.
 Authors used historical data to build a function assessing whether the particular company is heading to financial problems.
 Approximately 75\% of test data was clasified correctly.
 
@@ -443,11 +443,11 @@ returns.
 Authors of \cite{intro_to_finance} claim that evolutionary algorithms are used to: 
 
 \begin{itemize}
-  \item forecast corporate earnings, exchange rate volatility, etc.
-  \item build adaptive trading strategies
-  \item optimize portfolio composition
-  \item market risk computation
-  \item derivatives modelling
+  \item forecast corporate earnings, exchange rate volatility, etc.;
+  \item build adaptive trading strategies;
+  \item optimize portfolio composition;
+  \item market risk computation;
+  \item derivatives modelling.
 \end{itemize}
 
 An interesting application of EAs is presented in \cite{Dre_Sep}, authors tried to generate investment strategies using EAs, CEAs and CoEMAS.
@@ -459,7 +459,7 @@ Entire system was implemented from scratch and it turned out to provide profitab
 Quantum-inspired EAs are used for option pricing model calibration, which is a very interesting modification of standard evolutionary approach.
 Authors of \cite{quantum} point out that quantum based evolutionary algorithm has not been widely used in financial problems so far.
 Qubits (quantum bits) are used as a mean of representing chromosomes instead of standard binary representation.
-Quantum bit is defined as follows:
+Quantum bit is defined as follows \cite{quantum}:
 $$
   \Ket{q^{i}} = \alpha \Ket{0} + \beta \Ket{1} \\
 $$
@@ -492,25 +492,25 @@ Obtained results clearly show that EAs are capable of delivering exceptionally g
 Many computational problems require searching through a huge search space.
 Such problems can substantially benefit from an effective use of parallelism.
 In that case, many different possibilities are explored simultaneously. 
-It turns out that the process of biological evolution could provide an efficient method for addressing these problems.(\cite{Mitchell01})
-Because of this genetic algorithms belong to a class of Evolutionary Algorithms (\ref{sec:evolAlgorithms}).
+It turns out that the process of biological evolution could provide an efficient method for addressing these problems \cite{Mitchell01}.
+Genetic algorithms belong to a class of Evolutionary Algorithms (\ref{sec:evolAlgorithms}).
 
 
 The principles of genetics and natural selection lay the foundations for genetic algorithms (GAs).
 GAs are very powerfull tool to solve search and optimization problems.
 
 GAs rely on an evolving population composed of many individuals trying to maximize their \emph{fitness} (i.e., maximizes the return, minimizes cost of fabrication).  
-The method was developed by John Holland (1975) over the course of the 1960s and 1970s.(\cite{Haupt:2004:PGA:1007746})
+The method was developed by John Holland (1975) over the course of the 1960s and 1970s \cite{Haupt:2004:PGA:1007746}.
 
 \subsection{Elements of genetic algorithms}
 
 Almost all genetic algorithms have some elements in common \cite{Mitchell01}:
 \begin{itemize}
-  \item populations of chromosomes
-  \item selection according to fitness
-  \item crossover to produce new offspring
-  \item random mutation of new offspring
-  \item fitness function
+  \item populations of chromosomes;
+  \item selection according to fitness;
+  \item crossover to produce new offspring;
+  \item random mutation of new offspring;
+  \item fitness function.
 \end{itemize}
 
 \begin{figure}[ht]
@@ -526,8 +526,8 @@ Fitness functions are used to assess how well specific chromosome solves the pro
 The better fitting chromosomes are more likely to be involved in reproduction process.
 That mimics the biological process of evolution - fitness of an organism is obtained by means of random variation (mutation, recombination, etc.) and natural selection
 thus propagating genetic material to future generations.
-These rules seems to be simple, but they are in fact responsible for extraordinary variety and complexity of the biosphere.
-\cite{Mitchell01} 
+These rules seems to be simple, but they are in fact responsible for extraordinary variety and complexity of the biosphere 
+\cite{Mitchell01}. 
  
 According to \cite{Mitchell01} , high parallelism, discovering and emphasizing solutions that are already quite good are the main reason why GAs work.  
  
@@ -580,11 +580,11 @@ In fact, this phenomena is a diagnostic problem because observing fitness measur
 Following \cite{Dre}, co-evolutionary interactions could include:
 
 \begin{itemize}
-  \item competition for limited resources
-  \item predator-prey interactions
-  \item host-parasite interactions
-  \item mutualism
-  \item commensalism
+  \item competition for limited resources;
+  \item predator-prey interactions;
+  \item host-parasite interactions;
+  \item mutualism;
+  \item commensalism.
 \end{itemize}
 
 The fitness of each individual simultaneously depends on fitness of the solution as well as other individuals' quality.
@@ -669,7 +669,7 @@ According to \cite{co-evol}, the pseudocode of cooperative co-evolutionary algor
       }
       \T $\leftarrow$ T + 1 \;
   }
-  \caption{Pseudocode of generic CEA}\label{pseudo_CEA}
+  \caption{Pseudocode of generic CEA (\cite{co-evol})}\label{pseudo_CEA}
 \end{algorithm}
 
 
@@ -682,7 +682,7 @@ A complete solution is formed by an individual combined with its collaborators.
 
 There is no universally accepted definition of the term \emph{agent}.
 Nevertheless majority of researchers agree that \emph{agent} operates inside some \emph{environment} and should be capable of \emph{autonomous action}.
-There is little agreement beyond this. (\cite{Weiss}) 
+There is little agreement beyond this \cite{Weiss}. 
  
 In theory it is possible to imagine a single agent working in an environment but it is quite rare.
 The most common situation is a group of autonomous agents interacting inside the environment.
@@ -691,15 +691,15 @@ In order to be capable of fulfilling all the above requirements environments hav
 \subsection{Intelligent agents}
 
 The most useful type of \emph{agents} is called \emph{intelligent agent}.
-The \emph{intelligent agent} is capable of (\cite{Weiss}):
+The \emph{intelligent agent} is capable of \cite{Weiss}:
 
 \begin{description}
-  \item [reactivity]
-	  agents can respond to changes in the environment and properly adjust to new conditions
-  \item [pro-activeness]
-	  agents take the initiative to accomplish their goals
-  \item [social ability]
-	  agents are capable of intelligent interaction with other agents to satisfy their objectives
+  \item [Reactivity]
+	  - agents can respond to changes in the environment and properly adjust to new conditions;
+  \item [Pro-activeness]
+	  - agents take the initiative to accomplish their goals;
+  \item [Social ability]
+	- agents are capable of intelligent interaction with other agents to satisfy their objectives.
 \end{description}
 
 \subsection{Co-evolutionary Multi-agent System (CoEMAS)}
@@ -708,9 +708,9 @@ The \emph{intelligent agent} is capable of (\cite{Weiss}):
 According to  \cite{Dre} ,\cite{Dre2}, CoEMAS contains the following elements:
 
 \begin{itemize}
-  \item the environment 
-  \item the set of species that co-evolve 
-  \item the set of different resource types (there should be at least one resource type)
+  \item the environment; 
+  \item the set of species that co-evolve; 
+  \item the set of different resource types (there should be at least one resource type).
 \end{itemize}
 
 The environment contains information about available resources, its topography (usually represented as a weighted directed graph).
@@ -722,23 +722,23 @@ Additionally we define the set of actions that agent can perform :
 
 \begin{description}
   \item [die]
-      agent dies when the amount of resources it helds is too low to sustain life (freed resource is given back to environment)
+      - agent dies when the amount of resources it helds is too low to sustain life (freed resource is given back to environment);
   \item [accept]
-      agent accepts partner for reproduction (only agents having more than threshold amount of resources are taken into account)
+      - agent accepts partner for reproduction (only agents having more than threshold amount of resources are taken into account);
   \item [give]
-      agent is obliged to give some resource to other agent
+      - agent is obliged to give some resource to other agent;
   \item [get]
-      agent is allowed to get some resource from other agent
+      - agent is allowed to get some resource from other agent;
   \item [seek]
-      agent finds another agent so actions like get and finding appropriate partner for reproduction can be performed
+      - agent finds another agent so actions like get and finding appropriate partner for reproduction can be performed;
   \item [clone]
-      action of producing offspring - some amount of resources is passed to newly created agents from parents
+      - action of producing offspring - some amount of resources is passed to newly created agents from parents;
   \item [mutation]
-      this action is responsible for mutating the agent (introduces random genetic change)
+      - this action is responsible for mutating the agent (introduces random genetic change);
   \item [migration]
-      agent is allowed to migrate from the current node to another
+      - agent is allowed to migrate from the current node to another;
   \item [recombination]
-      recombination operator is applied
+      - recombination operator is applied.
 
 \end{description}
 
@@ -784,6 +784,60 @@ After performing actions assigned to a particular strategy, a new strategy is el
 \ENDWHILE
 
 \end{algorithmic}
+
+
+\begin{algorithm}
+  \SetKwData{returnOrientedSubpopulation}{returnOrientedSubpopulation}
+  \SetKwData{riskOrientedSubpopulation}{riskOrientedSubpopulation}
+  \SetKwData{parents}{parents}
+  \SetKwData{T}{T}
+  \SetKwData{offspring}{offspring}
+  \SetKwData{population}{population}
+  \SetKwData{mutants}{mutants}
+  \SetKwFunction{evaluate}{evaluate}
+  \SetKwFunction{evaluateWithCollaborators}{evaluateWithCollaborators}
+  \SetKwFunction{initialise}{initialise}
+  \SetKwFunction{selectParents}{selectParents}
+  \SetKwFunction{recombine}{recombine}
+  \SetKwFunction{merge}{merge}
+  \SetKwFunction{mutate}{mutate}
+  \SetKwFunction{selectSurvivors}{selectSurvivors}
+  \SetKwFunction{selectCollaborators}{selectCollaborators}
+
+  \SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
+ 
+
+  \Input{a set of populations $P$}
+  \BlankLine
+  
+  \ForEach{population $p_s$ $\in$ $P$}{
+	  \initialise($p_s$)\;
+  }
+
+  \ForEach{population $p_s$ $\in$ $P$}{
+	  \evaluate($p_s$)\;
+   }
+
+  \T $\leftarrow$ 0 \;
+
+  \Repeat{TERMINATION CONDITION is satisfied}{
+      \ForEach{population $p_s$ $\in$ $P$}{
+	\parents $\leftarrow$  \selectParents{$p_s$} \;
+	\offspring $\leftarrow$ \recombine{\parents} \;
+	\selectCollaborators{$P$}
+	\evaluateWithCollaborators{\offspring}  
+
+	\ForEach{$individual$ $\in$ \offspring}{
+	    \evaluate($individual$)\;
+	}
+
+	$p_s$ $\leftarrow$ \selectSurvivors{$p_s$} \;
+      }
+      \T $\leftarrow$ T + 1 \;
+  }
+  \caption{Pseudocode of generic CEA (\cite{co-evol})}\label{pseudo_CEA}
+\end{algorithm}
+
 
 It is obvious that applying above strategies we try to mimick behaviour of real organisms struggling in a hostile environment.
 

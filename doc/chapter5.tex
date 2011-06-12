@@ -3,28 +3,27 @@
 \label{cha:user_guide}
 
 
-
 \section{List of scripts}
 
 \begin{description}
   \item [create\_jars.sh]
-      It is a script responsible for building jar files of all projects needed to run co-evolutionary algorithm on multi-agent running platform. 
+      - it is a script responsible for building jar files of all projects needed to run co-evolutionary algorithm on multi-agent running platform. 
   \item [deploy.sh]
-      Script responsible for running co-evolutionary algorithm on a multi-agent platform.
+      - script responsible for running co-evolutionary algorithm on a multi-agent platform.
       A special directory called \emph{sandbox} is created and all necessary jar files as well as files containing preprocessed historical data are copied to \emph{sandbox}.
       It also specifies the number of Computing Nodes that will be used for computation.
       ActiveMQ should be started before running this script.
   \item [create\_agent\_jars.sh]
-      Script responsible for building jar files of all projects needed to run CoEMAS system on multi-agent running platform. 
+      - script responsible for building jar files of all projects needed to run CoEMAS system on multi-agent running platform. 
   \item [agent\_node\_deploy.sh]
-      Script responsible for running CoEMAS system on a multi-agent platform.
+      - script responsible for running CoEMAS system on a multi-agent platform.
       A special directory called \emph{sandbox} is created and all necessary jar files as well as files containing preprocessed historical data are copied to \emph{sandbox}.
       It also specifies the number of Computing Nodes that will be used for computation.
       ActiveMQ should be started before running this script. 
   \item [precompute.R]
-      Script responsible for precomputing standard deviation and correlation coefficients from historical data.
+      - script responsible for precomputing standard deviation and correlation coefficients from historical data.
   \item [PrecomputeCovVarForMPT.R]
-      Script responsible for precomputing covariance and variance from historical data. 
+      - script responsible for precomputing covariance and variance from historical data. 
 
 \end{description}
 
@@ -34,14 +33,14 @@
 
 \begin{description}
  \item [trend following]
-      In order to adjust trend following algorithm we have to modify the script code.
+      - in order to adjust trend following algorithm we have to modify the script code.
       Thanks to comments present in code, it is not that difficult.
   \item [genetic algorrithm]
-      There are constants (regulating algorithm behaviour) in file GeneticAlgorithmImpl.java that can be set by class constructor. 
+      - there are constants (regulating algorithm behaviour) in file GeneticAlgorithmImpl.java that can be set by class constructor. 
   \item [co-evolutionary algorithm]
-      Because Spring manages the bean creation of co-evolutionary algorithm, all coefficients responsible for adjusting algorithm behaviour can be set by constructor injection. 
+      - because Spring manages the bean creation of co-evolutionary algorithm, all coefficients responsible for adjusting algorithm behaviour can be set by constructor injection. 
   \item [CoEMAS] 
-      CoEMAS can be adjusted in the same way as the co-evolutionary algorithm (constructor injection).
+      - CoEMAS can be adjusted in the same way as the co-evolutionary algorithm (constructor injection).
 \end{description}
 
 
