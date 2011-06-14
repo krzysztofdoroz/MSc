@@ -413,7 +413,8 @@ Following \cite{Phd}, the most common methods of maintaining population diversit
   \item \textbf{Isolation by distance}:
 	the concept of location is introduced so distinct subpopulations can exchange individuals by the process of migration. 
   \item \textbf{Overspecification}:
-	apart from solution to the problem, each individual contains unused part of information that can manifest itself at some point in the future.
+	apart from solution to the problem, each individual contains unused part of information (which is not taken into consideration during fitness calculation)
+	that can manifest itself at some point in the future.
   \item \textbf{Reinitialization}:
 	The whole population or at least a significant part is reinitialized after some time or when the search process stagnates.
   \item \textbf{Crowding}:
@@ -552,14 +553,37 @@ Following \cite{Mitchell01} - the simplest form of genetic algorithm involves th
 
 \end{description}
 
+\subsection{Application of EA to multi-objective optimization problems}
+
+Evolutionary algorithms turn out to be very robust approach to multi-objective optimization problems.
+Authors of \cite{drezewski2010review} tested their implementation on a set of well-known MOOPs \cite{drezewski2010review}:
+
+\begin{itemize}
+ \item Kursawe problem: \begin{equation} 
+Kursawe \equiv
+ \begin{cases}
+       & f_{1}(x) = \sum_{i = 0}^{n - 1}(-10exp(-0.2\sqrt{(x_{i}^{2} + x_{i + 1}^2)})) \\
+       &  f_{2}(x) = \sum_{i = 1}^{n}(|x_{i}|^{0.8} + 5 \sin({x_{i}^3}))  \\ 
+			  &  n = 3,  -5 \leq x_{1}, x_{2}, x_{3} \leq 5 
+			  
+\end{cases}  
+\end{equation}
+
+  \item ZDT.
+    
+\end{itemize}
+
+Results were compared with solutions proposed by one of the most popular multi-objective evolutionary algorithms that use elitism
+ approach: NSGA-II and SPEA2 \cite{drezewski2010review}.
+
 %---------------------------------------------------------------------------
 
 \section{Co-evolutionary algorithms}
 \label{sec:co-evol}
 
-Co-evolutionary algorithms seems to have a huge advantage over evolutionary algorithms (EAs) - they can be applied to problems which do not have easily formulated 
+Co-evolutionary algorithms seem to have a huge advantage over evolutionary algorithms (EAs) - they can be applied to problems which do not have easily formulated 
 fitness function (e.g. game-playing strategies).
-It commonly believed that they tend to perform better when dealing with infinite search spaces than regular EAs \cite{co-evol}.
+It is commonly believed that they tend to perform better when dealing with infinite search spaces than regular EAs \cite{co-evol}.
 Because of these advantages many researchers believe that they have a great potential.
 
 Co-evolutionary algorithms rely on process of co-evolution (two or more species coexist and interact with each others in the same environment).
@@ -754,91 +778,45 @@ After performing actions assigned to a particular strategy, a new strategy is el
 
 \subsection{Basic activities of agent in CoEMAS}
 
-
-\begin{algorithmic}
-
-\STATE $r^{\gamma}$ := $r^{\gamma}_{init}$ \COMMENT{assign initial amount of resource to the agent}
-
-\WHILE{$r^{\gamma}$ > 0}
-
-\STATE \COMMENT{choose a profile $pr_{i}$} 
-
-\IF{$pr_{i}$ is the $resource$ $profile$} 
-  
-\STATE perform actions defined in $resource$ $profile$ which means obtaining more resources from other agents or environment
-
-\ELSE
-        \IF {$pr_{i}$ is the $reproduction$ $profile$}
-                \STATE perform actions defined in $reproduction$ $profile$ if amount of resource allows reproduction, 
-			after reproduction the amount of resource possessed by an individual is lowered by a certain amount, which is given to offspring
-        \ENDIF
-
-\ELSE 
-	\IF {$pr_{i}$ is the $migration$ $profile$}
-                \STATE perform actions defined in $migration$ $profile$ if amount of resource allows migration, some of the resource held by an individual is
-			passed to the environment (the migration process is not free)
-        \ENDIF
-
-\ENDIF
-
-\ENDWHILE
-
-\end{algorithmic}
-
+Pseudocode for activities of each agent is presented in Algorithm~\ref{pseudo_CoEMAS}.
 
 \begin{algorithm}
-  \SetKwData{returnOrientedSubpopulation}{returnOrientedSubpopulation}
-  \SetKwData{riskOrientedSubpopulation}{riskOrientedSubpopulation}
-  \SetKwData{parents}{parents}
-  \SetKwData{T}{T}
-  \SetKwData{offspring}{offspring}
-  \SetKwData{population}{population}
-  \SetKwData{mutants}{mutants}
-  \SetKwFunction{evaluate}{evaluate}
-  \SetKwFunction{evaluateWithCollaborators}{evaluateWithCollaborators}
-  \SetKwFunction{initialise}{initialise}
-  \SetKwFunction{selectParents}{selectParents}
-  \SetKwFunction{recombine}{recombine}
-  \SetKwFunction{merge}{merge}
-  \SetKwFunction{mutate}{mutate}
-  \SetKwFunction{selectSurvivors}{selectSurvivors}
-  \SetKwFunction{selectCollaborators}{selectCollaborators}
-
+  
+  \SetKwData{Resource}{Resource}
+  \SetKwData{profile}{profile}
+  \SetKwData{InitialAmount}{InitialAmount}
+  \SetKwFunction{chooseProfile}{chooseProfile}
+  
   \SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
  
-
-  \Input{a set of populations $P$}
   \BlankLine
   
-  \ForEach{population $p_s$ $\in$ $P$}{
-	  \initialise($p_s$)\;
-  }
+  \tcc{assigning initial amount of resource to each agent}   
+  \Resource $\leftarrow$  \InitialAmount \; 
 
-  \ForEach{population $p_s$ $\in$ $P$}{
-	  \evaluate($p_s$)\;
-   }
-
-  \T $\leftarrow$ 0 \;
-
-  \Repeat{TERMINATION CONDITION is satisfied}{
-      \ForEach{population $p_s$ $\in$ $P$}{
-	\parents $\leftarrow$  \selectParents{$p_s$} \;
-	\offspring $\leftarrow$ \recombine{\parents} \;
-	\selectCollaborators{$P$}
-	\evaluateWithCollaborators{\offspring}  
-
-	\ForEach{$individual$ $\in$ \offspring}{
-	    \evaluate($individual$)\;
-	}
-
-	$p_s$ $\leftarrow$ \selectSurvivors{$p_s$} \;
+  \tcc{agent tries to act according to one of the predefined profiles if its resource level allows it to live} 
+  \While{\Resource > 0}{
+      \tcc{choose a profile}
+      \profile $\leftarrow$ \chooseProfile \;
+      
+      \If(){\profile is the $resource$ $profile$}{
+	   \tcc{perform actions defined in $resource$ $profile$ which means obtaining more resources from other agents or environment} 
       }
-      \T $\leftarrow$ T + 1 \;
+      \ElseIf{\profile is the $reproduction$ $profile$}{
+	    \tcc{perform actions defined in $reproduction$ $profile$ if amount of resource allows reproduction, 
+			after reproduction the amount of resource possessed by an individual is lowered by a certain amount, which is given to offspring}
+	}
+      \ElseIf{\profile is the $migration$ $profile$}{ \tcc{perform actions defined in $migration$ $profile$ if amount of resource allows migration, some of the resource
+	      held by an individual is passed to the environment (the migration process is not free)}}
+
+     
+
   }
-  \caption{Pseudocode of generic CEA (\cite{co-evol})}\label{pseudo_CEA}
+  \caption{Pseudocode of agent activities in CoEMAS }
+  \label{pseudo_CoEMAS}
 \end{algorithm}
 
 
-It is obvious that applying above strategies we try to mimick behaviour of real organisms struggling in a hostile environment.
+It is obvious that applying these strategies we try to mimick behaviour of real organisms struggling in a hostile environment.
 
  

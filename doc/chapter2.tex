@@ -24,6 +24,7 @@ It was configured in the following way:
 \end{itemize}
 
 Trend following algorithm has been tested without multi-agent running platform as it is a standalone R script.
+Apart from that, it is completely deterministic algorithm so each time we run it, we will get the same results.
 
 \subsection{Trend Following}
 
@@ -40,7 +41,7 @@ With values $N = 10$, $M = 20$ the SMA method focused on short-term trends.
   \begin{center}
     \includegraphics[scale=.5]{rplot0.png}
   \end{center}
-  \caption{Chart showing value of our portfolio in time}
+  \caption{Chart showing value of our portfolio in time (short-term trends)}
   \label{fig:trend-short}
 \end{figure}
 
@@ -58,7 +59,7 @@ In this particular test (with values: $N = 20$, $M = 40$), trend following algor
   \begin{center}
     \includegraphics[scale=.5]{rplot.png}
   \end{center}
-  \caption{Chart showing value of our portfolio in time}
+  \caption{Chart showing value of our portfolio in time (intermediate-term trends)}
   \label{fig:trend-int}
 \end{figure}
 
@@ -75,21 +76,23 @@ In both cases we encountered periods of time when portfolio contained no assets 
 
 \subsection{Genetic algorithm}
 
-Results are presented in figure ~\ref{fig:gen-algo}.
+The best results that we were able to obtain are presented in figure~\ref{fig:gen-algo}.
+Apart from that, the average values of 5 runs are shown in figure~\ref{fig:gen-algo-ave-2010}.
+As can be easily spotted the algorithm perform reasonably well on the average.
+
 The following configuration was used:
 \begin{itemize}
-  \item $reproduction\_$ $coeff$ was set to 0.2
-  \item population size is 512
-  \item $mutation$ $\_$ $coeff$ was set to 0.1
-  \item $extinction$ $\_$ $coeff$ was set to 0.3
+  \item $reproduction\_$ $coeff$ was set to 0.2;
+  \item population size is 512;
+  \item $mutation$ $\_$ $coeff$ was set to 0.1;
+  \item $extinction$ $\_$ $coeff$ was set to 0.3.
 \end{itemize}
-
 
 \begin{figure}[ht]
   \begin{center}
     \includegraphics[scale=.5]{best_2010_gen.png}
   \end{center}
-  \caption{Chart showing value of our portfolio in time}
+  \caption{Chart showing value of our best portfolio in time for GA}
   \label{fig:gen-algo}
 \end{figure}
 
@@ -97,7 +100,7 @@ The following configuration was used:
   \begin{center}
     \includegraphics[scale=.5]{ave_2010_gen.png}
   \end{center}
-  \caption{Chart showing value of our portfolio in time}
+  \caption{Chart showing average values of our portfolio in time for GA}
   \label{fig:gen-algo-ave-2010}
 \end{figure}
 
@@ -106,11 +109,11 @@ The following configuration was used:
 
 The following configuration was used:
 \begin{itemize}
-  \item $reproduction\_$ $coeff$ was set to 0.2
-  \item subpopulation size in each computing node was set to 64
-  \item number of computing nodes was set to 2
-  \item $mutation$ $\_$ $coeff$ was set to 0.1
-  \item $extinction$ $\_$ $coeff$ was set to 0.3
+  \item $reproduction\_$ $coeff$ was set to 0.2;
+  \item subpopulation size in each computing node was set to 64;
+  \item number of computing nodes was set to 2;
+  \item $mutation$ $\_$ $coeff$ was set to 0.1;
+  \item $extinction$ $\_$ $coeff$ was set to 0.3.
 \end{itemize}
 
 Results presented in figure~\ref{fig:co_eval_return} clearly show that the return of our investment is much higher than any other algorithm could achieve.  
@@ -121,7 +124,15 @@ In this case algorithm was tuned to treat non-dominated solutions from return or
   \begin{center}
     \includegraphics[scale=.5]{co-evol-value-oriented.png}
   \end{center}
-  \caption{Chart showing value of our portfolio in time}
+  \caption{Chart showing value of our best portfolio in time for CEA}
+  \label{fig:co_eval_return}
+\end{figure}
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[scale=.5]{cea_ave_2010.png}
+  \end{center}
+  \caption{Chart showing average value of our portfolio value in time for CEA}
   \label{fig:co_eval_return}
 \end{figure}
 
@@ -138,6 +149,14 @@ In fact all of the selected solutions come from the second one.
 
 \begin{figure}[ht]
   \begin{center}
+    \includegraphics[scale=.5]{cea_ave_risk_2010.png}
+  \end{center}
+  \caption{Chart showing average value of risk in time for CEA}
+  \label{fig:co_eval_risk}
+\end{figure}
+
+\begin{figure}[ht]
+  \begin{center}
     \includegraphics[scale=.5]{pareto_co_evol.png}
   \end{center}
   \caption{Chart showing the relation between return and risk of the particular solution}
@@ -145,30 +164,23 @@ In fact all of the selected solutions come from the second one.
 \end{figure}
 
 
-\begin{figure}[ht]
-  \begin{center}
-    \includegraphics[scale=.5]{co-evol-risk-value-oriented.png}
-  \end{center}
-  \caption{Chart showing value of risk in time}
-  \label{fig:co_eval_risk}
-\end{figure}
-
 \subsection{CoEMAS}
 
 The following configuration was used:
 \begin{itemize}
-  \item $reproduction\_$ $coeff$ was set to 0.2
-  \item each species was represented initially by 64 agents (in each computing node)
-  \item number of computing nodes was set to 2
-  \item $mutation$ $\_$ $coeff$ was set to 0.1
-  \item $extinction$ $\_$ $coeff$ was set to 0.3
+  \item $reproduction\_$ $coeff$ was set to 0.2;
+  \item each species was represented initially by 64 agents (in each computing node);
+  \item number of computing nodes was set to 2;
+  \item $mutation$ $\_$ $coeff$ was set to 0.1;
+  \item $extinction$ $\_$ $coeff$ was set to 0.3.
 \end{itemize}
 
 Figure~\ref{fig:agent_return} presents portfolio value in time while  figure~\ref{fig:agent_risk} presents the risk associated with our investments.
+Returns are not so spectacular as in CEA but on the other hand the amount of risk we have to take is much lower.
 
 \begin{figure}[ht]
   \begin{center}
-    \includegraphics[scale=.5]{agent-return.png}
+    \includegraphics[scale=.5]{coemas_ave_2010.png}
   \end{center}
   \caption{Chart showing value of our portfolio in time (CoEMAS)}
   \label{fig:agent_return}
@@ -182,6 +194,14 @@ Figure~\ref{fig:pareto_coemas} shows the results of computation (because of the 
 Solutions chosen to be a blueprint for our portfolio are shown as big black dots.
 We can easily spot that they are non dominated (in Pareto sense). 
 
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[scale=.5]{coemas_ave_risk_2010.png}
+  \end{center}
+  \caption{Chart showing average value of risk in time (CoEMAS)}
+  \label{fig:agent_risk}
+\end{figure}
+
 
 \begin{figure}[ht]
   \begin{center}
@@ -191,13 +211,6 @@ We can easily spot that they are non dominated (in Pareto sense).
   \label{fig:pareto_coemas}
 \end{figure}
 
-\begin{figure}[ht]
-  \begin{center}
-    \includegraphics[scale=.5]{agent-risk.png}
-  \end{center}
-  \caption{Chart showing value of risk in time (CoEMAS)}
-  \label{fig:agent_risk}
-\end{figure}
 
 \subsection{Conclusions}
 
@@ -218,7 +231,7 @@ account is the most serious limitation.
 
 \section{Second Set of Tests}
 
-The main goal of this set of tests is to chech the impact of increasing the number of computing nodes to the quality of solutions we obtain from implemented algorithms.
+The main goal of this set of tests is to check the impact of increasing the number of computing nodes to the quality of solutions we obtain from implemented algorithms.
 
 Besides the number of computing nodes (now 8 computing nodes will be running at once), the same historical data and configuration has been
  used (as in \ref{sec:first_set_of_tests}) to produce results.
@@ -229,11 +242,11 @@ Besides the number of computing nodes (now 8 computing nodes will be running at 
 
 The following configuration was used:
 \begin{itemize}
-  \item $reproduction\_$ $coeff$ was set to 0.2
-  \item subpopulation size in each computing node was set to 64
-  \item number of computing nodes was set to 8
-  \item $mutation$ $\_$ $coeff$ was set to 0.1
-  \item $extinction$ $\_$ $coeff$ was set to 0.3
+  \item $reproduction\_$ $coeff$ was set to 0.2;
+  \item subpopulation size in each computing node was set to 64;
+  \item number of computing nodes was set to 8;
+  \item $mutation$ $\_$ $coeff$ was set to 0.1;
+  \item $extinction$ $\_$ $coeff$ was set to 0.3.
 \end{itemize}
 
 Figure~\ref{fig:co_evol_8_risk} presents risk associated with our portfolio.
@@ -243,17 +256,17 @@ Apart from that, higher number of nodes offer similar performance in terms of re
 
 \begin{figure}[ht]
   \begin{center}
-    \includegraphics[scale=.5]{co-evol-8.png}
+    \includegraphics[scale=.5]{cea_ave_risk_2010_8.png}
   \end{center}
-  \caption{Chart showing value of risk in time}
+  \caption{Chart showing average value of risk in time for CEA}
   \label{fig:co_evol_8_risk}
 \end{figure}
 
 \begin{figure}[ht]
   \begin{center}
-    \includegraphics[scale=.5]{co_evol_8_return.png}
+    \includegraphics[scale=.5]{cea_ave_2010_8.png}
   \end{center}
-  \caption{Chart showing portfolio value in time}
+  \caption{Chart showing average portfolio value in time for CEA}
   \label{fig:co_evol_8_return}
 \end{figure}
 
@@ -261,19 +274,19 @@ Apart from that, higher number of nodes offer similar performance in terms of re
 
 The following configuration was used:
 \begin{itemize}
-  \item $reproduction\_$ $coeff$ was set to 0.2
-  \item each species was represented initially by 64 agents (in each computing node)
-  \item number of computing nodes was set to 8
-  \item $mutation$ $\_$ $coeff$ was set to 0.1
-  \item $extinction$ $\_$ $coeff$ was set to 0.3
+  \item $reproduction\_$ $coeff$ was set to 0.2;
+  \item each species was represented initially by 64 agents (in each computing node);
+  \item number of computing nodes was set to 8;
+  \item $mutation$ $\_$ $coeff$ was set to 0.1;
+  \item $extinction$ $\_$ $coeff$ was set to 0.3.
 \end{itemize}
 
 
 \begin{figure}[ht]
   \begin{center}
-    \includegraphics[scale=.5]{agent_8_risk.png}
+    \includegraphics[scale=.5]{coemas_ave_risk_2010_8.png}
   \end{center}
-  \caption{Chart showing portfolio value in time}
+  \caption{Chart showing average portfolio risk in time for CoEMAS}
   \label{fig:agent_8_risk}
 \end{figure}
 
@@ -284,9 +297,9 @@ There is no significant improvement in terms of return (as shown in figure~\ref{
 
 \begin{figure}[ht]
   \begin{center}
-    \includegraphics[scale=.5]{agent_return_8.png}
+    \includegraphics[scale=.5]{coemas_ave_2010_8.png}
   \end{center}
-  \caption{Chart showing portfolio value in time}
+  \caption{Chart showing average portfolio value in time for CoEMAS}
   \label{fig:agent_8_return}
 \end{figure}
 
@@ -303,6 +316,7 @@ The same 3 companies stocks have been selected to construct our portfolio as in 
 Year 2008 was extremely hard for investors due to crisis caused by credit crunch back in 2007.
 During 2008, WIG 20 lost over 47\% in value.
 Under such difficult circumstances it is tempting to run tests in order to asssess each algorithm ability to minimize losses.
+The best solutions obtained as well as average ones are included.  
 
 \subsection{Trend Following}
 
@@ -315,7 +329,7 @@ Results are presented in figure~\ref{fig:trend_foll_short}.
   \begin{center}
     \includegraphics[scale=.5]{trend_following_short.png}
   \end{center}
-  \caption{Chart showing portfolio value in time}
+  \caption{Chart showing portfolio value in time (short-term trends)}
   \label{fig:trend_foll_short}
 \end{figure}
 
@@ -329,7 +343,7 @@ Results are presented in figure~\ref{fig:trend_foll_inter}.
   \begin{center}
     \includegraphics[scale=.5]{trend_following_inter.png}
   \end{center}
-  \caption{Chart showing portfolio value in time}
+  \caption{Chart showing portfolio value in time (intermediate-term trends)}
   \label{fig:trend_foll_inter}
 \end{figure}
 
@@ -343,13 +357,15 @@ We managed to minimize the losses thanks to the fact that we completely ceased t
 
 The following configuration was used:
 \begin{itemize}
-  \item $reproduction\_$ $coeff$ was set to 0.2
-  \item population size is 512
-  \item $mutation$ $\_$ $coeff$ was set to 0.1
-  \item $extinction$ $\_$ $coeff$ was set to 0.3
+  \item $reproduction\_$ $coeff$ was set to 0.2;
+  \item population size is 512;
+  \item $mutation$ $\_$ $coeff$ was set to 0.1;
+  \item $extinction$ $\_$ $coeff$ was set to 0.3.
 \end{itemize}
 
-Results are presented in figure ~\ref{fig:gen_ave_2008}.
+The best results that we were able to obtain are presented in figure ~\ref{fig:gen_ave_2008}.
+Apart from that, the average values of 5 runs are shown in figure ~\ref{fig:gen_best_2008}.
+As can be easily spotted the algorithm perform reasonably well on average (especially compared with CEA).
 
 \begin{figure}[ht]
   \begin{center}
@@ -371,30 +387,41 @@ Results are presented in figure ~\ref{fig:gen_ave_2008}.
 
 The following configuration was used:
 \begin{itemize}
-  \item $reproduction\_$ $coeff$ was set to 0.2
-  \item subpopulation size in each computing node was set to 64
-  \item number of computing nodes was set to 2
-  \item $mutation$ $\_$ $coeff$ was set to 0.1
-  \item $extinction$ $\_$ $coeff$ was set to 0.3
+  \item $reproduction\_$ $coeff$ was set to 0.2;
+  \item subpopulation size in each computing node was set to 64;
+  \item number of computing nodes was set to 2;
+  \item $mutation$ $\_$ $coeff$ was set to 0.1;
+  \item $extinction$ $\_$ $coeff$ was set to 0.3.
 \end{itemize}
 
-Results presented in figure ~\ref{fig:co_evol_return} are catastrophic.
+Results presented in figure ~\ref{fig:co_evol_return} are catastrophic (and still they are the best results we obtained from a series of tests).
+Average results are shown in figure ~\ref{fig:cea_2008_ave}
+
 We have lost almost all our money - approximately 70\% of it.
-Risk associated with our portfolio is presented in figure ~\ref{fig:co-evol-risk}.
+Average risk associated with our portfolio is presented in figure ~\ref{fig:co-evol-risk}.
+As we can observe the best obtained results are quite similar to average ones.
 
 \begin{figure}[ht]
   \begin{center}
     \includegraphics[scale=.5]{co-evol-return.png}
   \end{center}
-  \caption{Chart showing portfolio value in time}
+  \caption{Chart showing the best portfolio value in time for CEA}
   \label{fig:co_evol_return}
 \end{figure}
 
 \begin{figure}[ht]
   \begin{center}
-    \includegraphics[scale=.5]{co-evol-risk.png}
+    \includegraphics[scale=.5]{cea_2008_ave.png}
   \end{center}
-  \caption{Chart showing portfolio risk in time}
+  \caption{Chart showing average portfolio value in time for CEA}
+  \label{fig:cea_2008_ave}
+\end{figure}
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[scale=.5]{cea_2008_ave_risk.png}
+  \end{center}
+  \caption{Chart showing average portfolio risk in time for CEA}
   \label{fig:co-evol-risk}
 \end{figure}
 
@@ -403,30 +430,41 @@ Risk associated with our portfolio is presented in figure ~\ref{fig:co-evol-risk
 
 The following configuration was used:
 \begin{itemize}
-  \item $reproduction\_$ $coeff$ was set to 0.2
-  \item each species was represented initially by 64 agents (in each computing node)
-  \item number of computing nodes was set to 2
-  \item $mutation$ $\_$ $coeff$ was set to 0.1
-  \item $extinction$ $\_$ $coeff$ was set to 0.3
+  \item $reproduction\_$ $coeff$ was set to 0.2;
+  \item each species was represented initially by 64 agents (in each computing node);
+  \item number of computing nodes was set to 2;
+  \item $mutation$ $\_$ $coeff$ was set to 0.1;
+  \item $extinction$ $\_$ $coeff$ was set to 0.3.
 \end{itemize}
 
-Figure~\ref{fig:agent_2008_return} presents portfolio value in time while  figure~\ref{fig:agent_2008_risk} presents the risk associated with our investments.
-
+Figure~\ref{fig:agent_2008_best_return} presents the best returns that we managed to obtain
+  while  figure~\ref{fig:agent_2008_ave_return} presents the average risk associated with our investments.
+Average return is shown in figure ~\ref{fig:agent_2008_ave_risk}.
+Once again it turns out that average values are pretty similar to the best we managed to get. 
+It turns out that CoEMAS performs much better in difficult times than CEA.
+ 
 \begin{figure}[ht]
   \begin{center}
     \includegraphics[scale=.5]{coemas-return.png}
   \end{center}
-  \caption{Chart showing portfolio value in time}
-  \label{fig:agent_2008_return}
+  \caption{Chart showing the best obtained portfolio values in time for CoEMAS}
+  \label{fig:agent_2008_best_return}
 \end{figure}
-
 
 \begin{figure}[ht]
   \begin{center}
-    \includegraphics[scale=.5]{coemas-risk.png}
+    \includegraphics[scale=.5]{coemas_2008_ave.png}
   \end{center}
-  \caption{Chart showing portfolio risk in time}
-  \label{fig:agent_2008_risk}
+  \caption{Chart showing average portfolio return in time for CoEMAS}
+  \label{fig:agent_2008_ave_return}
+\end{figure}
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[scale=.5]{coemas_2008_ave_risk.png}
+  \end{center}
+  \caption{Chart showing average portfolio risk in time for CoEMAS}
+  \label{fig:agent_2008_ave_risk}
 \end{figure}
 
 \subsection{Conclusions}

@@ -9,9 +9,9 @@
 
 The crux of the trend following method is to choose a set of entry and exit point conditions that determine our \emph{trading strategy} (predefined set of rules 
 responsible for making buy/sell decisions).
-Simple Moving Average (SMA) is especially useful to highlight longer-term trends in a set of data points.
+Simple Moving Average (SMA) is especially useful to highlight longer-term trends in a set of data points \cite{Trend01}.
 
-SMA is formulated as the unweighted mean of the previous $N$ data points:
+SMA is formulated as the unweighted mean of the previous $N$ data points \cite{Trend01}:
 
 \begin{equation}
     SMA_{today,N} = \frac{\sum_{i=1}^{N}p_{today - i}}{N}
@@ -28,8 +28,8 @@ In this case, data points will represent closing stock prices.
 
 \textbf{Entry points:}
   \begin{itemize}
-    \item Simple moving average (SMA) of last $N$ days is greater than SMA of last $M$ days ($N$ < $M$)
-    \item Current stock price is max of last $N$ days (that is usually a good indicator of lucrative opportunity on the market)
+    \item Simple moving average (SMA) of last $N$ days is greater than SMA of last $M$ days ($N$ < $M$);
+    \item Current stock price is max of last $N$ days (that is usually a good indicator of lucrative opportunity on the market).
   \end{itemize}
 
 As soon as at least one of the above conditions is satisfied we go long (we buy a particular asset).
@@ -38,8 +38,8 @@ As soon as at least one of the above conditions is satisfied we go long (we buy 
 \textbf{Exit points:}
   \begin{itemize}
     \item Losses on a single trade are greater than 2 \% (this rule is used to quickly abandon an investment that we were wrong about its trend direction,
-	  the amount of tolerable loss solely depends on our strategy and does not have to be exactly 2\%)
-    \item Simple moving average (SMA) of last $N$ days is lesser than SMA of last $M$ days ($N$ < $M$)
+	  the amount of tolerable loss solely depends on our strategy and does not have to be exactly 2\%);
+    \item Simple moving average (SMA) of last $N$ days is lesser than SMA of last $M$ days ($N$ < $M$).
   \end{itemize}
 
 As soon as the exit condition is satisfied we go short (we sell a particular asset).
@@ -51,11 +51,10 @@ By manipulating the value of $N$ we can seek out different types of trends, as m
 
 \subsection{Pseudocode}
 
-Algorithm~\ref{fig:tf_pseudo} shows pseudocode of trend following.
+Algorithm~\ref{fig:tf_pseudo} shows pseudocode of trend following. It uses the following functions:
 
 
 \begin{description}
-
 
 \item[SMA(i,N)]
   calculates Simple Moving Average for stock $i$, $N$ last days are taken into account  
@@ -160,7 +159,7 @@ Algorithm~\ref{fig:tf_pseudo} shows pseudocode of trend following.
 R is a programming language designed to deal with building systems based on statistical computation.
 Apart from that it offers command line interpreter.
 Working with vectors and matrices of data is straightforward and robust.
-Its high performance and vast library of already implemented statistical functions are the main advantages of R (\cite{R}).    
+Its high performance and vast library of already implemented statistical functions are the main advantages of R \cite{R}.    
 
 \section{Genetic algorithm}
 \label{sec:genAlgoImpl}
@@ -174,15 +173,15 @@ Before first round of computation, the entire population is created from scratch
 The following modified GA operations have been implemented:
 \begin{description}
   \item [mutation]
-      Mutation operator changes exactly one value $ \alpha_{i} $ representing percentage share of a specific stock $i$ (each time the value $i$ is chosen randomly)
+      - mutation operator changes exactly one value $ \alpha_{i} $ representing percentage share of a specific stock $i$ (each time the value $i$ is chosen randomly)
       to $\alpha_{i}'$ ($\alpha_{i}' \in (0,1)$ is chosen randomly). 
-      After that, we have to normalize vector.
-      \emph{Mutation\_coefficient} (\emph{mutation\_coefficient} $ \in (0,1)$ ) determines what part of population will be subjected to mutation operator.
+      After that, we have to normalize the vector.
+      \emph{Mutation\_coefficient} (\emph{mutation\_coefficient} $ \in (0,1)$ ) determines what part of the population will be subjected to mutation operator.
   \item [selection]
-      \emph{breeding\_coefficient} ( \emph{breeding\_coefficient} $ \in (0,1)$ ) determines what part of population will be subjected to crossover operator, selection is based on 
-      fitness function (only the fittest part of the population will be selected)
+      - \emph{breeding\_coefficient} ( \emph{breeding\_coefficient} $ \in (0,1)$ ) determines what part of population will be subjected to crossover operator, selection is based on 
+      fitness function (only the fittest part of the population will be selected);
   \item [crossover]
-      After selection chromosomes eligible for reproduction, each pair of chromosomes are subjected to crossover operator. As a result new chromosomes are created (each pair
+      - after selection chromosomes eligible for reproduction, each pair of chromosomes are subjected to crossover operator. As a result new chromosomes are created (each pair
       produces two new chromosomes) and added to population. Crossover choose points $left$  and $right$ (both are chosen randomly) which cut parent's chromosomes in the following
       way: 
 	  \begin{figure}[H]
@@ -262,12 +261,13 @@ At the end of each GA round a part of the population that has the lowest fitness
       \extinctLeastFitIndividuals{\population} \;
       \Return{the fittest individual} 
   }
-  \caption{GA pseudocode}\label{coemas_pseudo}
+  \caption{GA pseudocode}\label{genetic_pseudo}
 \end{algorithm}
 
 
 
-As can be easily spotted there are some minor changes to GA pseudocode compared with the generic one mentioned in \ref{sec:genAlgorithms}.
+As can be easily spotted there are some minor changes to GA pseudocode compared with the generic one mentioned in \ref{sec:genAlgorithms} 
+(see Algorithm~\ref{genetic_pseudo}).
 We start by evaluating each chromosome using fitness function described in \ref{sec:gen_fitness_fun}, which uses current stock prices.
 The fittest individuals are allowed to reproduce (this is further controlled by \emph{breeding\_coefficient}).
 New individuals are merged to existing population.
@@ -287,13 +287,15 @@ Fitness is calculated according to the following formula (for portfolio with $N$
     \gamma_{day} =  \sum_{i=1}^{N} {  \alpha_{i} * \frac{price(i,day)}{price(i,day - 1)} }
 \end{equation}
 
+where:
+
 \begin{description}
   \item [$\gamma_{day}$] 
-      value of the portfolio's fitness calculated for specific $day$
+      is the value of the portfolio's fitness calculated for specific $day$;
   \item [$\alpha_{i}$]
-      percentage share of a specific stock $i$ in the whole portfolio
+      is the percentage share of a specific stock $i$ in the whole portfolio;
   \item [$price(i,day)$]
-      returns the price of stock $i$ for a specific $day$
+      returns the price of stock $i$ for a specific $day$.
 \end{description}
 
 Clearly, the fitness function favours the portfolios which have the highest day-to-day increase in value.
@@ -315,13 +317,13 @@ Figure~\ref{fig:GA_diag} presents UML class diagram of the GA implementation.
 
 \begin{description}
   \item [GeneticAlgorithmImpl]
-    An implementation of IGeneticAlgorithm, it is responsible for calculating the most optimal portfolio
+    - an implementation of IGeneticAlgorithm, it is responsible for calculating the most optimal portfolio;
   \item [GeneticAlgorithmUtils]
-    Utility class providing methods used by genetic algorithm (like mutating, crossover, etc.)
+    - utility class providing methods used by genetic algorithm (like mutating, crossover, etc.);
   \item [IDataSource]
-    Any class implementing this interface would expose convenient access to all data needed to calculate fitness.
+    - any class implementing this interface would expose convenient access to all data needed to calculate fitness;
   \item [Portfolio]
-    Class representing potential solution - it stores all the information about our assets and the current value of them.
+    - class representing potential solution - it stores all the information about our assets and the current value of them.
 
 \end{description}
 
@@ -330,7 +332,7 @@ Figure~\ref{fig:GA_diag} presents UML class diagram of the GA implementation.
 
 \subsection{Co-evolutionary approach to portfolio optimization problem}
 
-Contrary to \ref{sec:genAlgoImpl}, two subpopulations coexist side by side.
+Contrary to \ref{sec:genAlgoImpl}, in this approach two subpopulations coexist side by side.
 Each individual represents potential solution to portfolio optimization problem.
 Risk oriented subpopulation tries to optimize on risk (the lower risk value the better), whereas the return oriented subpopulation tries to maximize expected return.
 Usually the greater the expected return the riskier the investment so our solutions will involve some trade-offs.
@@ -364,9 +366,9 @@ Risk as well as expected return are calculated according to Capital Asset Pricin
 To sum up several mechanisms have been implemented to keep both subpopulations diverse:
 
 \begin{itemize}
-  \item crossover is allowed only between the fittest chromosomes from different subpopulations 
-  \item mutations introducing random genetic change
-  \item migration allows chromosomes to travel to different nodes  
+  \item crossover is allowed only between the fittest chromosomes from different subpopulations; 
+  \item mutations introducing random genetic change;
+  \item migration allows chromosomes to travel to different nodes.  
 \end{itemize}
 
 \subsection{Pseudocode}
@@ -427,10 +429,10 @@ To sum up several mechanisms have been implemented to keep both subpopulations d
       \extinctLeastFitIndividuals{\population} \;
       \Return{non-dominated solution} 
   }
-  \caption{CoEMAS pseudocode}\label{coemas_pseudo}
+  \caption{CEA pseudocode}\label{cea_pseudo}
 \end{algorithm}
 
-Contrary to GA, we are dealing with two populations (with different objectives) at once.
+Contrary to GA, we are dealing with two populations (with different objectives) at once (see Algorithm~\ref{cea_pseudo}).
 Apart from that, the pseudocode looks very similar.
 Reproduction is only allowed between individuals from different subpopulations (which is a direct application of $restricted$ $mating$ method
  described in \ref{sec:population_diversity}).
@@ -441,7 +443,7 @@ Non-dominated solution (in Pareto sense) is returned as a result.
 \subsection{Class diagram}
 \label{Co-evol-class-diagram}
 
-Figure~\ref{fig:GA_UML} presents the UML class diagram of Genetic Algorithm.
+Figure~\ref{fig:GA_UML} presents the UML class diagram of CEA.
 
 \begin{figure}[ht]   
 	    \begin{center}
@@ -490,8 +492,8 @@ Instead of them we introduced individuals of two different species.
 Each species focuses on different task:
 
 \begin{itemize}
-  \item species number 1 - tries to achieve the lowest risk possible
-  \item species number 2 - tries to achieve the highest expected return possible
+  \item species number 1 - tries to achieve the lowest risk possible;
+  \item species number 2 - tries to achieve the highest expected return possible.
 \end{itemize}
 
 Risk as well as expected return is calculated due to Capital Asset Pricing Model (defined in \ref{CAPM}).
@@ -502,28 +504,28 @@ Implemented actions that each agent can perform include (\ref{sec:CoEMAS}):
 
 \begin{description}
   \item [death]
-      if amount of resource that agent posses is lower than threshold value the agent dies
+      - if amount of resource that agent posseses is lower than threshold value the agent dies;
   \item [migration]
-      agent is allowed to migrate but the probability of this action is low
+      - agent is allowed to migrate but the probability of this action is low;
   \item [reproduction]
-      agents from different species are allowed to reproduce provided that they both exceed the minimum amount of resource allowing to reproduce
+      - agents from different species are allowed to reproduce provided that they both exceed the minimum amount of resource allowing to reproduce;
   \item [give/get]
-      agent can get resource from other, dominated agent
+      - agent can get resource from other, dominated agent;
   \item [recombination]
-      agents produce offspring by the means of recombination
+      - agents produce offspring by the means of recombination;
   \item [mutation]
-      mutation introduces random change to potential solution, normalization of solution vector is then required 
+      - mutation introduces random change to potential solution, normalization of solution vector is then required;
   \item [seek]
-      agents appropriate  to reproduction as well as get operation can be found thanks to this action
+      - agents appropriate  to reproduction as well as get operation can be found thanks to this action.
 \end{description}
 
 Interactions between agents are implemented in the following way:
 \begin{itemize}
-  \item co-evolution is implemented as a sequence of \emph{turns}
+  \item co-evolution is implemented as a sequence of \emph{turns};
   \item in each \emph{turn} every agent perform its action (action to perform at any particular turn is chosen with some well defined probability, e.g. there is a 10\% chance that agent will try to find
-	a partner to reproduce, 60\% chance that the agent will try to get some resource from dominated agent)
+	a partner to reproduce, 60\% chance that the agent will try to get some resource from dominated agent);
   \item when every agent performed some action the \emph{turn} ends and entire population of agents is checked whether some of them should die (not enough resource left after other agents got resource
-	from it)
+	from it).
 \end{itemize}
 
 
@@ -577,13 +579,14 @@ Each agent performs one of the above actions with some probability.
   \caption{CoEMAS pseudocode}\label{coemas_pseudo}
 \end{algorithm}
 
+Pseudocode of CoEMAS is presented in Algorithm~\ref{coemas_pseudo}.
 
 Profiles are chosen with following probabilities:
 \begin{itemize}
-  \item $resource$ $profile$ - with probability 0.6
-  \item $reproduction$ $profile$ - with probability 0.2
-  \item $migration$ $profile$ with probability 0.1
-  \item $mutation$ $profile$ with probability 0.1
+  \item $resource$ $profile$ - with probability 0.6;
+  \item $reproduction$ $profile$ - with probability 0.2;
+  \item $migration$ $profile$ with probability 0.1;
+  \item $mutation$ $profile$ with probability 0.1.
 \end{itemize}
 
 Similarly to \ref{sec:co-evol-sys}, mutation is used as a mean of maintaining population diversity.
@@ -602,17 +605,19 @@ Figure~\ref{fig:coemas-uml} presents UML class diagram of CoEMAS.
 	    \label{fig:coemas-uml}
 	  \end{figure}
 
+The most important classes/interfaces are:
+
 \begin{description}
   \item [Environment]
-      aggregates all agents, responsible for population init at the start of algorithm and extinction of agents which resource level are too low, etc.
+      - aggregates all agents, responsible for population init at the start of algorithm and extinction of agents which resource level are too low, etc.
   \item [AgentUtils]
-      utility class providing functions to Agent class
+      - utility class providing functions to Agent class;
   \item [IAgent]
-      interface specifying all methods that agent in CoEMAS should be capable of doing
+      - interface specifying all methods that agent in CoEMAS should be capable of doing;
   \item [Agent]
-      implementation of agent that is autonomous and interact with other agents
+      - implementation of agent that is autonomous and interact with other agents;
   \item [IDataSource]
-      provides easy access to historical data and computed statistical functions
+      - provides easy access to historical data and computed statistical functions.
  
 \end{description}
 
@@ -632,9 +637,10 @@ Figure~\ref{fig:coemas-uml} presents UML class diagram of CoEMAS.
     \includegraphics[scale=.4]{agent_framework.png}
   \end{center}
   \caption{Deployment diagram of two Computing Nodes and Aggregation Node (in real situations more Computing Nodes are present)}
+  \label{platform_arch}
 \end{figure}
 
-Data Source as well as Computing Algorithm are created and injected to Computing Node(CN) by Spring. 
+Data Source as well as Computing Algorithm are created and injected to Computing Node (CN) by Spring (see figure~\ref{platform_arch}). 
 CNs send results of computations to Aggregating Node by JMS. 
 Apart from that, JMS is used to provide migration capability to each CN.
 
@@ -663,7 +669,7 @@ Apart from trend following algorithm, all the remaining approaches (CoEMAS (\ref
 
 \subsection{Aggregating Node}
 
-The sole purpose of Aggregating Node(AG) is to gather results from Computing Nodes(CN), choose the best non-dominated solution and write the results to file. 
+The sole purpose of Aggregating Node (AG) is to gather results from Computing Nodes (CN), choose the best non-dominated solution and write the results to file. 
 Based on this file all charts are created and comparison of different algorithms is possible.
 Communication between CNs and AG is provided by a single JMS queue (all CNs send results to one specific queue, AG consumes its content).
 
@@ -672,31 +678,31 @@ Communication between CNs and AG is provided by a single JMS queue (all CNs send
 
 \begin{description}
   \item [R]
-      Trend following algorithm has been implemented as an R script, historical data preprocessing.
+      - Trend following algorithm has been implemented as an R script, historical data preprocessing.
   \item [Apache ActiveMQ]
-      JMS implementation, provides communication between Computing Nodes and Aggregating Agent (\ref{multi-agent})
+      - JMS implementation, provides communication between Computing Nodes and Aggregating Agent (\ref{multi-agent})
   \item [Java]
       Almost all algorithms are implemented in Java, Computing Nodes as well as Aggregating Node are in fact jar files.
       Java is an object oriented programming language that is portable, secure and robust.
       Java code is compiled to byte code interpeted by Java Virtual Machine. 
       It is very popular thanks to ease of application development. 
   \item [Inversion of Control]
-	Inversion of Control (IoC) is an architectural pattern.
-	It relies on concept of having an outside entity (usually it is called IoC container) that is responsible for wiring objects together. \cite{Spring} 
+	- Inversion of Control (IoC) is an architectural pattern.
+	It relies on concept of having an outside entity (usually it is called IoC container) that is responsible for wiring objects together \cite{Spring}. 
   \item [JMS]
-	Java Message Service, it allows application to create, read, send and receive messages.
+	- Java Message Service, it allows application to create, read, send and receive messages.
 	Implementations of JMS provide reliable and asynchronous communication for distributed systems. 
 
   \item [Spring Framework]
-      Inversion of Control container (configuration of application components and lifecycle management of Java objects), Messaging (simplifies the use of the JMS API) modules used.
+      - Inversion of Control container (configuration of application components and lifecycle management of Java objects), Messaging (simplifies the use of the JMS API) modules used.
   \item [Apache Maven]
-      Used primarly for build automation.
+      - Used primarly for build automation.
   \item [JUnit]
-      JUnit tests cover the most crucial functions of implemented algorithms.
+      - JUnit tests cover the most crucial functions of implemented algorithms.
   \item [git]
-      Source Code Management tool.
+      - Source Code Management tool.
   \item [bash scripts]
-      Used for conveniently setting up and running test 
+      - Used for conveniently setting up and running test. 
 \end{description}
 
  
