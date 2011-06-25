@@ -1,0 +1,381 @@
+%%% -*- Coding: utf-8-unix; Mode: latex; TeX-master: "paper"; ispell-local-dictionary: "american" -*-
+
+\section{Experimental Results}
+\label{sec:experiments}
+
+\subsection{First Set of Tests}
+\label{sec:first_set_of_tests}
+
+First set of tests uses historical data from year 2010 (data of 3 different stocks have been used). 
+Portfolio contained 3 assets (they are one of the biggest companies present on WSE):
+
+\begin{itemize} 
+  \item KGHM;
+  \item TPSA;
+  \item PKO BP.
+\end{itemize}
+
+Multi-agent platform has been used to run algorithms.
+It was configured in the following way: 
+
+\begin{itemize}
+  \item configured to simulate trading strategy throughout the entire year 2010;
+  \item all investing decisions are solely based on results from algorithms;
+  \item migration mechanism between Computing Nodes has been enabled;
+  \item two Computing Nodes (with appropriate algorithms) have been used to obtain results.
+\end{itemize}
+
+Trend following algorithm has been tested without multi-agent running platform as it is a standalone R script.
+Apart from that, it is completely deterministic algorithm so each time we run it, we will get the same results.
+
+\subsection{Trend Following}
+
+\subsubsection{Short-term trend results}
+\label{short-term}
+
+As described in \ref{sec:trend-following}, we can adjust our trading rules to seek out short-term trends
+ (by changing the values of $N$ and $M$ in the \emph{Simple Moving Average} method).
+With values $N = 10$, $M = 20$ the SMA method focused on short-term trends.
+ 
+
+  
+
+\begin{figure}[htb]
+  \subfigure[short-term trends]{
+  \includegraphics[scale=.33]{rplot0.png}
+\label{fig:trend-short}}
+  \subfigure[intermediate-term trends]{
+  \includegraphics[scale=.33]{rplot.png}
+  \label{fig:trend-int}
+}
+  \caption{Charts showing portfolio value in time for TF using short-term and intermediate-term trends}
+\label{fig:TF}
+\end{figure}
+
+There are easily visible periods of time (figure~\ref{fig:trend-short}) when the portfolio value is not changing. 
+It is a time when our portfolio does not contain any assets (but we still have money). 
+After a while, conditions change and trend following algorithm decides to buy some assets.
+
+
+\subsubsection{Intermediate-term trend results}
+\label{trend-foll-inter}
+
+In this particular test (with values: $N = 20$, $M = 40$), trend following algorithm has been adjusted to focus on intermediate-term trends.
+ 
+
+
+Results are presented in figure~\ref{fig:trend-int}, as can be seen they are slightly better compared with short-term trends approach.  
+
+\subsubsection{Conclusions}
+
+It turned out that focusing on short-term or intermediate-term trends leads to almost the same results.
+Intermediate-term trend approach offers slightly better return from the investment.
+In both cases we encountered periods of time when portfolio contained no assets because situation on the market was not good enough to invest in any of the available stocks.
+
+
+%---------------------------------------------------------------------------
+
+\subsection{Genetic algorithm}
+
+The best results that we were able to obtain are presented in figure~\ref{fig:gen-algo}.
+Apart from that, the average values of 5 runs are shown in figure~\ref{fig:gen-algo-ave-2010}.
+As can be easily spotted the algorithm perform reasonably well on the average.
+
+The following configuration was used:
+\begin{itemize}
+  \item $reproduction\_$ $coeff$ was set to 0.2;
+  \item population size is 512;
+  \item $mutation$ $\_$ $coeff$ was set to 0.1;
+  \item $extinction$ $\_$ $coeff$ was set to 0.3.
+\end{itemize}
+
+\begin{figure}[htb]
+  \subfigure[Chart showing value of our best portfolio in time for GA]{
+  \includegraphics[scale=.3]{best_2010_gen.png}
+\label{fig:gen-algo}}
+  \subfigure[Chart showing average values of our portfolio in time for GA]{
+  \includegraphics[scale=.3]{ave_2010_gen.png}
+  \label{fig:gen-algo-ave-2010}
+}
+  \caption{Charts showing average and best portfolio values obtained for GA}
+\label{fig:gen-algo-ave-2010-com}
+\end{figure}
+
+
+
+
+
+\subsection{Co-evolutionary algorithm}
+\label{sec:co-evol-2}
+
+
+Results presented in figure~\ref{fig:co_eval_return} clearly show that the return of our investment is much higher than any other algorithm could achieve.  
+Analysing figure~\ref{fig:co_eval_risk} explains why the results are so good - the risk associated with our portfolio is substantially higher compared to other methods.
+In this case algorithm was tuned to treat non-dominated solutions from return oriented subpopulation - this explains why the results provide so much return and risk. 
+
+The following configuration was used:
+\begin{itemize}
+  \item $reproduction\_$ $coeff$ was set to 0.2;
+  \item subpopulation size in each computing node was set to 64;
+  \item number of computing nodes was set to 2;
+  \item $mutation$ $\_$ $coeff$ was set to 0.1;
+  \item $extinction$ $\_$ $coeff$ was set to 0.3.
+\end{itemize}
+
+\begin{figure}[htb]
+  \subfigure[Chart showing value of our best portfolio in time for CEA]{
+  \includegraphics[scale=.3]{co-evol-value-oriented.png}
+\label{fig:co_eval_return}}
+  \subfigure[Chart showing average value of our portfolio value in time for CEA]{
+  \includegraphics[scale=.3]{cea_ave_2010.png}
+  \label{fig:co_eval_return}
+}
+  \caption{Charts showing average and best portfolio values obtained for CEA}
+\label{fig:co-evol-ave-2010-com}
+\end{figure}
+
+
+\subsubsection{Pareto front}
+
+Because co-evolutionary algorithm operates in terms of risk and return we can check if the non dominated solutions (in Pareto sense) are used to construct our portfolio.
+Figure~\ref{fig:pareto_co_evol} shows the results of computation (results from a period of 6 days are presented for the sake of clarity). 
+Portfolio is built according to the solutions that are connected with red line.
+All of them are non dominated and all have the maximum return possible from all available feasible solutions at any particular day.
+
+Solutions from two different computing nodes are shown.
+It turns out that results from the second node are much better than from the first.
+In fact all of the selected solutions come from the second one.
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[scale=.3]{cea_ave_risk_2010.png}
+  \end{center}
+  \caption{Chart showing average value of risk in time for CEA}
+  \label{fig:co_eval_risk}
+\end{figure}
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[scale=.3]{pareto_co_evol.png}
+  \end{center}
+  \caption{Chart showing the relation between return and risk of the particular solution}
+  \label{fig:pareto_co_evol}
+\end{figure}
+
+
+\subsection{CoEMAS}
+
+Figure~\ref{fig:agent_return} presents portfolio value in time while  figure~\ref{fig:agent_risk} presents the risk associated with our investments.
+Returns are not so spectacular as in CEA but on the other hand the amount of risk we have to take is much lower.
+
+The following configuration was used:
+\begin{itemize}
+  \item $reproduction\_$ $coeff$ was set to 0.2;
+  \item each species was represented initially by 64 agents (in each computing node);
+  \item number of computing nodes was set to 2;
+  \item $mutation$ $\_$ $coeff$ was set to 0.1;
+  \item $extinction$ $\_$ $coeff$ was set to 0.3.
+\end{itemize}
+
+\begin{figure}[htb]
+  \subfigure[Chart showing value of our portfolio in time (CoEMAS)]{
+  \includegraphics[scale=.33]{coemas_ave_2010.png}
+\label{fig:agent_return}}
+  \subfigure[Chart showing average value of risk in time (CoEMAS)]{
+  \includegraphics[scale=.33]{coemas_ave_risk_2010.png}
+  \label{fig:agent_risk}
+}
+  \caption{Charts showing results for CoEMAS}
+\label{fig:CoEMAS_1}
+\end{figure}
+
+
+\subsubsection{Pareto front}
+
+CoEMAS like co-evolutionary algorithm gives us the opportunity to check if the non dominated solutions (in Pareto sense) are used to construct our portfolio.
+Figure~\ref{fig:pareto_coemas} shows the results of computation (because of the fact that populations are quite numerous,
+ results from a period of 3 days are presented for the sake of clarity). 
+Solutions chosen to be a blueprint for our portfolio are shown as big black dots.
+We can easily spot that they are non dominated (in Pareto sense). 
+
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[scale=.3]{pareto_coemas.png}
+  \end{center}
+  \caption{Chart showing the relation between return and risk of the particular solution}
+  \label{fig:pareto_coemas}
+\end{figure}
+
+
+\subsection{Conclusions}
+
+First set of tests showed that all algorithms give reasonable results.
+It is very hard to pinpoint one approach that is much better than others.
+Co-evolutionary system (\ref{sec:co-evol-sys}) outperformed other algorithms in terms of return.
+Such good results can be explained by the fact that trading strategy proposed by this algorithm is much riskier than using CoEMAS.
+  
+On the other hand, CoEMAS offers substantially lower return but is much more safer.
+As figure~\ref{fig:agent_risk} shows, the risky moves are mixed with safe ones resulting in much more balanced strategy.
+
+Trend following as well as genetic algorithm can not give us any information about the risk we are taking by investing according to results they provide.
+On the other hand, we can specify rules (in the trend following approach) that should reflect our attitude to risk taking (\ref{sec:trend-following}).
+With genetic algorithm (GA) we have no such option as our ability to customize GA is limited.
+Obviously we could test different values of coefficients responsible for simulating evolution process but it turns out that the fitness function that does not take risk into
+account is the most serious limitation.
+
+
+
+\subsection{Second Set of Tests}
+
+Third set of tests uses historical data from year 2008.
+The same 3 companies stocks have been selected to construct our portfolio as in previous tests.
+Year 2008 was extremely hard for investors due to crisis caused by credit crunch back in 2007.
+During 2008, WIG 20 lost over 47\% in value.
+Under such difficult circumstances it is tempting to run tests in order to asssess each algorithm ability to minimize losses.
+The best solutions obtained as well as average ones are included.  
+
+\subsection{Trend Following}
+
+\subsubsection{Short-term trend results}
+
+Algorithm is configured in the same manner as in \ref{short-term}.
+Results are presented in figure~\ref{fig:trend_foll_short}.
+
+\begin{figure}[htb]
+  \subfigure[short-term trends]{
+  \includegraphics[scale=.33]{trend_following_short.png}
+\label{fig:trend_foll_short}}
+  \subfigure[intermediate-term trends]{
+  \includegraphics[scale=.33]{trend_following_inter.png}
+  \label{fig:trend_foll_inter}
+}
+  \caption{Charts showing portfolio value in time for TF using short-term and intermediate-term trends}
+\label{fig:TF_2}
+\end{figure}
+
+\subsubsection{Intermediate-term trend results}
+
+Algorithm is configured in the same manner as in \ref{trend-foll-inter}.
+Results are presented in figure~\ref{fig:trend_foll_inter}.
+
+
+\subsubsection{Conclusions}
+
+Intermediate-term trend seeking tends to give much better results than focusing on short-term trends.
+We managed to minimize the losses thanks to the fact that we completely ceased trading during the worst time on the market.
+
+\subsection{Genetic algorithm}
+
+The best results that we were able to obtain are presented in figure ~\ref{fig:gen_ave_2008}.
+Apart from that, the average values of 5 runs are shown in figure ~\ref{fig:gen_best_2008}.
+As can be easily spotted the algorithm perform reasonably well on average (especially compared with CEA).
+
+The following configuration was used:
+\begin{itemize}
+  \item $reproduction\_$ $coeff$ was set to 0.2;
+  \item population size is 512;
+  \item $mutation$ $\_$ $coeff$ was set to 0.1;
+  \item $extinction$ $\_$ $coeff$ was set to 0.3.
+\end{itemize}
+
+\begin{figure}[htb]
+  \subfigure[Chart showing average portfolio value in time]{
+  \includegraphics[scale=.3]{gen_ave_2008.png}
+\label{fig:gen_ave_2008}}
+  \subfigure[Chart showing best portfolio value in time]{
+  \includegraphics[scale=.3]{best_gen_2008.png}
+  \label{fig:gen_best_2008}
+}
+  \caption{Charts showing portfolio value in time for GA}
+\label{fig:GA_2}
+\end{figure}
+
+\subsection{Co-evolutionary algorithm}
+
+Results presented in figure ~\ref{fig:co_evol_return} are catastrophic (and still they are the best results we obtained from a series of tests).
+Average results are shown in figure ~\ref{fig:cea_2008_ave}
+
+We have lost almost all our money - approximately 70\% of it.
+Average risk associated with our portfolio is presented in figure ~\ref{fig:co-evol-risk}.
+As we can observe the best obtained results are quite similar to average ones.
+
+The following configuration was used:
+\begin{itemize}
+  \item $reproduction\_$ $coeff$ was set to 0.2;
+  \item subpopulation size in each computing node was set to 64;
+  \item number of computing nodes was set to 2;
+  \item $mutation$ $\_$ $coeff$ was set to 0.1;
+  \item $extinction$ $\_$ $coeff$ was set to 0.3.
+\end{itemize}
+
+\begin{figure}[htb]
+  \subfigure[Chart showing best portfolio value in time]{
+  \includegraphics[scale=.3]{co-evol-return.png}
+\label{fig:co_evol_return}}
+  \subfigure[Chart showing average portfolio value in time]{
+  \includegraphics[scale=.3]{cea_2008_ave.png}
+  \label{fig:cea_2008_ave}
+}
+  \caption{Charts showing portfolio value in time for CEA}
+\label{fig:CEA_2}
+\end{figure}
+
+
+\subsection{CoEMAS}
+
+Figure~\ref{fig:agent_2008_best_return} presents the best returns that we managed to obtain
+  while  figure~\ref{fig:agent_2008_ave_return} presents the average risk associated with our investments.
+Average return is shown in figure ~\ref{fig:agent_2008_ave_risk}.
+Once again it turns out that average values are pretty similar to the best we managed to get. 
+It turns out that CoEMAS performs much better in difficult times than CEA.
+
+The following configuration was used:
+\begin{itemize}
+  \item $reproduction\_$ $coeff$ was set to 0.2;
+  \item each species was represented initially by 64 agents (in each computing node);
+  \item number of computing nodes was set to 2;
+  \item $mutation$ $\_$ $coeff$ was set to 0.1;
+  \item $extinction$ $\_$ $coeff$ was set to 0.3.
+\end{itemize}
+
+\begin{figure}[htb]
+  \subfigure[Chart showing best portfolio value in time]{
+  \includegraphics[scale=.3]{coemas-return.png}
+\label{fig:agent_2008_best_return}}
+  \subfigure[Chart showing average portfolio value in time]{
+  \includegraphics[scale=.3]{coemas_2008_ave.png}
+  \label{fig:agent_2008_ave_return}
+}
+  \caption{Charts showing portfolio value in time for CoEMAS}
+\label{fig:CoEMAS_2}
+\end{figure}
+
+
+
+\begin{figure}[htb]
+  \subfigure[Chart showing average portfolio risk in time for CEA]{
+  \includegraphics[scale=.3]{cea_2008_ave_risk.png}
+\label{fig:co-evol-risk}}
+  \subfigure[Chart showing average portfolio risk in time for CoEMAS]{
+  \includegraphics[scale=.3]{coemas_2008_ave_risk.png}
+  \label{fig:agent_2008_ave_risk}
+}
+  \caption{Charts showing portfolio value in time for CoEMAS}
+\label{fig:CoEMAS_CEA_2}
+\end{figure}
+
+\subsection{Conclusions}
+
+Clearly, trend following approach managed to save almost our entire capital.
+Losses that we had to experience due to this algorithm seems to be almost negligible comparing with other methods.
+
+In spite of the fact that fitness function used in genetic algorithm completely ignores the risk associated with assets in portfolio,       it actually performed better then solution taking risk into consideration.
+
+Co-evolutionary algorithm is particularly bad. 
+Almost 70\% of initial money is lost. CoEMAS performs slightly better, but it is still worse than simple genetic algorithm approach.
+
+Summing up, it turns out that algorithms performing exceptionally well in a bull market can potentially lead to catastrophic losses during
+difficult times. 
+Trend following algorithm has one major advantage among all discussed methods - it allows to withdraw all our money during periods of time
+that are not investor friendly.
